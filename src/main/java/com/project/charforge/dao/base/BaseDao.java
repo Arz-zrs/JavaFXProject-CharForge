@@ -50,7 +50,7 @@ public abstract class BaseDao<T> {
         return null;
     }
 
-    // Method to fill SQL parameters
+    // Method that operates on SQL parameters
     @FunctionalInterface
     protected interface StatementBinder {
         void bind(PreparedStatement statement) throws SQLException;

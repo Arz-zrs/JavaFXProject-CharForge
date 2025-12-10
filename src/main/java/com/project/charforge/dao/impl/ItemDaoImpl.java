@@ -11,7 +11,7 @@ import java.util.List;
 public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
     @Override
     public List<Item> findAll() {
-        return queryList("SELECT * FROM classes", StatementBinder.empty());
+        return queryList("SELECT * FROM items", StatementBinder.empty());
     }
 
     @Override
