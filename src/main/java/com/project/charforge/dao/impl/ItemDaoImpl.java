@@ -28,7 +28,7 @@ public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
                 result.getInt("id"),
                 result.getString("name"),
                 result.getDouble("weight"),
-                EquipmentSlot.valueOf(result.getString("type")),
+                EquipmentSlot.valueOf(result.getString("type").trim().toUpperCase()),
                 result.getInt("stat_str"),
                 result.getInt("stat_dex"),
                 result.getInt("stat_int"),
