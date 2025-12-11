@@ -53,6 +53,38 @@ public abstract class BaseDao<T> {
         return null;
     }
 
+    // Update or drop a table
+    protected int executeUpdate(String sql, StatementBinder binder) {
+        try (Connection connection = SQLiteConnect.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            binder.bind(statement);
+            return statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // Insert values into a table
+    protected int executeInsert(String sql, StatementBinder binder) {
+        try (Connection connection = SQLiteConnect.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
+
+            binder.bind(statement);
+            statement.executeUpdate();
+
+            try (ResultSet keys = statement.getGeneratedKeys()) {
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+            }
+            return -1;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     // Method that operates on SQL parameters
     @FunctionalInterface
     protected interface StatementBinder {
