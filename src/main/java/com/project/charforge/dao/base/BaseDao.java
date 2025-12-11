@@ -16,6 +16,7 @@ public abstract class BaseDao<T> {
     protected List<T> queryList(String sql, StatementBinder binder) {
         List<T> list = new ArrayList<>();
 
+        //noinspection SqlSourceToSinkFlow
         try (Connection connection = SQLiteConnect.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -34,6 +35,8 @@ public abstract class BaseDao<T> {
 
     // Returns a single row
     protected T querySingle(String sql, StatementBinder binder) {
+
+        //noinspection SqlSourceToSinkFlow
         try (Connection connection = SQLiteConnect.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
