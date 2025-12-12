@@ -7,11 +7,21 @@ import com.project.charforge.model.entity.character.CharClass;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class CharClassDaoImpl extends BaseDao<CharClass> implements CharClassDao {
     @Override
     public List<CharClass> findAll() {
         return queryList("SELECT * FROM classes", StatementBinder.empty());
+    }
+
+    @Override
+    public Optional<CharClass> findById(int classId) {
+        CharClass charClass = querySingle(
+                "SELECT * FROM classes WHERE id = ?",
+                statement -> statement.setInt(1, classId)
+        );
+        return Optional.ofNullable(charClass);
     }
 
     @Override

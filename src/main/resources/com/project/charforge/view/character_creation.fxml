@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.charforge.controller.CharacterCreationController">
+
+    <!-- Panel Form (Centered) -->
+    <VBox alignment="CENTER" maxWidth="500" spacing="20" style="-fx-padding: 40;" styleClass="stats-panel">
+
+        <Label prefHeight="96.0" prefWidth="414.0" style="-fx-alignment: center" styleClass="fantasy-title" text="CHARFORGE" />
+        <Label style="-fx-font-size: 24px;" styleClass="fantasy-lore" text="CREATE YOUR CHARACTER" underline="true" />
+
+        <Separator opacity="0.3" />
+
+        <!-- Form Grid -->
+        <GridPane alignment="CENTER" hgap="10" vgap="15">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" percentWidth="30" />
+                <ColumnConstraints percentWidth="70" />
+            </columnConstraints>
+
+            <!-- Name Input -->
+            <Label styleClass="stat-label-name" text="NAME:" />
+            <TextField fx:id="txtName" promptText="Enter hero name..." style="-fx-background-color: #333; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <!-- Race Selection -->
+            <Label styleClass="stat-label-name" text="RACE:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cmbRace" maxWidth="Infinity" promptText="Select Race" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <!-- Class Selection -->
+            <Label styleClass="stat-label-name" text="CLASS:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cmbJobClass" maxWidth="Infinity" promptText="Select Class" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <!-- Gender Selection-->
+            <Label text="GENDER:" styleClass="stat-label-name" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+            <HBox spacing="15" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <RadioButton fx:id="rbMale" text="MALE" selected="true" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';"/>
+                <RadioButton fx:id="rbFemale" text="FEMALE" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';"/>
+            </HBox>
+        </GridPane>
+
+        <!-- Description Box -->
+        <VBox spacing="5">
+            <Label style="-fx-font-weight: bold;" styleClass="fantasy-lore" text="DESCRIPTION" />
+            <TextArea fx:id="txtDescription" editable="false" prefHeight="100" style="-fx-control-inner-background: #222; -fx-text-fill: #aaa; -fx-font-family: 'Constantia';" wrapText="true" />
+        </VBox>
+
+        <Separator opacity="0.3" />
+
+        <!-- Action Button -->
+        <Button fx:id="btnCreate" maxWidth="200" prefHeight="40" style="-fx-background-color: #701b1b; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" text="BEGIN JOURNEY" />
+
+    </VBox>
+</StackPane>

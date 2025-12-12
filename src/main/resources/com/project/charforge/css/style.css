@@ -123,3 +123,17 @@
     -fx-text-fill: #a8b5c2; /* Silver pudar */
     -fx-font-weight: bold;
 }
+
+.fantasy-title {
+    -fx-text-alignment: center;
+    -fx-font-family: "Bookman Old Style", serif;
+    -fx-text-fill: #d6a666;
+    -fx-font-weight: bold;
+    -fx-font-size: 54px;
+    -fx-background-color: linear-gradient(to top, rgba(193, 134, 43, 0.5), rgba(110, 77, 10, 0.5));
+    -fx-background-radius: 30px;
+    -fx-border-color: #e1a953;
+    -fx-border-style: solid;
+    -fx-border-radius: 30px;
+    -fx-padding: 10;
+}

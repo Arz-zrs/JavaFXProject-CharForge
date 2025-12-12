@@ -14,6 +14,7 @@ public class PlayerCharacter {
     private String name;
     private Race race;
     private CharClass CharClass;
+    private Gender gender;
     private Map<EquipmentSlot, Item> equipment = new HashMap<>();
     private List<InventoryItem> inventory = new ArrayList<>();
 
@@ -27,12 +28,36 @@ public class PlayerCharacter {
         this.CharClass = CharClass;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Race getRace() {
         return race;
     }
 
     public void setRace(Race race) {
         this.race = race;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     public Map<EquipmentSlot, Item> getEquipment() {
