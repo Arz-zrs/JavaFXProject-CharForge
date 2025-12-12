@@ -53,7 +53,7 @@ public abstract class BaseDao<T> {
         return null;
     }
 
-    // Update or drop a table
+    // UPDATE operations
     protected int executeUpdate(String sql, StatementBinder binder) {
         try (Connection connection = SQLiteConnect.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {

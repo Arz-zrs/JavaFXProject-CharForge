@@ -14,7 +14,7 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     @Override
     public List<InventoryItem> findByCharacterId(int charId) {
         String sql = """
-        SELECT\s
+        SELECT
             ci.*,
             i.id AS item_id,
             i.name AS item_name,
@@ -24,13 +24,13 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
             i.stat_dex,
             i.stat_int,
             i.icon_path
-        FROM\s
+        FROM
             character_items ci
-        JOIN\s
+        JOIN
             items i ON ci.item_id = i.id
-        WHERE\s
+        WHERE
             ci.character_id = ?
-       \s""";
+       """;
 
         return queryList(sql, statement -> statement.setInt(1, charId));
     }
