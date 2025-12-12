@@ -22,27 +22,33 @@
 
             <!-- Name Input -->
             <Label styleClass="stat-label-name" text="NAME:" />
-            <TextField fx:id="txtName" promptText="Enter hero name..." style="-fx-background-color: #333; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <TextField fx:id="txtName" promptText="Enter your character name..." style="-fx-background-color: #333; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
             <!-- Race Selection -->
             <Label styleClass="stat-label-name" text="RACE:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <ComboBox fx:id="cmbRace" maxWidth="Infinity" promptText="Select Race" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <ComboBox fx:id="cmbRace" maxWidth="Infinity" promptText="Select Your Race" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <!-- Class Selection -->
             <Label styleClass="stat-label-name" text="CLASS:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cmbJobClass" maxWidth="Infinity" promptText="Select Class" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cmbJobClass" maxWidth="Infinity" promptText="Select Your Class" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
             <!-- Gender Selection-->
-            <Label text="GENDER:" styleClass="stat-label-name" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-            <HBox spacing="15" alignment="CENTER_LEFT" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                <RadioButton fx:id="rbMale" text="MALE" selected="true" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';"/>
-                <RadioButton fx:id="rbFemale" text="FEMALE" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';"/>
+            <Label styleClass="stat-label-name" text="GENDER:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <HBox alignment="CENTER_LEFT" spacing="15" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <RadioButton fx:id="rbMale" selected="true" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';" text="MALE" />
+                <RadioButton fx:id="rbFemale" style="-fx-text-fill: #a8b5c2; -fx-font-family: 'Constantia';" text="FEMALE" />
             </HBox>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
         </GridPane>
 
         <!-- Description Box -->
         <VBox spacing="5">
-            <Label style="-fx-font-weight: bold;" styleClass="fantasy-lore" text="DESCRIPTION" />
+            <Label style="-fx-font-weight: bold;" styleClass="fantasy-lore" text="CHARACTER STATS DESCRIPTION" />
             <TextArea fx:id="txtDescription" editable="false" prefHeight="100" style="-fx-control-inner-background: #222; -fx-text-fill: #aaa; -fx-font-family: 'Constantia';" wrapText="true" />
         </VBox>
 

@@ -1,20 +1,17 @@
 package com.project.charforge.controller;
 
-import com.project.charforge.dao.impl.InventoryDaoImpl;
-import com.project.charforge.dao.interfaces.InventoryDao;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
+import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.model.service.impl.EquipmentService;
-import com.project.charforge.model.service.impl.StatCalculator;
-import com.project.charforge.model.service.impl.ValidationService;
 import com.project.charforge.model.service.interfaces.IStatCalculator;
-import com.project.charforge.model.service.interfaces.IValidationService;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -22,6 +19,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -95,6 +93,7 @@ public class PaperDollController {
             target.getParent().setUserData(item);
 
             enableDragFromEquipmentSlot((StackPane) target.getParent(), item);
+            installToolTips(target, item);
         }
     }
 
@@ -112,7 +111,32 @@ public class PaperDollController {
         pane.getChildren().add(icon);
         enableDragSource(pane, item);
 
+        installToolTips(pane, item);
+
         inventoryGrid.add(pane, item.getGridIndex() % 10, item.getGridIndex() / 10);
+    }
+
+    // ToolTips Logic
+    private void installToolTips(Node node, InventoryItem inventoryItem) {
+        Item item = inventoryItem.getItem();
+        StringBuilder sb = new StringBuilder();
+
+        // Header and subheader
+        sb.append(item.getName().toUpperCase()).append("\n");
+        sb.append(item.getValidSlot().name().replace("_", " ")).append("\n\n");
+
+        // Stats logic
+        if (item.getStrBonus() != 0) sb.append("STR: ").append(item.getStrBonus() > 0 ? "+" : "").append(item.getStrBonus()).append("\n");
+        if (item.getDexBonus() != 0) sb.append("DEX: ").append(item.getDexBonus() > 0 ? "+" : "").append(item.getDexBonus()).append("\n");
+        if (item.getIntBonus() != 0) sb.append("INT: ").append(item.getIntBonus() > 0 ? "+" : "").append(item.getIntBonus()).append("\n");
+
+        // Footer
+        sb.append("\nWeight: ").append(item.getWeight()).append(" kg");
+
+        Tooltip tooltip = new Tooltip(sb.toString());
+        tooltip.setShowDelay(Duration.millis(100));
+        tooltip.setShowDuration(Duration.seconds(10));
+        Tooltip.install(node, tooltip);
     }
 
     // Drag & Drop Logic

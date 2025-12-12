@@ -10,7 +10,7 @@
     -fx-font-family: "Book Antiqua", serif;
 }
 
-/* Label & Teks */
+/* LABEL & TEXT */
 .label {
     -fx-text-fill: #e0e0e0;
 }
@@ -22,40 +22,36 @@
     -fx-opacity: 0.7;
 }
 
-/* Container utama */
+/* MAIN CONTAINER */
 .paper-doll-container {
     -fx-background-color: rgb(64, 50, 38);
     -fx-border-color: #c0a062;
     -fx-border-width: 2px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0); /* Shadow dalam */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 20, 0, 0, 0);
     -fx-background-radius: 4;
     -fx-border-radius: 4;
 }
 
-/* Gaya untuk Slot Equipment */
 .equipment-slot {
-    -fx-background-color: rgba(0, 0, 0, 0.4); /* Transparan gelap */
+    -fx-background-color: rgba(0, 0, 0, 0.4);
     -fx-border-color: #c0a062;
     -fx-border-width: 1;
     -fx-border-radius: 2;
 }
 
-/* Efek saat mouse berada di atas slot (Hover) */
 .equipment-slot:hover {
     -fx-border-color: #c0a062;
-    -fx-background-color: rgba(192, 160, 98, 0.1); /* Emas transparan */
+    -fx-background-color: rgba(192, 160, 98, 0.1);
     -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, #c0a062, 10, 0.3, 0, 0);
 }
 
-/* Efek saat item sedang didrag di atas slot yang valid */
 .equipment-slot-valid {
     -fx-border-color: #2e7d32;
     -fx-background-color: rgba(46, 125, 50, 0.2);
     -fx-effect: dropshadow(gaussian, #2e7d32, 15, 0.4, 0, 0);
 }
 
-/* Efek saat slot invalid (misal: helm ditaruh di kaki) */
 .equipment-slot-invalid {
     -fx-border-color: #8b0000;
     -fx-background-color: rgba(139, 0, 0, 0.2);
@@ -72,7 +68,7 @@
     -fx-background-color: rgb(64, 50, 38);
 }
 
-/* --- STATS PANEL --- */
+/* STATS PANEL */
 .stats-panel {
     -fx-background-color: rgb(64, 50, 38); /* Lebih gelap dari background */
     -fx-border-color: #c0a062;
@@ -83,14 +79,12 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
 }
 
-/* Label Nama Stat (Kiri) */
 .stat-label-name {
     -fx-font-family: "Constantia", serif;
-    -fx-text-fill: #a8b5c2; /* Silver pudar */
+    -fx-text-fill: #a8b5c2; 
     -fx-font-weight: bold;
 }
 
-/* Label Nilai Stat (Kanan) */
 .stat-label-value {
     -fx-font-family: "Palatino Linotype", serif;
     -fx-text-fill: #c0a062; /* Emas */
@@ -99,7 +93,7 @@
     -fx-effect: dropshadow(one-pass-box, black, 2, 0.5, 0, 0);
 }
 
-/* Progress Bar Berat */
+/* Progress Bar Weight */
 .weight-bar .track {
     -fx-background-color: #333;
     -fx-background-radius: 2;
@@ -108,6 +102,7 @@
     -fx-background-color: linear-gradient(to right, #2e7d32, #81c784); /* Hijau */
     -fx-background-radius: 2;
 }
+
 /* Ubah warna bar jadi merah jika keberatan (bisa diatur lewat code nanti) */
 .weight-bar:overweight .bar {
     -fx-background-color: linear-gradient(to right, #b71c1c, #e57373);
@@ -115,12 +110,12 @@
 
 .fantasy-lore {
     -fx-font-family: "Constantia", serif;
-    -fx-text-fill: #bac3c8; /* Silver pudar */
+    -fx-text-fill: #bac3c8; 
 }
 
 .fantasy-header {
     -fx-font-family: "Constantia", serif;
-    -fx-text-fill: #a8b5c2; /* Silver pudar */
+    -fx-text-fill: #a8b5c2; 
     -fx-font-weight: bold;
 }
 
@@ -136,4 +131,22 @@
     -fx-border-style: solid;
     -fx-border-radius: 30px;
     -fx-padding: 10;
+}
+
+/* TOOLTIPS */
+.tooltip {
+    -fx-background-color: rgba(20, 20, 20, 0.95);
+    
+    -fx-border-color: #c0a062;
+    -fx-border-width: 1px;
+    -fx-border-radius: 2px;
+    
+    -fx-text-fill: #e0e0e0;
+    
+    -fx-font-family: "Constantia", "Georgia", serif;
+    -fx-font-size: 12px;
+    
+    -fx-padding: 8px;
+    
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }

@@ -8,6 +8,7 @@ import com.project.charforge.model.service.interfaces.IEquipmentService;
 import com.project.charforge.model.service.interfaces.IValidationService;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EquipmentService implements IEquipmentService {
     private final InventoryDao inventoryDao;
@@ -29,10 +30,21 @@ public class EquipmentService implements IEquipmentService {
 
     @Override
     public void equip(PlayerCharacter character, int instanceId, EquipmentSlot slot) {
-        InventoryItem item = findInventoryItem(character, instanceId);
+        InventoryItem newItem = findInventoryItem(character, instanceId);
 
-        if (!validationService.canEquip(character, item, slot)) {
-            throw new IllegalStateException("Cannot equip item into " + slot);
+        if (!validationService.canEquip(character, newItem, slot)) {
+            throw new IllegalStateException("Cannot equip item "+ newItem.getItem().getName() +" into " + slot);
+        }
+
+        // Check if current item is currently used
+        Optional<InventoryItem> currentEquipped = character.getInventory().stream()
+                .filter(i -> i.isEquipped() && slot.name().equals(i.getSlotName()))
+                .findFirst();
+
+        if (currentEquipped.isPresent()) {
+            InventoryItem oldItem = currentEquipped.get();
+            if (oldItem.getInstanceId() == newItem.getInstanceId()) return;
+            unequip(character, oldItem.getInstanceId());
         }
 
         inventoryDao.equipItem(instanceId, slot.name());
@@ -40,7 +52,11 @@ public class EquipmentService implements IEquipmentService {
 
     @Override
     public void unequip(PlayerCharacter character, int instanceId) {
-        int newGridIndex = character.getInventory().size();
+        // Search empty slot in grid
+        long itemsInBag =
+                character.getInventory().stream().filter(i -> !i.isEquipped()).count();
+        int newGridIndex = (int) itemsInBag;
+
         inventoryDao.unequipItem(instanceId, newGridIndex);
     }
 
@@ -56,7 +72,6 @@ public class EquipmentService implements IEquipmentService {
 
         return validationService.canEquip(character, item, targetSlot);
     }
-
 
     private InventoryItem findInventoryItem(PlayerCharacter character, int instanceId) {
         return character.getInventory().stream()
