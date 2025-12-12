@@ -13,15 +13,26 @@ import java.util.List;
 public class InventoryDaoImpl extends BaseDao<InventoryItem> implements InventoryDao {
     @Override
     public List<InventoryItem> findByCharacterId(int charId) {
-        return queryList(
-                "SELECT ci.*, " +
-                        "       i.id AS item_id, i.name AS item_name, i.weight, i.type, " +
-                        "       i.stat_str, i.stat_dex, i.stat_int, i.icon_path " +
-                        "FROM character_items ci " +
-                        "JOIN items i ON ci.item_id = i.id " +
-                        "WHERE ci.character_id = ?",
-                statement -> statement.setInt(1, charId)
-        );
+        String sql = """
+        SELECT\s
+            ci.*,
+            i.id AS item_id,
+            i.name AS item_name,
+            i.weight,
+            i.type,
+            i.stat_str,
+            i.stat_dex,
+            i.stat_int,
+            i.icon_path
+        FROM\s
+            character_items ci
+        JOIN\s
+            items i ON ci.item_id = i.id
+        WHERE\s
+            ci.character_id = ?
+       \s""";
+
+        return queryList(sql, statement -> statement.setInt(1, charId));
     }
 
     @Override
