@@ -24,8 +24,10 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
 
     @Override
     public int save(PlayerCharacter character) {
+        String sql = "INSERT INTO characters (name, race_id, job_class_id, gender) VALUES (?, ?, ?, ?)";
+
         return executeInsert(
-                "INSERT INTO characters (name, race_id, job_class_id, gender) VALUES (?, ?, ?, ?)",
+                sql,
                 statement -> {
                     statement.setString(1, character.getName());
                     statement.setInt(2, character.getRace().getId());

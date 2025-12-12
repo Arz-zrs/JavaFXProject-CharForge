@@ -12,13 +12,17 @@ import java.util.Optional;
 public class CharClassDaoImpl extends BaseDao<CharClass> implements CharClassDao {
     @Override
     public List<CharClass> findAll() {
-        return queryList("SELECT * FROM classes", StatementBinder.empty());
+        String sql = "SELECT * FROM classes";
+
+        return queryList(sql, StatementBinder.empty());
     }
 
     @Override
     public Optional<CharClass> findById(int classId) {
+        String sql = "SELECT * FROM classes WHERE id = ?";
+
         CharClass charClass = querySingle(
-                "SELECT * FROM classes WHERE id = ?",
+                sql,
                 statement -> statement.setInt(1, classId)
         );
         return Optional.ofNullable(charClass);

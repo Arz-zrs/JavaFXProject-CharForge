@@ -60,6 +60,18 @@ public class PlayerCharacter {
         this.gender = gender;
     }
 
+    public void setEquipment(Map<EquipmentSlot, Item> equipment) {
+        this.equipment = equipment;
+    }
+
+    public List<InventoryItem> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(List<InventoryItem> inventory) {
+        this.inventory = inventory;
+    }
+
     public Map<EquipmentSlot, Item> getEquipment() {
         return equipment;
     }
@@ -79,7 +91,9 @@ public class PlayerCharacter {
                     EquipmentSlot slot = EquipmentSlot.valueOf(inventoryItem.getSlotName());
                     equippedMap.put(slot, inventoryItem.getItem());
                 } catch (IllegalArgumentException e) {
+                    // TODO:
                     // alert message, breaks SOLID principle if I call Alert.AlertType.ERROR
+                    // System.err.println() would work as well
                     throw new RuntimeException(e);
                 }
             }

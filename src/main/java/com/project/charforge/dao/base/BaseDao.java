@@ -1,6 +1,6 @@
 package com.project.charforge.dao.base;
 
-import com.project.charforge.util.SQLiteConnect;
+import com.project.charforge.util.SQLiteConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public abstract class BaseDao<T> {
         List<T> list = new ArrayList<>();
 
         //noinspection SqlSourceToSinkFlow
-        try (Connection connection = SQLiteConnect.getConnection();
+        try (Connection connection = SQLiteConnectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -37,7 +37,7 @@ public abstract class BaseDao<T> {
     protected T querySingle(String sql, StatementBinder binder) {
 
         //noinspection SqlSourceToSinkFlow
-        try (Connection connection = SQLiteConnect.getConnection();
+        try (Connection connection = SQLiteConnectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -55,7 +55,7 @@ public abstract class BaseDao<T> {
 
     // UPDATE operations
     protected int executeUpdate(String sql, StatementBinder binder) {
-        try (Connection connection = SQLiteConnect.getConnection();
+        try (Connection connection = SQLiteConnectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -68,7 +68,7 @@ public abstract class BaseDao<T> {
 
     // Insert values into a table
     protected int executeInsert(String sql, StatementBinder binder) {
-        try (Connection connection = SQLiteConnect.getConnection();
+        try (Connection connection = SQLiteConnectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
 
             binder.bind(statement);

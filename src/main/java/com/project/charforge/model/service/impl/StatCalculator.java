@@ -1,13 +1,14 @@
-package com.project.charforge.model.service;
+package com.project.charforge.model.service.impl;
 
 import com.project.charforge.model.entity.base.StatModifier;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.item.Item;
+import com.project.charforge.model.service.interfaces.IStatCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StatCalculator {
+public class StatCalculator implements IStatCalculator {
     public record StatSnapshot(
             int totalStr,
             int totalDex,
@@ -17,6 +18,7 @@ public class StatCalculator {
             boolean isOverweight
     ){}
 
+    @Override
     public StatSnapshot calculate(PlayerCharacter character) {
         int strength = 0;
         int dexterity = 0;

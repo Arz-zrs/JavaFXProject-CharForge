@@ -1,59 +1,271 @@
 package com.project.charforge.controller;
 
+import com.project.charforge.dao.impl.InventoryDaoImpl;
+import com.project.charforge.dao.interfaces.InventoryDao;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
+import com.project.charforge.model.entity.inventory.InventoryItem;
+import com.project.charforge.model.entity.item.EquipmentSlot;
+import com.project.charforge.model.service.impl.EquipmentService;
+import com.project.charforge.model.service.impl.StatCalculator;
+import com.project.charforge.model.service.impl.ValidationService;
+import com.project.charforge.model.service.interfaces.IStatCalculator;
+import com.project.charforge.model.service.interfaces.IValidationService;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
-import java.util.Objects;
+import java.util.List;
 
 
 // TODO: UPDATE DAN OLAH CONTROLLER
 public class PaperDollController {
 
-    @FXML
-    private ImageView imgSilhouette; // Inject Image View Siluet
-    @FXML
-    private Label lblName;
-    @FXML
-    private Label lblRaceClass;
+    @FXML private ImageView imgSilhouette;
+    @FXML private Label lblName, lblRaceClass ;
+    @FXML private Label lblTotalStr, lblTotalDex, lblTotalInt, lblWeightVal ;
+    @FXML private ProgressBar progressWeight;
+    @FXML private GridPane inventoryGrid;
 
-    // ... field slot lain ...
+    @FXML private StackPane slotHead, slotAccessory, slotBody, slotMainHand, slotOffHand, slotLegs;
+    @FXML private ImageView imgHead, imgAccessory, imgBody, imgMainHand, imgOffHand, imgLegs;
 
     private PlayerCharacter character;
 
-    // Method ini dipanggil dari CharacterCreationController
-    public void setProfile(PlayerCharacter character) {
-        this.character = character;
+    private EquipmentService equipmentService;
+    private IStatCalculator statCalculator;
 
-        // 1. Update Teks Info
+    public void injectServices(EquipmentService equipmentService, IStatCalculator statCalculator) {
+        this.equipmentService = equipmentService;
+        this.statCalculator = statCalculator;
+    }
+
+    public void setCharacter(PlayerCharacter character) {
+        this.character = character;
+        updateHeaderInfo();
+        reloadInventory();
+        refreshStats();
+    }
+
+    // Refresh inventory
+    private void reloadInventory() {
+        List<InventoryItem> items = equipmentService.loadInventory(character);
+
+        clearAllSlots();
+        inventoryGrid.getChildren().clear();
+
+        for (InventoryItem item : items) {
+            if (item.isEquipped()) {
+                renderEquippedItem(item);
+            } else {
+                renderInventoryItem(item);
+            }
+        }
+    }
+
+    // Updates header label
+    private void updateHeaderInfo(){
         lblName.setText(character.getName().toUpperCase());
         lblRaceClass.setText(character.getRace().getName() + " " + character.getCharClass().getName());
 
-        // 2. Update Siluet Berdasarkan Gender
-        updateSilhouetteImage(character.getGender());
+        String imgMalePath = "/com/project/charforge/images/silhouette_male.png";
+        String imgFemalePath = "/com/project/charforge/images/silhouette_female.png";
+
+        String path = character.getGender() == Gender.MALE
+                ? imgMalePath : imgFemalePath;
+
+        imgSilhouette.setImage(new Image(getClass().getResourceAsStream(path)));
     }
 
-    private void updateSilhouetteImage(Gender gender) {
-        String imagePath;
+    private void renderEquippedItem(InventoryItem item) {
+        EquipmentSlot slot = EquipmentSlot.valueOf(item.getSlotName());
+        ImageView target = getImageViewForSlot(slot);
 
-        if (gender == Gender.MALE) {
-            imagePath = "/com/project/charforge/assets/silhouette_male.png";
-        } else {
-            imagePath = "/com/project/charforge/assets/silhouette_female.png";
+        if (target != null) {
+            setImageFromPath(target, item.getItem().getIconPath());
+            target.setVisible(true);
+            target.getParent().setUserData(item);
+
+            enableDragFromEquipmentSlot((StackPane) target.getParent(), item);
         }
+    }
 
+    private void renderInventoryItem(InventoryItem item) {
+        StackPane pane = new StackPane();
+        pane.setPrefSize(50, 50);
+        pane.setStyle("-fx-background-color: #333; -fx-border-color: #555;");
+        pane.setUserData(item);
+
+        ImageView icon = new ImageView();
+        icon.setFitWidth(40);
+        icon.setFitHeight(40);
+        setImageFromPath(icon, item.getItem().getIconPath());
+
+        pane.getChildren().add(icon);
+        enableDragSource(pane, item);
+
+        inventoryGrid.add(pane, item.getGridIndex() % 10, item.getGridIndex() / 10);
+    }
+
+    // Drag & Drop Logic
+    // Drag (Source)
+    private void enableDragSource(Node node, InventoryItem item) {
+        node.setOnDragDetected(event -> {
+            Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(String.valueOf(item.getInstanceId()));
+            db.setContent(content);
+            event.consume();
+        });
+    }
+
+    // Drag from Equipment Slot
+    private void enableDragFromEquipmentSlot(StackPane slotPane, InventoryItem item) {
+        slotPane.setOnDragDetected(event -> {
+            Dragboard db = slotPane.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putString(String.valueOf(item.getInstanceId()));
+            db.setContent(content);
+            event.consume();
+        });
+    }
+
+    // Drop (Target)
+    private void setupSlotEvents(StackPane slotPane, EquipmentSlot slotType) {
+
+        // When dragged over slot
+        slotPane.setOnDragOver(event -> {
+            var db = event.getDragboard();
+
+            if (db.hasString()) {
+                try {
+                    int id = Integer.parseInt(db.getString());
+
+                    boolean valid = equipmentService.canEquip(character, id, slotType);
+
+                    if (valid) {
+                        event.acceptTransferModes(TransferMode.MOVE);
+                        slotPane.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
+                    } else {
+                        slotPane.setStyle("-fx-border-color: #FF5252; -fx-border-width: 2;");
+                    }
+
+                } catch (NumberFormatException ignore) {}
+            }
+
+            event.consume();
+        });
+
+        // Remove highlight when drag exits slot area
+        slotPane.setOnDragExited(event -> {
+            slotPane.setStyle("");
+            event.consume();
+        });
+
+        // Final drop event
+        slotPane.setOnDragDropped(event -> {
+            var db = event.getDragboard();
+            boolean success = false;
+
+            if (db.hasString()) {
+                int id = Integer.parseInt(db.getString());
+
+                try {
+                    equipmentService.equip(character, id, slotType);
+                    reloadInventory();
+                    refreshStats();
+                    success = true;
+
+                } catch (IllegalStateException e) {
+                    // if equip failed, flash red briefly (optional)
+                    slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
+                }
+            }
+
+            event.setDropCompleted(success);
+
+            // always reset after drop
+            slotPane.setStyle("");
+
+            event.consume();
+        });
+    }
+
+
+    // Stat Calculation
+    private void refreshStats() {
+        var stats = statCalculator.calculate(character);
+
+        lblTotalStr.setText(String.valueOf(stats.totalStr()));
+        lblTotalDex.setText(String.valueOf(stats.totalDex()));
+        lblTotalInt.setText(String.valueOf(stats.totalInt()));
+
+        double progress = stats.currentWeight() / stats.maxWeight();
+        progressWeight.setProgress(progress);
+
+        lblWeightVal.setText(String.format("%.2f / %.2f kg", stats.currentWeight(), stats.maxWeight()));
+    }
+
+    // Helper Methods
+    private void clearAllSlots() {
+        imgHead.setVisible(false); slotHead.setUserData(null);
+        imgBody.setVisible(false); slotBody.setUserData(null);
+        imgMainHand.setVisible(false); slotMainHand.setUserData(null);
+        imgOffHand.setVisible(false); slotOffHand.setUserData(null);
+        imgLegs.setVisible(false); slotLegs.setUserData(null);
+        imgAccessory.setVisible(false); slotAccessory.setUserData(null);
+    }
+
+    private ImageView getImageViewForSlot(EquipmentSlot slot) {
+        return switch (slot) {
+            case HEAD -> imgHead;
+            case BODY -> imgBody;
+            case MAIN_HAND -> imgMainHand;
+            case OFFHAND -> imgOffHand;
+            case LEGS -> imgLegs;
+            case ACCESSORY -> imgAccessory;
+            default -> null;
+        };
+    }
+
+    private void setImageFromPath(ImageView view, String path) {
         try {
-            // Load gambar dari resources
-            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imagePath)));
-            imgSilhouette.setImage(image);
-        } catch (NullPointerException e) {
-            System.err.println("Gagal memuat gambar siluet: " + imagePath);
+            String fullPath = "/com/project/charforge/images/items/" + path;
+            view.setImage(new Image(getClass().getResourceAsStream(fullPath)));
+        } catch (Exception e) {
+            // Placeholder Image
+             view.setImage(new Image("com/project/charforge/images/items/placeholder.png"));
         }
+    }
+
+    // Inventory Setup
+    @FXML
+    public void initialize() {
+        // Unequip when dropped in inventory
+        inventoryGrid.setOnDragDropped(event -> {
+            if (event.getDragboard().hasString()) {
+                int instanceId = Integer.parseInt(event.getDragboard().getString());
+                equipmentService.unequip(character, instanceId);
+                reloadInventory();
+                refreshStats();
+            }
+            event.setDropCompleted(true);
+        });
+
+        // Setup slot drag handlers
+        setupSlotEvents(slotHead, EquipmentSlot.HEAD);
+        setupSlotEvents(slotBody, EquipmentSlot.BODY);
+        setupSlotEvents(slotMainHand, EquipmentSlot.MAIN_HAND);
+        setupSlotEvents(slotOffHand, EquipmentSlot.OFFHAND);
+        setupSlotEvents(slotLegs, EquipmentSlot.LEGS);
+        setupSlotEvents(slotAccessory, EquipmentSlot.ACCESSORY);
     }
 }

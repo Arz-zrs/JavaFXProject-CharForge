@@ -37,8 +37,10 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
 
     @Override
     public void equipItem(int instanceId, String slotName) {
+        String sql = "UPDATE character_items SET slot_name = ?, grid_index = NULL WHERE instance_id = ?";
+
         executeUpdate(
-                "UPDATE character_items SET slot_name = ?, grid_index = NULL WHERE instance_id = ?",
+                sql,
                 statement -> {
                     statement.setString(1, slotName);
                     statement.setInt(2, instanceId);
@@ -48,8 +50,10 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
 
     @Override
     public void unequipItem(int instanceId, int newGridIndex) {
+        String sql = "UPDATE character_items SET slot_name = NULL, grid_index = ? WHERE instance_id = ?";
+
         executeUpdate(
-                "UPDATE character_items SET slot_name = NULL, grid_index = ? WHERE instance_id = ?",
+                sql,
                 statement -> {
                     statement.setInt(1, newGridIndex);
                     statement.setInt(2, instanceId);
@@ -59,8 +63,10 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
 
     @Override
     public void addItemToCharacter(int charId, int itemId, int gridIndex) {
+        String sql = "INSERT INTO character_items (character_id, item_id, slot_name, grid_index) VALUES (?, ?, NULL, ?)";
+
         executeInsert(
-                "INSERT INTO character_items (character_id, item_id, slot_name, grid_index) VALUES (?, ?, NULL, ?)",
+                sql,
                 statement -> {
                     statement.setInt(1, charId);
                     statement.setInt(2, itemId);
@@ -75,7 +81,7 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
         try {
             slotType = EquipmentSlot.valueOf(result.getString("type"));
         } catch (IllegalArgumentException e) {
-            slotType = EquipmentSlot.ACCESSORY;
+            slotType = EquipmentSlot.MISC;
         }
 
         Item item = new Item(

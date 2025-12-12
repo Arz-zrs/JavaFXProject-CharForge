@@ -9,4 +9,10 @@ module com.project.charforge {
 
     exports com.project.charforge.app;
     opens com.project.charforge.app to javafx.graphics;
+
+    exports com.project.charforge.model.entity.character;
+    exports com.project.charforge.model.entity.inventory;
+    exports com.project.charforge.model.entity.item;
+    exports com.project.charforge.model.service.impl;
+    exports com.project.charforge.model.service.interfaces;
 }
