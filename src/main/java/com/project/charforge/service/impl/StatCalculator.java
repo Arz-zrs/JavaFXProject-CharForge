@@ -1,50 +1,34 @@
 package com.project.charforge.service.impl;
 
-import com.project.charforge.model.entity.base.StatModifier;
 import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.model.entity.item.Item;
+import com.project.charforge.model.entity.inventory.InventoryItem;
+import com.project.charforge.model.dto.StatSnapshot;
 import com.project.charforge.service.interfaces.IStatCalculator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StatCalculator implements IStatCalculator {
-    public record StatSnapshot(
-            int totalStr,
-            int totalDex,
-            int totalInt,
-            double currentWeight,
-            double maxWeight,
-            boolean isOverweight
-    ){}
 
     @Override
     public StatSnapshot calculate(PlayerCharacter character) {
-        int strength = 0;
-        int dexterity = 0;
-        int intelligence = 0;
+
+        int str = character.getRace().getStrBonus() + character.getCharClass().getStrBonus();
+        int dex = character.getRace().getDexBonus() + character.getCharClass().getDexBonus();
+        int intel = character.getRace().getIntBonus() + character.getCharClass().getIntBonus();
+
         double currentWeight = 0.0;
 
-        List<StatModifier> modifiers = new ArrayList<>();
+        for (InventoryItem invItem : character.getInventory()) {
+            currentWeight += invItem.getItem().getWeight();
 
-        if (character.getRace() != null) modifiers.add(character.getRace());
-        if (character.getCharClass() != null) modifiers.add(character.getCharClass());
-        modifiers.addAll(character.getEquipment().values());
-
-        for (StatModifier mod: modifiers) {
-            strength += mod.getStrBonus();
-            dexterity += mod.getDexBonus();
-            intelligence += mod.getIntBonus();
-
-            if (mod instanceof Item item) currentWeight += item.getWeight();
+            if (invItem.isEquipped()) {
+                str += invItem.getItem().getStrBonus();
+                dex += invItem.getItem().getDexBonus();
+                intel += invItem.getItem().getIntBonus();
+            }
         }
 
         double baseCap = 50.0;
-        double maxWeight = 0;
+        double maxWeight = (baseCap + (str * 2)) * character.getRace().getWeightModifier();
 
-        if (character.getRace() != null) {
-            maxWeight = (baseCap + (strength * 2)) * character.getRace().getWeightModifier();
-        }
-        return new StatSnapshot(strength, dexterity, intelligence, currentWeight, maxWeight, currentWeight > maxWeight);
+        return new StatSnapshot(str, dex, intel, currentWeight, maxWeight, currentWeight > maxWeight);
     }
 }

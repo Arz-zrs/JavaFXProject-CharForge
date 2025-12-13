@@ -156,6 +156,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
+/* MAIN MENU */
 /* TableView */
 .table-view {
     -fx-background-color: #222;
@@ -165,4 +166,13 @@
 .table-column {
     -fx-background-color: #c0a062;
     -fx-border-color: #534629;
+}
+
+.menu-panel {
+    -fx-background-color: rgb(64, 50, 38);
+    -fx-border-color: #c0a062;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
 }

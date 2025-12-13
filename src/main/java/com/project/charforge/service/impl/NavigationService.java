@@ -44,6 +44,7 @@ public class NavigationService implements INavigationService {
             controller.setCharacter(character);
 
             setScene(root);
+            stage.setMaximized(true);
         } catch (IOException e) {
             AlertUtils.showError("Error", "Navigation failed");
         }
@@ -63,13 +64,31 @@ public class NavigationService implements INavigationService {
     }
 
     private void setScene(Parent root) {
-        Scene current = stage.getScene();
-        Scene next = (current == null)
-                ? new Scene(root)
-                : new Scene(root, current.getWidth(), current.getHeight());
+        Scene currentScene = stage.getScene();
 
-        stage.setScene(next);
-        stage.centerOnScreen();
+        boolean isMaximized = stage.isMaximized();
+        boolean isFullScreen = stage.isFullScreen();
+
+        Scene nextScene;
+        if (currentScene == null) {
+            nextScene = new Scene(root);
+        } else {
+            nextScene = new Scene(root, currentScene.getWidth(), currentScene.getHeight());
+        }
+
+        stage.setScene(nextScene);
+
+        if (isMaximized) {
+            stage.setMaximized(true);
+        }
+        if (isFullScreen) {
+            stage.setFullScreen(true);
+        }
+
+        if (!isMaximized && !isFullScreen) {
+            stage.centerOnScreen();
+        }
+
         stage.show();
     }
 }

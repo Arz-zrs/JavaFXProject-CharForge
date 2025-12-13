@@ -2,7 +2,6 @@ package com.project.charforge.controller;
 
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.service.impl.CharacterService;
 import com.project.charforge.service.interfaces.ICharacterService;
 import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.ui.AlertUtils;

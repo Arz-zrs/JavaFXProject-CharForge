@@ -15,8 +15,9 @@ public class AppControllerInitializer implements ControllerInitializer {
     private final CharClassDao classDao;
     private final IEquipmentService equipmentService;
     private final ICharacterCreationService creationService;
+    private final ICharacterService characterService;
     private INavigationService navigationService;
-    private ICharacterService characterService;
+
 
     public AppControllerInitializer(
             CharacterDao characterDao,

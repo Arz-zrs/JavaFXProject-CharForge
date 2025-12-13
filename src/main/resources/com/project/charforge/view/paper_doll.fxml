@@ -62,7 +62,7 @@
             </VBox>
 
             <!-- RIGHT PAGE: STATS PANEL -->
-            <VBox alignment="TOP_CENTER" prefHeight="500" prefWidth="250" spacing="10" styleClass="stats-panel">
+            <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500" prefWidth="250" spacing="10" styleClass="stats-panel">
                 <padding>
                     <Insets bottom="20" left="20" right="20" top="20" />
                 </padding>

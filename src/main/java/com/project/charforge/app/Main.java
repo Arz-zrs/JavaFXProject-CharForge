@@ -38,12 +38,15 @@ public class Main extends Application {
                 characterService
         );
 
+        // 4. Navigation & Wiring
         INavigationService navigationService = new NavigationService(stage, appInitializer);
-
         appInitializer.setNavigationService(navigationService);
 
-        // 6. Start App
+        // 5. Stage Setup
         stage.setTitle("CharForge - RPG Simulator");
+        stage.setMaximized(true);
+
+        // 6. Start
         navigationService.goToMainMenu();
     }
 
