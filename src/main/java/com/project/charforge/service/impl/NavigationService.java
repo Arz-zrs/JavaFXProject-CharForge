@@ -44,7 +44,6 @@ public class NavigationService implements INavigationService {
             controller.setCharacter(character);
 
             setScene(root);
-            stage.setMaximized(true);
         } catch (IOException e) {
             AlertUtils.showError("Error", "Navigation failed");
         }

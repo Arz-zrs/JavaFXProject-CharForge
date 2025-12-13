@@ -47,7 +47,7 @@ public class AppControllerInitializer implements ControllerInitializer {
                     raceDao,
                     classDao,
                     creationService,
-                    equipmentService
+                    navigationService
             );
         }
 

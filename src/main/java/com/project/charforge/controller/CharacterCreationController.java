@@ -9,6 +9,7 @@ import com.project.charforge.model.entity.character.Race;
 import com.project.charforge.service.impl.StatCalculator;
 import com.project.charforge.service.interfaces.ICharacterCreationService;
 import com.project.charforge.service.interfaces.IEquipmentService;
+import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -35,13 +36,13 @@ public class CharacterCreationController {
     private RaceDao raceDao;
     private CharClassDao classDao;
     private ICharacterCreationService creationService;
-    private IEquipmentService equipmentService;
+    private INavigationService navigationService;
 
-    public void injectDependencies(RaceDao raceDao, CharClassDao classDao, ICharacterCreationService creationService, IEquipmentService equipmentService) {
+    public void injectDependencies(RaceDao raceDao, CharClassDao classDao, ICharacterCreationService creationService, INavigationService navigationService) {
         this.raceDao = raceDao;
         this.classDao = classDao;
         this.creationService = creationService;
-        this.equipmentService = equipmentService;
+        this.navigationService = navigationService;
 
         loadMasterData();
     }
@@ -75,31 +76,11 @@ public class CharacterCreationController {
                     cmbCharClass.getValue()
             );
 
-            navigateToPaperDoll(pc);
+            navigationService.goToPaperDoll(pc);
 
         } catch (Exception e) {
             AlertUtils.showError("Error", e.getMessage());
             System.err.println(e.getMessage());
-        }
-    }
-
-    private void navigateToPaperDoll(PlayerCharacter profile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/project/charforge/view/paper_doll.fxml"));
-            Parent root = loader.load();
-
-            PaperDollController controller = loader.getController();
-
-            controller.injectServices(equipmentService, new StatCalculator());
-
-            controller.setCharacter(profile);
-
-            Stage stage = (Stage) btnCreate.getScene().getWindow();
-            stage.setScene(new Scene(root, 1000, 700));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.getStackTrace();
         }
     }
 
