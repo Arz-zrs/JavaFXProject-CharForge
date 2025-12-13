@@ -6,19 +6,12 @@ import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
-import com.project.charforge.service.impl.StatCalculator;
 import com.project.charforge.service.interfaces.ICharacterCreationService;
-import com.project.charforge.service.interfaces.IEquipmentService;
 import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CharacterCreationController {
@@ -27,7 +20,6 @@ public class CharacterCreationController {
     @FXML private ComboBox<Race> cmbRace;
     @FXML private ComboBox<CharClass> cmbCharClass;
     @FXML private TextArea txtDescription;
-    @FXML private Button btnCreate;
     @FXML private RadioButton rbMale;
     @FXML private RadioButton rbFemale;
 
@@ -56,32 +48,8 @@ public class CharacterCreationController {
         cmbRace.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateDescription());
         cmbCharClass.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateDescription());
 
-        btnCreate.setOnAction(event -> handleCreate());
-
         setupComboCellFactory(cmbRace);
         setupComboCellFactory(cmbCharClass);
-    }
-
-    private void handleCreate() {
-        if (!isInputValid()) {
-            AlertUtils.showWarning("Incomplete", "Please fill all fields!");
-            return;
-        }
-
-        try {
-            PlayerCharacter pc = creationService.createCharacter(
-                    txtName.getText(),
-                    rbMale.isSelected() ? Gender.MALE : Gender.FEMALE,
-                    cmbRace.getValue(),
-                    cmbCharClass.getValue()
-            );
-
-            navigationService.goToPaperDoll(pc);
-
-        } catch (Exception e) {
-            AlertUtils.showError("Error", e.getMessage());
-            System.err.println(e.getMessage());
-        }
     }
 
     private void loadMasterData() {
@@ -133,5 +101,33 @@ public class CharacterCreationController {
                 && cmbRace.getValue() != null
                 && cmbCharClass.getValue() != null
                 && genderGroup.getSelectedToggle() != null;
+    }
+
+    @FXML
+    public void handleCreateCharacter() {
+        if (!isInputValid()) {
+            AlertUtils.showWarning("Incomplete", "Please fill all fields!");
+            return;
+        }
+
+        try {
+            PlayerCharacter pc = creationService.createCharacter(
+                    txtName.getText(),
+                    rbMale.isSelected() ? Gender.MALE : Gender.FEMALE,
+                    cmbRace.getValue(),
+                    cmbCharClass.getValue()
+            );
+
+            navigationService.goToPaperDoll(pc);
+
+        } catch (Exception e) {
+            AlertUtils.showError("Error", e.getMessage());
+            System.err.println(e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleReturnToMenu() {
+        navigationService.goToMainMenu();
     }
 }

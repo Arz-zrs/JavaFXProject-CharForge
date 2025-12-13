@@ -6,9 +6,12 @@ import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.service.interfaces.IEquipmentService;
+import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.service.interfaces.IStatCalculator;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tooltip;
@@ -38,10 +41,12 @@ public class PaperDollController {
 
     private IEquipmentService equipmentService;
     private IStatCalculator statCalculator;
+    private INavigationService navigationService;
 
-    public void injectServices(IEquipmentService equipmentService, IStatCalculator statCalculator) {
+    public void injectServices(IEquipmentService equipmentService, IStatCalculator statCalculator, INavigationService navigationService) {
         this.equipmentService = equipmentService;
         this.statCalculator = statCalculator;
+        this.navigationService = navigationService;
     }
 
     public void setCharacter(PlayerCharacter character) {
@@ -186,7 +191,6 @@ public class PaperDollController {
             event.consume();
         });
 
-        // Remove highlight when drag exits slot area
         slotPane.setOnDragExited(event -> {
             slotPane.setStyle("");
             event.consume();
@@ -207,7 +211,6 @@ public class PaperDollController {
                     success = true;
 
                 } catch (IllegalStateException e) {
-                    // if equip failed, flash red briefly (optional)
                     slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
                 }
             }
@@ -289,5 +292,9 @@ public class PaperDollController {
         setupSlotEvents(slotOffHand, EquipmentSlot.OFFHAND);
         setupSlotEvents(slotLegs, EquipmentSlot.LEGS);
         setupSlotEvents(slotAccessory, EquipmentSlot.ACCESSORY);
+    }
+
+    public void handleReturnToMenu() {
+        navigationService.goToMainMenu();
     }
 }

@@ -39,7 +39,11 @@ public class AppControllerInitializer implements ControllerInitializer {
     public void initialize(Object controller) {
         if (controller instanceof MainMenuController c) {
             if (navigationService == null) throw new IllegalStateException("NavigationService not set");
-            c.injectDependencies(characterDao, navigationService, characterService);
+            c.injectDependencies(
+                    characterDao,
+                    navigationService,
+                    characterService
+            );
         }
 
         else if (controller instanceof CharacterCreationController c) {
@@ -52,7 +56,11 @@ public class AppControllerInitializer implements ControllerInitializer {
         }
 
         else if (controller instanceof PaperDollController c) {
-            c.injectServices(equipmentService, new StatCalculator());
+            c.injectServices(
+                    equipmentService,
+                    new StatCalculator(),
+                    navigationService
+            );
         }
     }
 

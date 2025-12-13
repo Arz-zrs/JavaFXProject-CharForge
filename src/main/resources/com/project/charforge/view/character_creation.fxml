@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -53,9 +54,16 @@
         </VBox>
 
         <Separator opacity="0.3" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="80.0">
+         <children>
 
-        <!-- Action Button -->
-        <Button fx:id="btnCreate" maxWidth="200" prefHeight="40" style="-fx-background-color: #701b1b; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" text="BEGIN JOURNEY" />
-
+              <!-- Action Button -->
+              <Button onAction="#handleCreateCharacter" maxWidth="200" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="BEGIN JOURNEY" />
+              <Button onAction="#handleReturnToMenu" maxWidth="200" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="RETURN TO MENU" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
     </VBox>
 </StackPane>

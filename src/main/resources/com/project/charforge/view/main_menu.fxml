@@ -28,9 +28,9 @@
 
         <!-- Buttons -->
         <HBox alignment="CENTER" spacing="20">
-            <Button onAction="#handleNewCharacter" style="-fx-background-color: #701b1b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #222" text="NEW CHARACTER" />
-            <Button onAction="#handleLoadCharacter" style="-fx-background-color: #c0a062; -fx-text-fill: black; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #222" text="LOAD SELECTED" />
-            <Button onAction="#handleDeleteCharacter" style="-fx-background-color: #701b1b; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #ff0000;" text="DELETE" />
+            <Button onAction="#handleNewCharacter" prefHeight="44.0" prefWidth="153.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="NEW CHARACTER" />
+            <Button onAction="#handleLoadCharacter" prefHeight="45.0" prefWidth="145.0" style="-fx-background-color: #816425; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="LOAD SELECTED" />
+            <Button onAction="#handleDeleteCharacter" prefHeight="46.0" prefWidth="90.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand; -fx-padding: 10 20; -fx-border-color: #ff0000; -fx-border-radius: 10px" text="DELETE" />
 
             <padding>
             <Insets bottom="20.0" />
