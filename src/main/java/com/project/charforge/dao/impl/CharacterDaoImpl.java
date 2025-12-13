@@ -11,6 +11,7 @@ import com.project.charforge.model.entity.character.Race;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 
 public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements CharacterDao {
@@ -20,6 +21,20 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
     public CharacterDaoImpl(RaceDao raceDao, CharClassDao classDao) {
         this.raceDao = raceDao;
         this.classDao = classDao;
+    }
+
+    @Override
+    public List<PlayerCharacter> findAll() {
+        String sql = """
+                SELECT
+                    c.id AS char_id, c.name AS char_name, c.gender AS char_gender,
+                    r.id AS race_id, r.name AS race_name, r.base_str, r.base_dex, r.base_int, r.weight_capacity_modifier,
+                    cl.id AS class_id, cl.name AS class_name, cl.bonus_str, cl.bonus_dex, cl.bonus_int
+                FROM characters c
+                LEFT JOIN races r ON c.race_id = r.id
+                LEFT JOIN classes cl ON c.class_id = cl.id
+                """;
+        return queryList(sql, StatementBinder.empty());
     }
 
     @Override

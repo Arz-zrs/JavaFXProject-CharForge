@@ -5,7 +5,7 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
-import com.project.charforge.model.service.impl.EquipmentService;
+import com.project.charforge.model.service.interfaces.IEquipmentService;
 import com.project.charforge.model.service.interfaces.IStatCalculator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -23,8 +23,6 @@ import javafx.util.Duration;
 
 import java.util.List;
 
-
-// TODO: UPDATE DAN OLAH CONTROLLER
 public class PaperDollController {
 
     @FXML private ImageView imgSilhouette;
@@ -38,10 +36,10 @@ public class PaperDollController {
 
     private PlayerCharacter character;
 
-    private EquipmentService equipmentService;
+    private IEquipmentService equipmentService;
     private IStatCalculator statCalculator;
 
-    public void injectServices(EquipmentService equipmentService, IStatCalculator statCalculator) {
+    public void injectServices(IEquipmentService equipmentService, IStatCalculator statCalculator) {
         this.equipmentService = equipmentService;
         this.statCalculator = statCalculator;
     }

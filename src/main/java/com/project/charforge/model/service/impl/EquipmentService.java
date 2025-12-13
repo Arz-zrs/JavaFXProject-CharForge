@@ -61,6 +61,17 @@ public class EquipmentService implements IEquipmentService {
     }
 
     @Override
+    public void addStartingEquipment(int characterId, String className) {
+        // Add leather cap to all class
+        inventoryDao.addItemToCharacter(characterId, 2, 0);
+
+        // Add weapons respective to class: Warrior -> Sword, Mage -> Staff, Archer -> dagger
+        if ("Warrior".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 1, 1);
+        else if ("Mage".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 3, 1);
+        else if ("Archer".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 4, 1);
+    }
+
+    @Override
     public boolean canEquip(PlayerCharacter character, int instanceId, EquipmentSlot targetSlot) {
         InventoryItem item = character.getInventory()
                 .stream()

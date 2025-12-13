@@ -30,7 +30,7 @@
 
             <!-- Class Selection -->
             <Label styleClass="stat-label-name" text="CLASS:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-            <ComboBox fx:id="cmbJobClass" maxWidth="Infinity" promptText="Select Your Class" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ComboBox fx:id="cmbCharClass" maxWidth="Infinity" promptText="Select Your Class" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
             <!-- Gender Selection-->
             <Label styleClass="stat-label-name" text="GENDER:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
