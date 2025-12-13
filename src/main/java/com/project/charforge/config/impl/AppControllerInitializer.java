@@ -16,26 +16,29 @@ public class AppControllerInitializer implements ControllerInitializer {
     private final IEquipmentService equipmentService;
     private final ICharacterCreationService creationService;
     private INavigationService navigationService;
+    private ICharacterService characterService;
 
     public AppControllerInitializer(
             CharacterDao characterDao,
             RaceDao raceDao,
             CharClassDao classDao,
             IEquipmentService equipmentService,
-            ICharacterCreationService creationService)
+            ICharacterCreationService creationService,
+            ICharacterService characterService)
     {
         this.characterDao = characterDao;
         this.raceDao = raceDao;
         this.classDao = classDao;
         this.equipmentService = equipmentService;
         this.creationService = creationService;
+        this.characterService = characterService;
     }
 
     @Override
     public void initialize(Object controller) {
         if (controller instanceof MainMenuController c) {
             if (navigationService == null) throw new IllegalStateException("NavigationService not set");
-            c.injectDependencies(characterDao, navigationService);
+            c.injectDependencies(characterDao, navigationService, characterService);
         }
 
         else if (controller instanceof CharacterCreationController c) {

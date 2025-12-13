@@ -2,14 +2,18 @@ package com.project.charforge.controller;
 
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.model.entity.character.PlayerCharacter;
+import com.project.charforge.service.impl.CharacterService;
+import com.project.charforge.service.interfaces.ICharacterService;
 import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.util.List;
+import java.util.Optional;
 
 public class MainMenuController {
     @FXML private TableView<PlayerCharacter> tableCharacters;
@@ -20,10 +24,12 @@ public class MainMenuController {
 
     private CharacterDao characterDao;
     private INavigationService navigationService;
+    private ICharacterService characterService;
 
-    public void injectDependencies(CharacterDao characterDao, INavigationService navigationService) {
+    public void injectDependencies(CharacterDao characterDao, INavigationService navigationService, ICharacterService characterService) {
         this.characterDao = characterDao;
         this.navigationService = navigationService;
+        this.characterService = characterService;
 
         refreshTable();
     }
@@ -56,9 +62,34 @@ public class MainMenuController {
     private void handleLoadCharacter() {
         PlayerCharacter selected = tableCharacters.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            AlertUtils.showError("No Selection", "Please select a character to load.");
+            AlertUtils.showWarning("No Selection", "Please select a character to load.");
             return;
         }
         navigationService.goToPaperDoll(selected);
     }
+
+    @FXML
+    public void handleDeleteCharacter() {
+        PlayerCharacter selected = tableCharacters.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertUtils.showWarning("No Selection", "Please select a character to delete.");
+            return;
+        }
+
+        Optional<ButtonType> result = AlertUtils.showConfirmation(
+                "Delete Character",
+                "Are you sure?",
+                "Permanently delete " + selected.getName() + "?\nThis cannot be undone."
+        );
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            boolean success = characterService.deleteCharacter(selected.getId());
+            if (success) {
+                refreshTable();
+            } else {
+                AlertUtils.showError("Error", "Failed to delete character.");
+            }
+        }
+    }
+
 }

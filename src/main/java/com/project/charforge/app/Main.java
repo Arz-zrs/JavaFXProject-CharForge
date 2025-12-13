@@ -26,6 +26,7 @@ public class Main extends Application {
         IValidationService validationService = new ValidationService();
         IEquipmentService equipmentService = new EquipmentService(invDao, validationService);
         ICharacterCreationService creationService = new CharacterCreationService(charDao, equipmentService);
+        ICharacterService characterService = new CharacterService(charDao);
 
         // 3. Controller Initialize
         AppControllerInitializer appInitializer = new AppControllerInitializer(
@@ -33,7 +34,8 @@ public class Main extends Application {
                 raceDao,
                 classDao,
                 equipmentService,
-                creationService
+                creationService,
+                characterService
         );
 
         INavigationService navigationService = new NavigationService(stage, appInitializer);
