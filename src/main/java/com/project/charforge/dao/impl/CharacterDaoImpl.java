@@ -4,11 +4,14 @@ import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.CharClassDao;
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.dao.interfaces.RaceDao;
+import com.project.charforge.db.SQLiteConnectionProvider;
 import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -39,7 +42,7 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
 
     @Override
     public int save(PlayerCharacter character) {
-        String sql = "INSERT INTO characters (name, race_id, job_class_id, gender) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO characters (name, race_id, class_id, gender) VALUES (?, ?, ?, ?)";
 
         return executeInsert(
                 sql,
@@ -50,6 +53,40 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
                     statement.setString(4, character.getGender().name());
                 }
         );
+    }
+
+    @Override
+    public boolean delete(int id) {
+        String deleteInventorySql =
+                "DELETE FROM character_items WHERE character_id = ?";
+        String deleteCharacterSql =
+                "DELETE FROM characters WHERE id = ?";
+
+        try (Connection conn = SQLiteConnectionProvider.getConnection()) {
+            conn.setAutoCommit(false);
+
+            try (PreparedStatement psInv = conn.prepareStatement(deleteInventorySql);
+                 PreparedStatement psChar = conn.prepareStatement(deleteCharacterSql)) {
+
+                psInv.setInt(1, id);
+                psInv.executeUpdate();
+
+                psChar.setInt(1, id);
+                int affectedRows = psChar.executeUpdate();
+
+                conn.commit();
+                return affectedRows > 0;
+
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Failed to delete character " + id, e);
+        }
     }
 
     @Override
@@ -83,18 +120,18 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
         PlayerCharacter character = new PlayerCharacter();
 
         // Character columns
-        character.setId(result.getInt("id"));
-        character.setName(result.getString("name"));
+        character.setId(result.getInt("char_id"));
+        character.setName(result.getString("char_name"));
 
         // Race object
         if (!result.wasNull()) {
             Race race = new Race(
                     result.getInt("race_id"),
                     result.getString("race_name"),
-                    result.getInt("race_base_str"),
-                    result.getInt("race_base_dex"),
-                    result.getInt("race_base_int"),
-                    result.getDouble("race_weight_capacity")
+                    result.getInt("base_str"),
+                    result.getInt("base_dex"),
+                    result.getInt("base_int"),
+                    result.getDouble("weight_capacity_modifier")
             );
             character.setRace(race);
         }

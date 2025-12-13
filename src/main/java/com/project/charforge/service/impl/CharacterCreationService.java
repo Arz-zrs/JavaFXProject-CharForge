@@ -1,12 +1,12 @@
-package com.project.charforge.model.service.impl;
+package com.project.charforge.service.impl;
 
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
-import com.project.charforge.model.service.interfaces.ICharacterCreationService;
-import com.project.charforge.model.service.interfaces.IEquipmentService;
+import com.project.charforge.service.interfaces.ICharacterCreationService;
+import com.project.charforge.service.interfaces.IEquipmentService;
 
 public class CharacterCreationService implements ICharacterCreationService {
     private final CharacterDao characterDao;

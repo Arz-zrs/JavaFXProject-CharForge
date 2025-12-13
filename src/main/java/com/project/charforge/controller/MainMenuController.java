@@ -1,4 +1,64 @@
 package com.project.charforge.controller;
 
+import com.project.charforge.dao.interfaces.CharacterDao;
+import com.project.charforge.model.entity.character.PlayerCharacter;
+import com.project.charforge.service.interfaces.INavigationService;
+import com.project.charforge.ui.AlertUtils;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+
+import java.util.List;
+
 public class MainMenuController {
+    @FXML private TableView<PlayerCharacter> tableCharacters;
+    @FXML private TableColumn<PlayerCharacter, String> colName;
+    @FXML private TableColumn<PlayerCharacter, String> colRace;
+    @FXML private TableColumn<PlayerCharacter, String> colClass;
+    @FXML private TableColumn<PlayerCharacter, String> colGender;
+
+    private CharacterDao characterDao;
+    private INavigationService navigationService;
+
+    public void injectDependencies(CharacterDao characterDao, INavigationService navigationService) {
+        this.characterDao = characterDao;
+        this.navigationService = navigationService;
+
+        refreshTable();
+    }
+
+    @FXML
+    private void initialize() {
+        setupTable();
+    }
+
+    private void setupTable(){
+        colName.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getName()));
+        colRace.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getRace().getName()));
+        colClass.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getCharClass().getName()));
+        colGender.setCellValueFactory(cell -> new SimpleStringProperty(cell.getValue().getGender().name()));
+
+    }
+
+    private void refreshTable() {
+        if (characterDao == null) throw new IllegalStateException("CharacterDao not injected");
+        List<PlayerCharacter> characters = characterDao.findAll();
+        tableCharacters.getItems().setAll(characters);
+    }
+
+    @FXML
+    private void handleNewCharacter() {
+        navigationService.goToCharacterCreation();
+    }
+
+    @FXML
+    private void handleLoadCharacter() {
+        PlayerCharacter selected = tableCharacters.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            AlertUtils.showError("No Selection", "Please select a character to load.");
+            return;
+        }
+        navigationService.goToPaperDoll(selected);
+    }
 }

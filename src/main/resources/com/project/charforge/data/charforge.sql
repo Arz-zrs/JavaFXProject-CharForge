@@ -90,3 +90,5 @@ VALUES ('Mage', 0, 2, 8);
 
 INSERT INTO classes (name, bonus_str, bonus_dex, bonus_int)
 VALUES ('Archer', 2, 6, 2);
+
+select * from classes

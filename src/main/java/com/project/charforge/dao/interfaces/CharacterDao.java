@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface CharacterDao {
     List<PlayerCharacter> findAll();
     int save(PlayerCharacter character);
+    boolean delete(int id);
     Optional<PlayerCharacter> findById(int id);
 }

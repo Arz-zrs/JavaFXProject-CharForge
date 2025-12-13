@@ -1,6 +1,6 @@
 package com.project.charforge.dao.base;
 
-import com.project.charforge.util.SQLiteConnectionProvider;
+import com.project.charforge.db.SQLiteConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

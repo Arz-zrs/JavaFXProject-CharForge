@@ -6,9 +6,10 @@ import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
-import com.project.charforge.model.service.impl.StatCalculator;
-import com.project.charforge.model.service.interfaces.ICharacterCreationService;
-import com.project.charforge.model.service.interfaces.IEquipmentService;
+import com.project.charforge.service.impl.StatCalculator;
+import com.project.charforge.service.interfaces.ICharacterCreationService;
+import com.project.charforge.service.interfaces.IEquipmentService;
+import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -62,7 +63,7 @@ public class CharacterCreationController {
 
     private void handleCreate() {
         if (!isInputValid()) {
-            showAlert("Incomplete", "Please fill all fields!");
+            AlertUtils.showWarning("Incomplete", "Please fill all fields!");
             return;
         }
 
@@ -77,7 +78,8 @@ public class CharacterCreationController {
             navigateToPaperDoll(pc);
 
         } catch (Exception e) {
-            showAlert("Error", e.getMessage());
+            AlertUtils.showError("Error", e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
 
@@ -150,12 +152,5 @@ public class CharacterCreationController {
                 && cmbRace.getValue() != null
                 && cmbCharClass.getValue() != null
                 && genderGroup.getSelectedToggle() != null;
-    }
-
-    private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setContentText(content);
-        alert.showAndWait();
     }
 }

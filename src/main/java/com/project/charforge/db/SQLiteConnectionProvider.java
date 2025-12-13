@@ -1,4 +1,4 @@
-package com.project.charforge.util;
+package com.project.charforge.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

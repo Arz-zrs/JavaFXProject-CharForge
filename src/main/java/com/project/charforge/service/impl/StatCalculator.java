@@ -1,9 +1,9 @@
-package com.project.charforge.model.service.impl;
+package com.project.charforge.service.impl;
 
 import com.project.charforge.model.entity.base.StatModifier;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.item.Item;
-import com.project.charforge.model.service.interfaces.IStatCalculator;
+import com.project.charforge.service.interfaces.IStatCalculator;
 
 import java.util.ArrayList;
 import java.util.List;
