@@ -87,6 +87,3 @@ VALUES ('Mage', 0, 2, 8, 'INT');
 
 INSERT INTO classes (name, bonus_str, bonus_dex, bonus_int, attack_scaling)
 VALUES ('Archer', 2, 6, 2, 'DEX');
-
-select *
-from classes
