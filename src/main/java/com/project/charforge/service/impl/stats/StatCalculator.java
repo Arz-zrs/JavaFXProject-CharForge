@@ -1,5 +1,6 @@
 package com.project.charforge.service.impl.stats;
 
+import com.project.charforge.model.dto.DerivedStat;
 import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
@@ -23,9 +24,13 @@ public class StatCalculator implements IStatCalculator {
     @Override
     public StatSnapshot calculate(PlayerCharacter character) {
 
-        int str = character.getRace().getStrBonus() + character.getCharClass().getStrBonus();
-        int dex = character.getRace().getDexBonus() + character.getCharClass().getDexBonus();
-        int ints = character.getRace().getIntBonus() + character.getCharClass().getIntBonus();
+        int baseStr = character.getRace().getStrBonus() + character.getCharClass().getStrBonus();
+        int baseDex = character.getRace().getDexBonus() + character.getCharClass().getDexBonus();
+        int baseInt = character.getRace().getIntBonus() + character.getCharClass().getIntBonus();
+
+        int bonusStr = 0;
+        int bonusDex = 0;
+        int bonusInt = 0;
 
         int itemHpBonus = 0;
         int itemAtkBonus = 0;
@@ -34,37 +39,56 @@ public class StatCalculator implements IStatCalculator {
         for (InventoryItem inv : character.getInventory()) {
             if (!inv.isEquipped()) continue;
 
-            str += inv.getItem().getStrBonus();
-            dex += inv.getItem().getDexBonus();
-            ints += inv.getItem().getIntBonus();
+            bonusStr += inv.getItem().getStrBonus();
+            bonusDex += inv.getItem().getDexBonus();
+            bonusInt += inv.getItem().getIntBonus();
 
             itemHpBonus += inv.getItem().getHpBonus();
             itemAtkBonus += inv.getItem().getAtkBonus();
             itemApBonus += inv.getItem().getApBonus();
         }
 
-        int attackScalingStat = resolveAttackScalingStat(
+        DerivedStat str = new DerivedStat(baseStr, bonusStr);
+        DerivedStat dex = new DerivedStat(baseDex, bonusDex);
+        DerivedStat ints = new DerivedStat(baseInt, bonusInt);
+
+        int baseHp = BASE_HP + (str.base() * HP_PER_STR);
+        int bonusHp = (str.bonus() * HP_PER_STR) + itemHpBonus;
+        DerivedStat hp = new DerivedStat(baseHp, bonusHp);
+
+        int scalingBase = resolveAttackScalingStat(
                 character.getCharClass(),
-                str,
-                dex,
-                ints
+                str.base(),
+                dex.base(),
+                ints.base()
+        );
+        int scalingBonus = resolveAttackScalingStat(
+                character.getCharClass(),
+                str.bonus(),
+                dex.bonus(),
+                ints.bonus()
+        );
+        DerivedStat atk = new DerivedStat(
+                scalingBase * ATK_PER_STAT,
+                (scalingBonus * ATK_PER_STAT) + itemAtkBonus
         );
 
-        int maxHp = BASE_HP + (str * HP_PER_STR) + itemHpBonus;
-        int totalAtk = (attackScalingStat * ATK_PER_STAT) + itemAtkBonus;
-        int totalAp = (dex * AP_PER_DEX) + itemApBonus;
+        DerivedStat ap = new DerivedStat(
+                dex.base() * AP_PER_DEX,
+                (dex.bonus() * AP_PER_DEX) + itemApBonus
+        );
 
         double currentWeight = encumbranceService.getCurrentWeight(character);
-        double maxWeight = encumbranceService.getMaxWeight(character, str);
+        double maxWeight = encumbranceService.getMaxWeight(character, str.total());
         boolean encumbered = currentWeight > maxWeight;
 
         return new StatSnapshot(
                 str,
                 dex,
                 ints,
-                maxHp,
-                totalAp,
-                totalAtk,
+                hp,
+                ap,
+                atk,
                 currentWeight,
                 maxWeight,
                 encumbered

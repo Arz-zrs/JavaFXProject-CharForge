@@ -13,10 +13,8 @@ import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import com.project.charforge.ui.ItemToolTipFactory;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -24,7 +22,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Objects;

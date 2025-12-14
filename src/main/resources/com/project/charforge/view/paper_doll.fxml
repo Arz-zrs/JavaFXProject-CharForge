@@ -74,7 +74,7 @@
                 <Separator opacity="0.3" />
 
                 <!-- Main Stats Grid -->
-                <GridPane hgap="10" vgap="10">
+                <GridPane hgap="10" prefHeight="168.0" prefWidth="206.0" vgap="10" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="60" />
                         <ColumnConstraints halignment="RIGHT" percentWidth="40" />
@@ -82,26 +82,26 @@
                     </columnConstraints>
 
                     <Label styleClass="stat-label-name" text="HP" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label fx:id="lblHp" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label fx:id="lblHp" styleClass="stat-label-value" text="110 (100, +10)" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                     <Label styleClass="stat-label-name" text="ARMOR" GridPane.rowIndex="1" />
-                    <Label fx:id="lblAp" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label fx:id="lblAp" styleClass="stat-label-value" text="10 (5, +5)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
                     <Label styleClass="stat-label-name" text="ATK" GridPane.rowIndex="2" />
-                    <Label fx:id="lblAtk" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label fx:id="lblAtk" styleClass="stat-label-value" text="10 (5, +5)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
 
                     <!-- STR -->
                     <Label styleClass="stat-label-name" text="STRENGTH" GridPane.rowIndex="3" />
-                    <Label fx:id="lblTotalStr" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label fx:id="lblTotalStr" styleClass="stat-label-value" text="10 (5, +5)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <!-- DEX -->
                     <Label styleClass="stat-label-name" text="DEXTERITY" GridPane.rowIndex="4" />
-                    <Label fx:id="lblTotalDex" styleClass="stat-label-value" text="8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label fx:id="lblTotalDex" styleClass="stat-label-value" text="8 (6, +2)" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                     <!-- INT -->
                     <Label styleClass="stat-label-name" text="INTELLIGENCE" GridPane.rowIndex="5" />
-                    <Label fx:id="lblTotalInt" styleClass="stat-label-value" text="5" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label fx:id="lblTotalInt" styleClass="stat-label-value" text="5 (3, +2)" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
                <rowConstraints>
                   <RowConstraints />

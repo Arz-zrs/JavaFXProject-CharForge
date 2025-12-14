@@ -31,7 +31,7 @@ public class Main extends Application {
         // DAOs
         RaceDao raceDao = new RaceDaoImpl();
         CharClassDao classDao = new CharClassDaoImpl();
-        CharacterDao characterDao = new CharacterDaoImpl(raceDao, classDao);
+        CharacterDao characterDao = new CharacterDaoImpl();
         InventoryDao inventoryDao = new InventoryDaoImpl();
         ItemDao itemDao = new ItemDaoImpl();
 

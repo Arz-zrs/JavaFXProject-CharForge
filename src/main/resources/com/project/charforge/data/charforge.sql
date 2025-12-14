@@ -66,7 +66,7 @@ INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, st
 VALUES ('Old Staff', 'MAIN_HAND', 2.0, 0, 0, 4, 0, 0, 8, 'wood_staff.png');
 
 INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
-VALUES ('Rusty Dagger', 'MAIN_HAND', 1.5, 1, 2, 0, 0, 0, 4, 'dagger.png');
+VALUES ('Rusty Dagger', 'OFFHAND', 1.5, 1, 2, 0, 0, 0, 4, 'dagger.png');
 
 -- Races Seeded Data
 INSERT INTO races (name, base_str, base_dex, base_int, weight_capacity_modifier)

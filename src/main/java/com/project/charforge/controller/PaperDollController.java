@@ -1,11 +1,11 @@
 package com.project.charforge.controller;
 
 import com.project.charforge.console.Logs;
+import com.project.charforge.model.dto.DerivedStat;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
-import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.INavigationService;
@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -22,7 +21,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Objects;
@@ -213,13 +211,13 @@ public class PaperDollController {
     private void refreshStats() {
         var snap = statCalculator.calculate(character);
 
-        if (lblHp != null) lblHp.setText(String.valueOf(snap.healthPoints()));
-        if (lblAp != null) lblAp.setText(String.valueOf(snap.armorPoints()));
-        if (lblAtk != null) lblAtk.setText(String.valueOf(snap.attack()));
+        lblHp.setText(formatStat(snap.hp()));
+        lblAtk.setText(formatStat(snap.atk()));
+        lblAp.setText(formatStat(snap.ap()));
 
-        lblTotalStr.setText(String.valueOf(snap.totalStr()));
-        lblTotalDex.setText(String.valueOf(snap.totalDex()));
-        lblTotalInt.setText(String.valueOf(snap.totalInt()));
+        lblTotalStr.setText(formatStat(snap.str()));
+        lblTotalDex.setText(formatStat(snap.dex()));
+        lblTotalInt.setText(formatStat(snap.ints()));
 
         double ratio = snap.currentWeight() / snap.maxWeight();
         progressWeight.setProgress(Math.min(1.0, ratio));
@@ -235,6 +233,15 @@ public class PaperDollController {
         if (snap.isEncumbered()) {
             progressWeight.getStyleClass().add("weight-bar-encumbered");
         }
+    }
+
+    private String formatStat(DerivedStat stat) {
+        return String.format(
+                "%d (%d%s)",
+                stat.total(),
+                stat.base(),
+                stat.bonus() != 0 ? ", +" + stat.bonus() : ""
+        );
     }
 
     // Helper Methods

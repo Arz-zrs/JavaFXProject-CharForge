@@ -1,9 +1,7 @@
 package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
-import com.project.charforge.dao.interfaces.CharClassDao;
 import com.project.charforge.dao.interfaces.CharacterDao;
-import com.project.charforge.dao.interfaces.RaceDao;
 import com.project.charforge.db.SQLiteConnectionProvider;
 import com.project.charforge.model.entity.character.*;
 
@@ -15,14 +13,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements CharacterDao {
-    private final RaceDao raceDao;
-    private final CharClassDao classDao;
-
-    public CharacterDaoImpl(RaceDao raceDao, CharClassDao classDao) {
-        this.raceDao = raceDao;
-        this.classDao = classDao;
-    }
-
     @Override
     public List<PlayerCharacter> findAll() {
         String sql = """

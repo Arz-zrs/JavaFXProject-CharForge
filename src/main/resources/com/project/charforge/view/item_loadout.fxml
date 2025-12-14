@@ -59,12 +59,14 @@
                 <ProgressBar fx:id="progressWeight" prefWidth="300" progress="0.0" />
                 <Label fx:id="lblWeightVal" styleClass="stat-label-value" text="0 / 50 kg" />
             </HBox>
-         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-            <children>
-                  <Button maxWidth="200" onAction="#handleFinish" prefHeight="50.0" prefWidth="185.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #c1b784; -fx-border-radius: 10px; -fx-padding: 10 30; -fx-cursor: hand; -fx-font-family: 'Palatino Linotype'; -fx-font-size: 14px" text="BEGIN JOURNEY" />
-                  <Button maxWidth="200" onAction="#handlePrevious" prefHeight="50.0" prefWidth="185.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="PREVIOUS" />
-            </children>
-         </HBox>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                <Button maxWidth="200" onAction="#handleFinish" prefHeight="50.0" prefWidth="185.0"
+                        style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #c1b784; -fx-border-radius: 10px; -fx-padding: 10 30; -fx-cursor: hand; -fx-font-family: 'Palatino Linotype'; -fx-font-size: 14px"
+                        text="BEGIN JOURNEY"/>
+                <Button maxWidth="200" onAction="#handlePrevious" prefHeight="50.0" prefWidth="185.0"
+                        style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px"
+                        text="PREVIOUS"/>
+            </HBox>
         </VBox>
     </bottom>
 
