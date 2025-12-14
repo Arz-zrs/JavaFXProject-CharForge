@@ -52,6 +52,14 @@ public class EquipmentService implements IEquipmentService {
         inventoryDao.equipItem(instanceId, slot.name());
     }
 
+    private InventoryItem findInventoryItem(PlayerCharacter character, int instanceId) {
+        return character.getInventory().stream()
+                .filter(i -> i.getInstanceId() == instanceId)
+                .findFirst()
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Item not found in character inventory: " + instanceId));
+    }
+
     @Override
     public void unequip(PlayerCharacter character, int instanceId) {
         int newGridIndex = findFreeGridIndex(character);
@@ -93,13 +101,5 @@ public class EquipmentService implements IEquipmentService {
         if (item == null) return false;
 
         return validationService.canEquip(character, item, targetSlot);
-    }
-
-    private InventoryItem findInventoryItem(PlayerCharacter character, int instanceId) {
-        return character.getInventory().stream()
-                .filter(i -> i.getInstanceId() == instanceId)
-                .findFirst()
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Item not found in character inventory: " + instanceId));
     }
 }

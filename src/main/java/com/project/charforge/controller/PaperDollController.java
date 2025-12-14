@@ -275,6 +275,12 @@ public class PaperDollController {
     // Inventory Setup
     @FXML
     public void initialize() {
+        setupAutoHideLabel(slotHead, imgHead);
+        setupAutoHideLabel(slotBody, imgBody);
+        setupAutoHideLabel(slotMainHand, imgMainHand);
+        setupAutoHideLabel(slotOffHand, imgOffHand);
+        setupAutoHideLabel(slotLegs, imgLegs);
+        setupAutoHideLabel(slotAccessory, imgAccessory);
 
         // Unequip Logic
         inventoryGrid.setOnDragOver(event -> {
@@ -326,6 +332,14 @@ public class PaperDollController {
         setupSlotEvents(slotOffHand, EquipmentSlot.OFFHAND);
         setupSlotEvents(slotLegs, EquipmentSlot.LEGS);
         setupSlotEvents(slotAccessory, EquipmentSlot.ACCESSORY);
+    }
+
+    private void setupAutoHideLabel(StackPane slot, ImageView img) {
+        for (Node node : slot.getChildren()) {
+            if (node instanceof Label) {
+                node.visibleProperty().bind(img.visibleProperty().not());
+            }
+        }
     }
 
     @FXML
