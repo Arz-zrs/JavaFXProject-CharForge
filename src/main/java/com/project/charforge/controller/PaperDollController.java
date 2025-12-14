@@ -6,9 +6,10 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
-import com.project.charforge.service.interfaces.characters.ICharacterStatService;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
+import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.ui.ItemToolTipFactory;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -30,7 +31,8 @@ public class PaperDollController {
 
     @FXML private ImageView imgSilhouette;
     @FXML private Label lblName, lblRaceClass ;
-    @FXML private Label lblTotalStr, lblTotalDex, lblTotalInt, lblWeightVal ;
+    @FXML private Label lblTotalStr, lblTotalDex, lblTotalInt, lblWeightVal;
+    @FXML private Label lblHp, lblAp, lblAtk;
     @FXML private ProgressBar progressWeight;
     @FXML private GridPane inventoryGrid;
 
@@ -40,16 +42,16 @@ public class PaperDollController {
     private PlayerCharacter character;
 
     private IEquipmentService equipmentService;
-    private ICharacterStatService charStatService;
+    private IStatCalculator statCalculator;
     private INavigationService navigationService;
 
     public void injectServices(
             IEquipmentService equipmentService,
-            ICharacterStatService charStatService,
+            IStatCalculator statCalculator,
             INavigationService navigationService
     ) {
         this.equipmentService = equipmentService;
-        this.charStatService = charStatService;
+        this.statCalculator = statCalculator;
         this.navigationService = navigationService;
     }
 
@@ -100,50 +102,27 @@ public class PaperDollController {
             target.getParent().setUserData(item);
 
             enableDragFromEquipmentSlot((StackPane) target.getParent(), item);
-            installToolTips(target, item);
+            ItemToolTipFactory.install(target, item.getItem());
         }
     }
 
-    private void renderInventoryItem(InventoryItem item) {
+    private void renderInventoryItem(InventoryItem inventoryItem) {
         StackPane pane = new StackPane();
         pane.setPrefSize(50, 50);
         pane.setStyle("-fx-background-color: #333; -fx-border-color: #555;");
-        pane.setUserData(item);
+        pane.setUserData(inventoryItem);
 
         ImageView icon = new ImageView();
         icon.setFitWidth(40);
         icon.setFitHeight(40);
-        setImageFromPath(icon, item.getItem().getIconPath());
+        setImageFromPath(icon, inventoryItem.getItem().getIconPath());
 
         pane.getChildren().add(icon);
-        enableDragSource(pane, item);
+        enableDragSource(pane, inventoryItem);
 
-        installToolTips(pane, item);
+        ItemToolTipFactory.install(pane, inventoryItem.getItem());
 
-        inventoryGrid.add(pane, item.getGridIndex() % 10, item.getGridIndex() / 10);
-    }
-
-    // ToolTips Logic
-    private void installToolTips(Node node, InventoryItem inventoryItem) {
-        Item item = inventoryItem.getItem();
-        StringBuilder sb = new StringBuilder();
-
-        // Header and subheader
-        sb.append(item.getName().toUpperCase()).append("\n");
-        sb.append(item.getValidSlot().name().replace("_", " ")).append("\n\n");
-
-        // Stats logic
-        if (item.getStrBonus() != 0) sb.append("STR: ").append(item.getStrBonus() > 0 ? "+" : "").append(item.getStrBonus()).append("\n");
-        if (item.getDexBonus() != 0) sb.append("DEX: ").append(item.getDexBonus() > 0 ? "+" : "").append(item.getDexBonus()).append("\n");
-        if (item.getIntBonus() != 0) sb.append("INT: ").append(item.getIntBonus() > 0 ? "+" : "").append(item.getIntBonus()).append("\n");
-
-        // Footer
-        sb.append("\nWeight: ").append(item.getWeight()).append(" kg");
-
-        Tooltip tooltip = new Tooltip(sb.toString());
-        tooltip.setShowDelay(Duration.millis(100));
-        tooltip.setShowDuration(Duration.seconds(10));
-        Tooltip.install(node, tooltip);
+        inventoryGrid.add(pane, inventoryItem.getGridIndex() % 10, inventoryItem.getGridIndex() / 10);
     }
 
     // Drag & Drop Logic
@@ -232,7 +211,11 @@ public class PaperDollController {
 
     // Stat Calculation
     private void refreshStats() {
-        var snap = charStatService.snapshot(character);
+        var snap = statCalculator.calculate(character);
+
+        if (lblHp != null) lblHp.setText(String.valueOf(snap.healthPoints()));
+        if (lblAp != null) lblAp.setText(String.valueOf(snap.armorPoints()));
+        if (lblAtk != null) lblAtk.setText(String.valueOf(snap.attack()));
 
         lblTotalStr.setText(String.valueOf(snap.totalStr()));
         lblTotalDex.setText(String.valueOf(snap.totalDex()));

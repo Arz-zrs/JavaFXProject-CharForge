@@ -5,10 +5,7 @@ import com.project.charforge.dao.interfaces.CharClassDao;
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.dao.interfaces.RaceDao;
 import com.project.charforge.db.SQLiteConnectionProvider;
-import com.project.charforge.model.entity.character.CharClass;
-import com.project.charforge.model.entity.character.Gender;
-import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.model.entity.character.Race;
+import com.project.charforge.model.entity.character.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -32,7 +29,7 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
                 SELECT
                     c.id AS char_id, c.name AS char_name, c.gender AS char_gender,
                     r.id AS race_id, r.name AS race_name, r.base_str, r.base_dex, r.base_int, r.weight_capacity_modifier,
-                    cl.id AS class_id, cl.name AS class_name, cl.bonus_str, cl.bonus_dex, cl.bonus_int
+                    cl.id AS class_id, cl.name AS class_name, cl.bonus_str, cl.bonus_dex, cl.bonus_int, cl.attack_scaling
                 FROM characters c
                 LEFT JOIN races r ON c.race_id = r.id
                 LEFT JOIN classes cl ON c.class_id = cl.id
@@ -104,7 +101,7 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
                 
                     cl.id AS class_id,
                     cl.name AS class_name,
-                    cl.bonus_str, cl.bonus_dex, cl.bonus_int
+                    cl.bonus_str, cl.bonus_dex, cl.bonus_int, cl.attack_scaling
                 FROM characters c
                 LEFT JOIN races r ON c.race_id = r.id
                 LEFT JOIN classes cl ON c.class_id = cl.id
@@ -137,14 +134,25 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
         }
 
         // Class object
+        String scalingStr = result.getString("attack_scaling");
+        AttackScaling scaling = AttackScaling.STR;
+
+        if (scalingStr != null) {
+            try {
+                scaling = AttackScaling.valueOf(scalingStr);
+            } catch (IllegalArgumentException e) {
+                e.getStackTrace();
+            }
+        }
+
         if (!result.wasNull()) {
             CharClass charClass = new CharClass(
                     result.getInt("class_id"),
                     result.getString("class_name"),
                     result.getInt("bonus_str"),
                     result.getInt("bonus_dex"),
-                    result.getInt("bonus_int")
-
+                    result.getInt("bonus_int"),
+                    scaling
             );
             character.setCharClass(charClass);
         }

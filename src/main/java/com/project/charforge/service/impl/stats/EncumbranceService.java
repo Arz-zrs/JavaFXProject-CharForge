@@ -5,11 +5,8 @@ import com.project.charforge.service.interfaces.stats.IEncumbranceService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 
 public class EncumbranceService implements IEncumbranceService {
-    private final IStatCalculator statCalculator;
-
-    public EncumbranceService(IStatCalculator statCalculator) {
-        this.statCalculator = statCalculator;
-    }
+    private static final double BASE_WEIGHT_CAP = 50.0;
+    private static final int WEIGHT_PER_STR = 2;
 
     @Override
     public double getCurrentWeight(PlayerCharacter character) {
@@ -19,8 +16,8 @@ public class EncumbranceService implements IEncumbranceService {
     }
 
     @Override
-    public double getMaxWeight(PlayerCharacter character) {
-        int str = statCalculator.calculate(character).totalStr();
-        return (50 + str * 2) * character.getRace().getWeightModifier();
+    public double getMaxWeight(PlayerCharacter character, int totalStr) {
+        return (BASE_WEIGHT_CAP + (totalStr * WEIGHT_PER_STR))
+                * character.getRace().getWeightModifier();
     }
 }

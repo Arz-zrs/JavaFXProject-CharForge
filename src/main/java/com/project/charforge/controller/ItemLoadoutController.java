@@ -1,13 +1,19 @@
 package com.project.charforge.controller;
 
+import com.project.charforge.console.Logs;
+import com.project.charforge.model.dto.StatSnapshot;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.Item;
+import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
-import com.project.charforge.service.interfaces.stats.IEncumbranceService;
+import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.ui.AlertUtils;
+import com.project.charforge.ui.ItemToolTipFactory;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tooltip;
@@ -18,6 +24,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.util.List;
 import java.util.Objects;
@@ -32,18 +39,21 @@ public class ItemLoadoutController {
     private INavigationService navigationService;
     private IItemService itemService;
     private IInventoryService inventoryService;
-    private IEncumbranceService encumbranceService;
+    private IStatCalculator statCalculator;
+    private ICharacterService creationService;
 
     public void injectDependencies(
             INavigationService navigationService,
             IItemService itemService,
             IInventoryService inventoryService,
-            IEncumbranceService encumbranceService
+            IStatCalculator statCalculator,
+            ICharacterService creationService
     ) {
         this.navigationService = navigationService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;
-        this.encumbranceService = encumbranceService;
+        this.statCalculator = statCalculator;
+        this.creationService = creationService;
     }
 
     public void setCharacter(PlayerCharacter character) {
@@ -111,15 +121,16 @@ public class ItemLoadoutController {
 
         pane.getChildren().add(img);
 
-        Tooltip t = new Tooltip(item.getName() + "\n" + item.getWeight() + " kg");
-        Tooltip.install(pane, t);
+        ItemToolTipFactory.install(pane, item);
 
         return pane;
     }
 
     private void updateWeightUI() {
-        double current = encumbranceService.getCurrentWeight(character);
-        double max = encumbranceService.getMaxWeight(character);
+        StatSnapshot stats = statCalculator.calculate(character);
+
+        double current = stats.currentWeight();
+        double max = stats.maxWeight();
 
         progressWeight.setProgress(current / max);
         lblWeightVal.setText(String.format("%.1f / %.1f kg", current, max));
@@ -142,7 +153,12 @@ public class ItemLoadoutController {
             if (!e.getDragboard().hasString()) return;
 
             int itemId = Integer.parseInt(e.getDragboard().getString());
-            inventoryService.addItem(character, itemId);
+            if (character.getId() == 0) {
+                inventoryService.addTempItem(character, itemId);
+            }
+            else {
+                inventoryService.addItem(character, itemId);
+            }
 
             reloadBackpack();
             e.setDropCompleted(true);
@@ -152,6 +168,18 @@ public class ItemLoadoutController {
 
     @FXML
     private void handleFinish() {
-        navigationService.goToPaperDoll(character);
+        try {
+            if (character.getId() == 0) creationService.saveCharacterToDB(character);
+            navigationService.goToPaperDoll(character);
+
+        } catch (Exception e) {
+            Logs.printError(e.getMessage());
+            e.getStackTrace();
+            AlertUtils.showError("Save Error", "Gagal menyimpan karakter.");
+        }
+    }
+
+    public void handlePrevious() {
+        navigationService.goToCharacterCreation();
     }
 }

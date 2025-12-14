@@ -104,11 +104,10 @@
     -fx-background-radius: 2;
 }
 .weight-bar .bar {
-    -fx-background-color: linear-gradient(to right, #2e7d32, #81c784); /* Hijau */
+    -fx-background-color: linear-gradient(to right, #2e7d32, #81c784);
     -fx-background-radius: 2;
 }
 
-/* Ubah warna bar jadi merah jika keberatan (bisa diatur lewat code nanti) */
 .weight-bar-encumbered .bar {
     -fx-background-color: linear-gradient(to right, #b71c1c, #e57373);
 }
@@ -171,6 +170,15 @@
 .menu-panel {
     -fx-background-color: rgb(64, 50, 38);
     -fx-border-color: #c0a062;
+    -fx-border-width: 2px;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
+}
+
+.menu-panel-in {
+    -fx-background-color: rgb(64, 50, 38);
+    -fx-border-color: #e1a953;
     -fx-border-width: 2px;
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;

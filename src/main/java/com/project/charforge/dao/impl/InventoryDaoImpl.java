@@ -23,6 +23,9 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
             i.stat_str,
             i.stat_dex,
             i.stat_int,
+            i.stat_hp,
+            i.stat_ap,
+            i.stat_atk,
             i.icon_path
         FROM
             character_items ci
@@ -92,6 +95,9 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
                 result.getInt("stat_str"),
                 result.getInt("stat_dex"),
                 result.getInt("stat_int"),
+                result.getInt("stat_hp"),
+                result.getInt("stat_ap"),
+                result.getInt("stat_atk"),
                 result.getString("icon_path")
         );
 

@@ -78,23 +78,38 @@
                     <columnConstraints>
                         <ColumnConstraints percentWidth="60" />
                         <ColumnConstraints halignment="RIGHT" percentWidth="40" />
+
                     </columnConstraints>
 
+                    <Label styleClass="stat-label-name" text="HP" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label fx:id="lblHp" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                    <Label styleClass="stat-label-name" text="ARMOR" GridPane.rowIndex="1" />
+                    <Label fx:id="lblAp" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                    <Label styleClass="stat-label-name" text="ATK" GridPane.rowIndex="2" />
+                    <Label fx:id="lblAtk" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+
                     <!-- STR -->
-                    <Label styleClass="stat-label-name" text="STRENGTH" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label fx:id="lblTotalStr" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label styleClass="stat-label-name" text="STRENGTH" GridPane.rowIndex="3" />
+                    <Label fx:id="lblTotalStr" styleClass="stat-label-value" text="10" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
                     <!-- DEX -->
-                    <Label styleClass="stat-label-name" text="DEXTERITY" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label fx:id="lblTotalDex" styleClass="stat-label-value" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label styleClass="stat-label-name" text="DEXTERITY" GridPane.rowIndex="4" />
+                    <Label fx:id="lblTotalDex" styleClass="stat-label-value" text="8" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
                     <!-- INT -->
-                    <Label styleClass="stat-label-name" text="INTELLIGENCE" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label fx:id="lblTotalInt" styleClass="stat-label-value" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label styleClass="stat-label-name" text="INTELLIGENCE" GridPane.rowIndex="5" />
+                    <Label fx:id="lblTotalInt" styleClass="stat-label-value" text="5" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
                <rowConstraints>
                   <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
                </rowConstraints>
                 </GridPane>
 

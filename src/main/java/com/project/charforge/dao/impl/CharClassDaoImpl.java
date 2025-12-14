@@ -2,6 +2,7 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.CharClassDao;
+import com.project.charforge.model.entity.character.AttackScaling;
 import com.project.charforge.model.entity.character.CharClass;
 
 import java.sql.ResultSet;
@@ -30,12 +31,24 @@ public class CharClassDaoImpl extends BaseDao<CharClass> implements CharClassDao
 
     @Override
     protected CharClass mapRow(ResultSet result) throws SQLException {
+        String scalingStr = result.getString("attack_scaling");
+        AttackScaling scaling = AttackScaling.STR;
+
+        if (scalingStr != null) {
+            try {
+                scaling = AttackScaling.valueOf(scalingStr);
+            } catch (IllegalArgumentException e) {
+                e.getStackTrace();
+            }
+        }
+        
         return new CharClass(
                 result.getInt("id"),
                 result.getString("name"),
                 result.getInt("bonus_str"),
                 result.getInt("bonus_dex"),
-                result.getInt("bonus_int")
+                result.getInt("bonus_int"),
+                scaling
         );
     }
 }

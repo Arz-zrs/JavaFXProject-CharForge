@@ -1,16 +1,12 @@
 package com.project.charforge.controller;
 
 import com.project.charforge.console.Logs;
-import com.project.charforge.dao.interfaces.CharClassDao;
-import com.project.charforge.dao.interfaces.RaceDao;
 import com.project.charforge.model.entity.character.*;
-import com.project.charforge.service.interfaces.characters.ICharacterCreationService;
+import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
-import java.util.List;
 
 public class CharacterCreationController {
 
@@ -23,14 +19,10 @@ public class CharacterCreationController {
 
     private ToggleGroup genderGroup;
 
-    private RaceDao raceDao;
-    private CharClassDao classDao;
-    private ICharacterCreationService creationService;
+    private ICharacterService creationService;
     private INavigationService navigationService;
 
-    public void injectDependencies(RaceDao raceDao, CharClassDao classDao, ICharacterCreationService creationService, INavigationService navigationService) {
-        this.raceDao = raceDao;
-        this.classDao = classDao;
+    public void injectDependencies(ICharacterService creationService, INavigationService navigationService) {
         this.creationService = creationService;
         this.navigationService = navigationService;
 
@@ -39,50 +31,46 @@ public class CharacterCreationController {
 
     @FXML
     public void initialize() {
+        setupGenderToggle();
+        setupComboBoxes();
+    }
+
+    private void setupGenderToggle() {
         genderGroup = new ToggleGroup();
         rbMale.setToggleGroup(genderGroup);
         rbFemale.setToggleGroup(genderGroup);
+    }
+
+    private void setupComboBoxes() {
+        setupComboCellFactory(cmbRace);
+        setupComboCellFactory(cmbCharClass);
 
         cmbRace.getSelectionModel().selectedItemProperty().addListener((_, _, _) -> updateDescription());
         cmbCharClass.getSelectionModel().selectedItemProperty().addListener((_, _, _) -> updateDescription());
-
-        setupComboCellFactory(cmbRace);
-        setupComboCellFactory(cmbCharClass);
     }
+
 
     private void loadMasterData() {
-        List<Race> races = raceDao.findAll();
-        cmbRace.getItems().addAll(races);
-
-        List<CharClass> classes = classDao.findAll();
-        cmbCharClass.getItems().addAll(classes);
+        cmbRace.getItems().setAll(creationService.getAllRaces());
+        cmbCharClass.getItems().setAll(creationService.getAllClasses());
     }
+
 
     private void updateDescription() {
         StringBuilder desc = new StringBuilder();
-
         Race r = cmbRace.getValue();
-        if (r != null) {
-            desc.append("RACE: ").append(r.getName()).append("\n")
-                    .append("Str: +").append(r.getStrBonus())
-                    .append(" | Dex: +").append(r.getDexBonus())
-                    .append(" | Int: +").append(r.getIntBonus()).append("\n");
-        }
+        if (r != null) desc.append(r.describe()).append("\n");
 
         CharClass c = cmbCharClass.getValue();
-        if (c != null) {
-            desc.append("\nCLASS: ").append(c.getName()).append("\n")
-                    .append("Str: +").append(c.getStrBonus())
-                    .append(" | Dex: +").append(c.getDexBonus())
-                    .append(" | Int: +").append(c.getIntBonus());
-        }
+        if (c != null) desc.append(c.describe());
 
         txtDescription.setText(desc.toString());
     }
 
     private <T> void setupComboCellFactory(ComboBox<T> comboBox) {
         comboBox.setCellFactory(_ -> new ListCell<>() {
-            @Override protected void updateItem(T item, boolean empty) {
+            @Override
+            protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) setText(null);
                 else {
@@ -104,23 +92,27 @@ public class CharacterCreationController {
     @FXML
     public void handleCreateCharacter() {
         if (!isInputValid()) {
-            AlertUtils.showWarning("Incomplete", "Please fill all fields!");
+            AlertUtils.showError("Incomplete", "Please fill all fields!");
             return;
         }
 
         try {
             PlayerCharacter pc = creationService.createCharacter(
                     txtName.getText(),
-                    rbMale.isSelected() ? Gender.MALE : Gender.FEMALE,
+                    getSelectedGender(),
                     cmbRace.getValue(),
                     cmbCharClass.getValue()
             );
-            navigationService.goToItemLoadout(pc);
 
+            navigationService.goToItemLoadout(pc);
         } catch (Exception e) {
             AlertUtils.showError("Error", e.getMessage());
             Logs.printError(e.getMessage());
         }
+    }
+
+    private Gender getSelectedGender() {
+        return rbMale.isSelected() ? Gender.MALE : Gender.FEMALE;
     }
 
     @FXML

@@ -50,22 +50,18 @@
         <!-- Description Box -->
         <VBox spacing="5">
             <Label style="-fx-font-weight: bold;" styleClass="fantasy-lore" text="CHARACTER STATS" />
-            <TextArea fx:id="txtDescription" editable="false" VBox.vgrow="ALWAYS" style="-fx-control-inner-background: #222; -fx-text-fill: #aaa; -fx-font-family: 'Constantia';" wrapText="true" />
+            <TextArea fx:id="txtDescription" editable="false" style="-fx-control-inner-background: #222; -fx-text-fill: #aaa; -fx-font-family: 'Constantia';" wrapText="true" VBox.vgrow="ALWAYS" />
         </VBox>
 
         <Separator opacity="0.3" />
         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="80.0">
             <VBox.margin>
-                <Insets/>
+                <Insets />
             </VBox.margin>
 
             <!-- Action Button -->
-            <Button maxWidth="200" onAction="#handleCreateCharacter" prefHeight="50.0" prefWidth="166.0"
-                    style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px"
-                    text="BEGIN JOURNEY"/>
-            <Button maxWidth="200" onAction="#handleReturnToMenu" prefHeight="50.0" prefWidth="166.0"
-                    style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px"
-                    text="RETURN TO MENU"/>
+            <Button maxWidth="200" onAction="#handleCreateCharacter" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="TO ARMORY" />
+            <Button maxWidth="200" onAction="#handleReturnToMenu" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="RETURN TO MENU" />
         </HBox>
     </VBox>
 </StackPane>

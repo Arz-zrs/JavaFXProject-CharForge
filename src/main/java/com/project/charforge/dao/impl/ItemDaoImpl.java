@@ -7,6 +7,7 @@ import com.project.charforge.model.entity.item.Item;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
     @Override
@@ -15,11 +16,14 @@ public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
     }
 
     @Override
-    public List<Item> findBySlot(EquipmentSlot slot) {
-        return queryList(
-                "SELECT * FROM items WHERE type = ?",
-                statement -> statement.setString(1, slot.name())
+    public Optional<Item> findById(int itemId) {
+        String sql = "SELECT * FROM items WHERE id = ?";
+
+        Item item = querySingle(
+                sql,
+                statement -> statement.setInt(1, itemId)
         );
+        return Optional.ofNullable(item);
     }
 
     @Override
@@ -32,6 +36,9 @@ public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
                 result.getInt("stat_str"),
                 result.getInt("stat_dex"),
                 result.getInt("stat_int"),
+                result.getInt("stat_hp"),
+                result.getInt("stat_ap"),
+                result.getInt("stat_atk"),
                 result.getString("icon_path")
         );
     }

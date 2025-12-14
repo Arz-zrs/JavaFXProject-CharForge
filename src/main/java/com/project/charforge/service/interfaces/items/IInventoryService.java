@@ -8,4 +8,5 @@ import java.util.List;
 public interface IInventoryService {
     List<InventoryItem> getInventory(PlayerCharacter character);
     void addItem(PlayerCharacter character, int itemId);
+    void addTempItem(PlayerCharacter character, int itemId);
 }

@@ -1,6 +1,5 @@
 package com.project.charforge.controller;
 
-import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
@@ -21,12 +20,10 @@ public class MainMenuController {
     @FXML private TableColumn<PlayerCharacter, String> colClass;
     @FXML private TableColumn<PlayerCharacter, String> colGender;
 
-    private CharacterDao characterDao;
     private INavigationService navigationService;
     private ICharacterService characterService;
 
-    public void injectDependencies(CharacterDao characterDao, INavigationService navigationService, ICharacterService characterService) {
-        this.characterDao = characterDao;
+    public void injectDependencies(INavigationService navigationService, ICharacterService characterService) {
         this.navigationService = navigationService;
         this.characterService = characterService;
 
@@ -47,8 +44,8 @@ public class MainMenuController {
     }
 
     private void refreshTable() {
-        if (characterDao == null) throw new IllegalStateException("CharacterDao not injected");
-        List<PlayerCharacter> characters = characterDao.findAll();
+        if (characterService == null) throw new IllegalStateException("characterService not injected");
+        List<PlayerCharacter> characters = characterService.findAllCharacters();
         tableCharacters.getItems().setAll(characters);
     }
 

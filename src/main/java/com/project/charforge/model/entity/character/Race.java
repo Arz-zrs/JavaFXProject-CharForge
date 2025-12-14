@@ -21,4 +21,9 @@ public class Race extends BaseEntity implements StatModifier {
     @Override public int getDexBonus() { return baseDex; }
     @Override public int getIntBonus() { return baseInt; }
     public double getWeightModifier() { return weightModifier; }
+
+    public String describe() {
+        return String.format("RACE: %s\nStr: +%d | Dex: +%d | Int: +%d | Weight Modifier: %.2f",
+                getName(), getStrBonus(), getDexBonus(), getIntBonus(), getWeightModifier());
+    }
 }
