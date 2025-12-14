@@ -79,7 +79,7 @@ public class StatCalculator implements IStatCalculator {
         );
 
         double currentWeight = encumbranceService.getCurrentWeight(character);
-        double maxWeight = encumbranceService.getMaxWeight(character, str.total());
+        double maxWeight = encumbranceService.getMaxWeight(character, str.base());
         boolean encumbered = currentWeight > maxWeight;
 
         return new StatSnapshot(
