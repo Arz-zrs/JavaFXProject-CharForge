@@ -9,11 +9,11 @@ import com.project.charforge.dao.interfaces.*;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.characters.ICharacterCreationService;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
+import com.project.charforge.service.interfaces.characters.ICharacterStatService;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IEncumbranceService;
-import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 
 public class AppControllerInitializer implements ControllerInitializer {
@@ -26,14 +26,13 @@ public class AppControllerInitializer implements ControllerInitializer {
     private final IItemService itemService;
     private final IInventoryService inventoryService;
 
-    private final IStatCalculator statCalculator;
+    private final ICharacterStatService characterStatService;
     private final IEncumbranceService encumbranceService;
 
     private final ICharacterCreationService creationService;
     private final ICharacterService characterService;
 
     private INavigationService navigationService;
-    private PlayerCharacter playerCharacter;
 
     public AppControllerInitializer(
             CharacterDao characterDao,
@@ -42,7 +41,7 @@ public class AppControllerInitializer implements ControllerInitializer {
             IEquipmentService equipmentService,
             IItemService itemService,
             IInventoryService inventoryService,
-            IStatCalculator statCalculator,
+            ICharacterStatService characterStatService,
             IEncumbranceService encumbranceService,
             ICharacterCreationService creationService,
             ICharacterService characterService
@@ -53,7 +52,7 @@ public class AppControllerInitializer implements ControllerInitializer {
         this.equipmentService = equipmentService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;
-        this.statCalculator = statCalculator;
+        this.characterStatService = characterStatService;
         this.encumbranceService = encumbranceService;
         this.creationService = creationService;
         this.characterService = characterService;
@@ -84,8 +83,7 @@ public class AppControllerInitializer implements ControllerInitializer {
             validateNavigation();
             c.injectServices(
                     equipmentService,
-                    statCalculator,
-                    encumbranceService,
+                    characterStatService,
                     navigationService
             );
         }
@@ -93,7 +91,6 @@ public class AppControllerInitializer implements ControllerInitializer {
         else if (controller instanceof ItemLoadoutController c) {
             validateNavigation();
             c.injectDependencies(
-                    playerCharacter,
                     navigationService,
                     itemService,
                     inventoryService,

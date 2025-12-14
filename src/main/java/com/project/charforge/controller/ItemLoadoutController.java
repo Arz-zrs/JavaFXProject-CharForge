@@ -35,13 +35,11 @@ public class ItemLoadoutController {
     private IEncumbranceService encumbranceService;
 
     public void injectDependencies(
-            PlayerCharacter character,
             INavigationService navigationService,
             IItemService itemService,
             IInventoryService inventoryService,
             IEncumbranceService encumbranceService
     ) {
-        this.character = character;
         this.navigationService = navigationService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;

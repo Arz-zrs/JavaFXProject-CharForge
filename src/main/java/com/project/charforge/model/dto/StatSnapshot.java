@@ -4,4 +4,4 @@ public record StatSnapshot(
         int totalStr,
         int totalDex,
         int totalInt
-){}
+){ }

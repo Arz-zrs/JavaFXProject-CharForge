@@ -109,7 +109,7 @@
 }
 
 /* Ubah warna bar jadi merah jika keberatan (bisa diatur lewat code nanti) */
-.weight-bar:overweight .bar {
+.weight-bar-encumbered .bar {
     -fx-background-color: linear-gradient(to right, #b71c1c, #e57373);
 }
 

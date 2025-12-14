@@ -3,6 +3,7 @@ package com.project.charforge.app;
 import com.project.charforge.config.impl.AppControllerInitializer;
 import com.project.charforge.dao.impl.*;
 import com.project.charforge.dao.interfaces.*;
+import com.project.charforge.service.impl.characters.CharacterStatService;
 import com.project.charforge.service.impl.items.EquipmentService;
 import com.project.charforge.service.impl.items.InventoryService;
 import com.project.charforge.service.impl.items.ItemService;
@@ -12,6 +13,7 @@ import com.project.charforge.service.impl.utils.NavigationService;
 import com.project.charforge.service.impl.characters.CharacterCreationService;
 import com.project.charforge.service.impl.characters.CharacterService;
 import com.project.charforge.service.impl.utils.ValidationService;
+import com.project.charforge.service.interfaces.characters.ICharacterStatService;
 import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IEncumbranceService;
@@ -46,6 +48,7 @@ public class Main extends Application {
         IEncumbranceService encumbranceService = new EncumbranceService(statCalculator);
         ICharacterCreationService creationService = new CharacterCreationService(characterDao);
         ICharacterService characterService = new CharacterService(characterDao);
+        ICharacterStatService characterStatService = new CharacterStatService(statCalculator, encumbranceService);
 
         // Controller Initialize
         AppControllerInitializer appInitializer =
@@ -56,7 +59,7 @@ public class Main extends Application {
                         equipmentService,
                         itemService,
                         inventoryService,
-                        statCalculator,
+                        characterStatService,
                         encumbranceService,
                         creationService,
                         characterService

@@ -6,10 +6,9 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
+import com.project.charforge.service.interfaces.characters.ICharacterStatService;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
-import com.project.charforge.service.interfaces.stats.IEncumbranceService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -41,19 +40,16 @@ public class PaperDollController {
     private PlayerCharacter character;
 
     private IEquipmentService equipmentService;
-    private IStatCalculator statCalculator;
-    private IEncumbranceService encumbranceService;
+    private ICharacterStatService charSnapShot;
     private INavigationService navigationService;
 
     public void injectServices(
             IEquipmentService equipmentService,
-            IStatCalculator statCalculator,
-            IEncumbranceService encumbranceService,
+            ICharacterStatService charSnapShot,
             INavigationService navigationService
     ) {
         this.equipmentService = equipmentService;
-        this.statCalculator = statCalculator;
-        this.encumbranceService = encumbranceService;
+        this.charSnapShot = charSnapShot;
         this.navigationService = navigationService;
     }
 
@@ -236,19 +232,26 @@ public class PaperDollController {
 
     // Stat Calculation
     private void refreshStats() {
-        var stats = statCalculator.calculate(character);
+        var snap = charSnapShot.snapshot(character);
 
-        lblTotalStr.setText(String.valueOf(stats.totalStr()));
-        lblTotalDex.setText(String.valueOf(stats.totalDex()));
-        lblTotalInt.setText(String.valueOf(stats.totalInt()));
+        lblTotalStr.setText(String.valueOf(snap.totalStr()));
+        lblTotalDex.setText(String.valueOf(snap.totalDex()));
+        lblTotalInt.setText(String.valueOf(snap.totalInt()));
 
-        double currentWeight = encumbranceService.getCurrentWeight(character);
-        double maxWeight = encumbranceService.getMaxWeight(character);
+        double ratio = snap.currentWeight() / snap.maxWeight();
+        progressWeight.setProgress(Math.min(1.0, ratio));
 
-        progressWeight.setProgress(currentWeight / maxWeight);
         lblWeightVal.setText(
-                String.format("%.2f / %.2f kg", currentWeight, maxWeight)
+                String.format("%.2f / %.2f kg",
+                        snap.currentWeight(),
+                        snap.maxWeight())
         );
+
+        progressWeight.getStyleClass().remove("weight-bar-encumbered");
+
+        if (snap.encumbered()) {
+            progressWeight.getStyleClass().add("weight-bar-encumbered");
+        }
     }
 
     // Helper Methods
@@ -308,11 +311,13 @@ public class PaperDollController {
             event.consume();
         });
 
+        // Reset style
         inventoryGrid.setOnDragExited(event -> {
             inventoryGrid.setStyle("");
             event.consume();
         });
 
+        // Successful drop
         inventoryGrid.setOnDragDropped(event -> {
             boolean success = false;
 

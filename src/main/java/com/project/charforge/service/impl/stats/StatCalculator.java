@@ -10,9 +10,7 @@ public class StatCalculator implements IStatCalculator {
     @Override
     public StatSnapshot calculate(PlayerCharacter character) {
         int str = character.getRace().getStrBonus() + character.getCharClass().getStrBonus();
-
         int dex = character.getRace().getDexBonus() + character.getCharClass().getDexBonus();
-
         int ints = character.getRace().getIntBonus() + character.getCharClass().getIntBonus();
 
         for (InventoryItem inv : character.getInventory()) {
