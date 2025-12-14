@@ -1,5 +1,6 @@
 package com.project.charforge.controller;
 
+import com.project.charforge.console.Logs;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
@@ -8,10 +9,8 @@ import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.service.interfaces.IEquipmentService;
 import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.service.interfaces.IStatCalculator;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Tooltip;
@@ -25,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PaperDollController {
 
@@ -83,7 +83,7 @@ public class PaperDollController {
         String path = character.getGender() == Gender.MALE
                 ? imgMalePath : imgFemalePath;
 
-        imgSilhouette.setImage(new Image(getClass().getResourceAsStream(path)));
+        imgSilhouette.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
     }
 
     private void renderEquippedItem(InventoryItem item) {
@@ -211,6 +211,7 @@ public class PaperDollController {
                     success = true;
 
                 } catch (IllegalStateException e) {
+                    Logs.printError(e.getMessage());
                     slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
                 }
             }
@@ -264,7 +265,7 @@ public class PaperDollController {
     private void setImageFromPath(ImageView view, String path) {
         try {
             String fullPath = "/com/project/charforge/images/items/" + path;
-            view.setImage(new Image(getClass().getResourceAsStream(fullPath)));
+            view.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(fullPath))));
         } catch (Exception e) {
             // Placeholder Image
              view.setImage(new Image("com/project/charforge/images/items/placeholder.png"));

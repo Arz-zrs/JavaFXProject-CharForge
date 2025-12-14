@@ -1,5 +1,6 @@
 package com.project.charforge.controller;
 
+import com.project.charforge.console.Logs;
 import com.project.charforge.dao.interfaces.CharClassDao;
 import com.project.charforge.dao.interfaces.RaceDao;
 import com.project.charforge.model.entity.character.CharClass;
@@ -122,7 +123,7 @@ public class CharacterCreationController {
 
         } catch (Exception e) {
             AlertUtils.showError("Error", e.getMessage());
-            System.err.println(e.getMessage());
+            Logs.printError(e.getMessage());
         }
     }
 

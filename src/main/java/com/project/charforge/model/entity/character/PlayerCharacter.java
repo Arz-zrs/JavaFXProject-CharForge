@@ -1,5 +1,6 @@
 package com.project.charforge.model.entity.character;
 
+import com.project.charforge.console.Logs;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
@@ -91,9 +92,7 @@ public class PlayerCharacter {
                     EquipmentSlot slot = EquipmentSlot.valueOf(inventoryItem.getSlotName());
                     equippedMap.put(slot, inventoryItem.getItem());
                 } catch (IllegalArgumentException e) {
-                    // TODO:
-                    // alert message, breaks SOLID principle if I call Alert.AlertType.ERROR
-                    // System.err.println() would work as well
+                    Logs.printError(e.getMessage());
                     throw new RuntimeException(e);
                 }
             }

@@ -16,19 +16,19 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        // 1. DAOs
+        // DAOs
         RaceDao raceDao = new RaceDaoImpl();
         CharClassDao classDao = new CharClassDaoImpl();
         CharacterDao charDao = new CharacterDaoImpl(raceDao, classDao);
         InventoryDao invDao = new InventoryDaoImpl();
 
-        // 2. Services
+        // Services
         IValidationService validationService = new ValidationService();
         IEquipmentService equipmentService = new EquipmentService(invDao, validationService);
         ICharacterCreationService creationService = new CharacterCreationService(charDao, equipmentService);
         ICharacterService characterService = new CharacterService(charDao);
 
-        // 3. Controller Initialize
+        // Controller Initialize
         AppControllerInitializer appInitializer = new AppControllerInitializer(
                 charDao,
                 raceDao,
@@ -38,15 +38,15 @@ public class Main extends Application {
                 characterService
         );
 
-        // 4. Navigation & Wiring
+        // Navigation & Wiring
         INavigationService navigationService = new NavigationService(stage, appInitializer);
         appInitializer.setNavigationService(navigationService);
 
-        // 5. Stage Setup
+        // Stage Setup
         stage.setTitle("CharForge - RPG Simulator");
         stage.setMaximized(true);
 
-        // 6. Start
+        // Start
         navigationService.goToMainMenu();
     }
 
