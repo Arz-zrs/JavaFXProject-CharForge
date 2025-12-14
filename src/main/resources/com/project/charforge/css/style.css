@@ -75,7 +75,7 @@
 }
 
 /* STATS PANEL */
-.stats-panel {
+.stat-panel {
     -fx-background-color: rgb(64, 50, 38);
     -fx-border-color: #c0a062;
     -fx-border-width: 2px;

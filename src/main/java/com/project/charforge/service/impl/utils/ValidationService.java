@@ -1,10 +1,10 @@
-package com.project.charforge.service.impl;
+package com.project.charforge.service.impl.utils;
 
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
-import com.project.charforge.service.interfaces.IValidationService;
+import com.project.charforge.service.interfaces.utils.IValidationService;
 
 public class ValidationService implements IValidationService {
     @Override

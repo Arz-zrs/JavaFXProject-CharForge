@@ -7,7 +7,7 @@
 <StackPane styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.charforge.controller.CharacterCreationController">
 
     <!-- Panel Form (Centered) -->
-    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="637.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="637.0" spacing="20" style="-fx-padding: 40;" styleClass="stats-panel">
+    <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="637.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="634.0" prefWidth="637.0" spacing="20" style="-fx-padding: 40;" styleClass="menu-panel">
 
         <Label prefHeight="96.0" prefWidth="414.0" style="-fx-alignment: center" styleClass="fantasy-title" text="CHARFORGE" />
         <Label style="-fx-font-size: 24px;" styleClass="fantasy-lore" text="CREATE YOUR CHARACTER" underline="true" />

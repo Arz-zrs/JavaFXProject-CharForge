@@ -1,11 +1,11 @@
-package com.project.charforge.service.impl;
+package com.project.charforge.service.impl.items;
 
 import com.project.charforge.dao.interfaces.InventoryDao;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
-import com.project.charforge.service.interfaces.IEquipmentService;
-import com.project.charforge.service.interfaces.IValidationService;
+import com.project.charforge.service.interfaces.items.IEquipmentService;
+import com.project.charforge.service.interfaces.utils.IValidationService;
 
 import java.util.List;
 import java.util.Optional;
@@ -77,17 +77,6 @@ public class EquipmentService implements IEquipmentService {
             candidate++;
         }
         return candidate;
-    }
-
-    @Override
-    public void addStartingEquipment(int characterId, String className) {
-        // Add leather cap to all class
-        inventoryDao.addItemToCharacter(characterId, 2, 0);
-
-        // Add weapons respective to class: Warrior -> Sword, Mage -> Staff, Archer -> dagger
-        if ("Warrior".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 1, 1);
-        else if ("Mage".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 3, 1);
-        else if ("Archer".equalsIgnoreCase(className)) inventoryDao.addItemToCharacter(characterId, 4, 1);
     }
 
     @Override

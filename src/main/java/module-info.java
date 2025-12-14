@@ -14,7 +14,11 @@ module com.project.charforge {
     exports com.project.charforge.model.entity.inventory;
     exports com.project.charforge.model.entity.item;
     exports com.project.charforge.model.dto;
-    exports com.project.charforge.service.interfaces;
+//    exports com.project.charforge.service.interfaces;
     exports com.project.charforge.dao.interfaces;
     exports com.project.charforge.config.interfaces;
+    exports com.project.charforge.service.interfaces.characters;
+    exports com.project.charforge.service.interfaces.stats;
+    exports com.project.charforge.service.interfaces.items;
+    exports com.project.charforge.service.interfaces.utils;
 }

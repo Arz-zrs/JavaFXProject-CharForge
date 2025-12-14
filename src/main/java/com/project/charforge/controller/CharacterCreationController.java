@@ -7,8 +7,8 @@ import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
-import com.project.charforge.service.interfaces.ICharacterCreationService;
-import com.project.charforge.service.interfaces.INavigationService;
+import com.project.charforge.service.interfaces.characters.ICharacterCreationService;
+import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -118,8 +118,7 @@ public class CharacterCreationController {
                     cmbRace.getValue(),
                     cmbCharClass.getValue()
             );
-
-            navigationService.goToPaperDoll(pc);
+            navigationService.goToItemLoadout(pc);
 
         } catch (Exception e) {
             AlertUtils.showError("Error", e.getMessage());

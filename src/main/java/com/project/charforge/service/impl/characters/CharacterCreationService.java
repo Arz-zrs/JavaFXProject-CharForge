@@ -1,20 +1,17 @@
-package com.project.charforge.service.impl;
+package com.project.charforge.service.impl.characters;
 
 import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.character.Race;
-import com.project.charforge.service.interfaces.ICharacterCreationService;
-import com.project.charforge.service.interfaces.IEquipmentService;
+import com.project.charforge.service.interfaces.characters.ICharacterCreationService;
 
 public class CharacterCreationService implements ICharacterCreationService {
     private final CharacterDao characterDao;
-    private final IEquipmentService equipmentService;
 
-    public CharacterCreationService(CharacterDao characterDao, IEquipmentService equipmentService) {
+    public CharacterCreationService(CharacterDao characterDao) {
         this.characterDao = characterDao;
-        this.equipmentService = equipmentService;
     }
 
     @Override
@@ -31,7 +28,6 @@ public class CharacterCreationService implements ICharacterCreationService {
         }
 
         pc.setId(id);
-        equipmentService.addStartingEquipment(id, charClass.getName());
 
         return pc;
     }

@@ -1,4 +1,4 @@
-package com.project.charforge.service.interfaces;
+package com.project.charforge.service.interfaces.characters;
 
 import com.project.charforge.model.entity.character.CharClass;
 import com.project.charforge.model.entity.character.Gender;

@@ -1,10 +1,11 @@
-package com.project.charforge.service.impl;
+package com.project.charforge.service.impl.utils;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
 import com.project.charforge.console.Logs;
+import com.project.charforge.controller.ItemLoadoutController;
 import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.service.interfaces.INavigationService;
+import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +43,26 @@ public class NavigationService implements INavigationService {
             Parent root = loader.load();
 
             PaperDollController controller = loader.getController();
+            initializer.initialize(controller);
+            controller.setCharacter(character);
+
+            setScene(root);
+        } catch (IOException e) {
+            Logs.printError(e.getMessage());
+            e.getStackTrace();
+            AlertUtils.showError("Error", "Navigation failed");
+        }
+    }
+
+    @Override
+    public void goToItemLoadout(PlayerCharacter character) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/com/project/charforge/view/item_loadout.fxml")
+            );
+            Parent root = loader.load();
+
+            ItemLoadoutController controller = loader.getController();
             initializer.initialize(controller);
             controller.setCharacter(character);
 

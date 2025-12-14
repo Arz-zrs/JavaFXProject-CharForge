@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane styleClass="root" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.project.charforge.controller.ItemLoadoutController">
+
+    <!-- HEADER -->
+    <top>
+        <VBox alignment="CENTER" spacing="10" style="-fx-padding: 20;">
+            <Label style="-fx-font-size: 24px;" styleClass="fantasy-header" text="CHOOSE YOUR GEAR" />
+            <Label styleClass="fantasy-lore" text="Drag items from the Armory to your Backpack" />
+        </VBox>
+    </top>
+
+    <!-- CENTER: SPLIT VIEW -->
+    <center>
+        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 0 20 0 20;" BorderPane.alignment="CENTER" VBox.vgrow="ALWAYS">
+
+            <!-- LEFT: ARMORY (SOURCE) -->
+            <VBox alignment="CENTER" spacing="10" styleClass="stat-panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <Label alignment="CENTER" styleClass="fantasy-header" text="ARMORY" />
+                <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                    <GridPane fx:id="gridArmory"
+                              alignment="TOP_CENTER" hgap="10" vgap="10" style="-fx-padding: 10;" styleClass="menu-panel">
+                  <padding>
+                     <Insets left="10.0" right="10.0" />
+                  </padding></GridPane>
+                </ScrollPane>
+            </VBox>
+
+            <!-- ARROW ICON -->
+            <Label style="-fx-text-fill: #555; -fx-font-size: 30px;" text="➔" />
+
+            <!-- RIGHT: BACKPACK (TARGET) -->
+            <VBox alignment="CENTER" spacing="10" styleClass="stat-panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                <Label alignment="CENTER" styleClass="fantasy-header" text="YOUR BACKPACK" />
+                <ScrollPane fitToWidth="true" fitToHeight="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent;">
+                    <GridPane fx:id="gridBackpack" alignment="TOP_CENTER" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="113.0" prefWidth="192.0" style="-fx-padding: 10;" styleClass="menu-panel" vgap="10">
+                  <padding>
+                     <Insets left="10.0" right="10.0" />
+                  </padding></GridPane>
+                </ScrollPane>
+            </VBox>
+        </HBox>
+    </center>
+
+    <!-- BOTTOM: WEIGHT & ACTION -->
+    <bottom>
+        <VBox alignment="CENTER" spacing="15" style="-fx-padding: 20;" VBox.vgrow="NEVER">
+            <HBox alignment="CENTER" spacing="20">
+                <Label styleClass="stat-label-name" text="Current Weight:" />
+                <ProgressBar fx:id="progressWeight" prefWidth="300" progress="0.0" />
+                <Label fx:id="lblWeightVal" styleClass="stat-label-value" text="0 / 50 kg" />
+            </HBox>
+
+            <Button onAction="#handleFinish" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #c1b784; -fx-border-radius: 10px; -fx-padding: 10 30; -fx-cursor: hand;" text="MANAGE CHARACTER" />
+        </VBox>
+    </bottom>
+
+</BorderPane>

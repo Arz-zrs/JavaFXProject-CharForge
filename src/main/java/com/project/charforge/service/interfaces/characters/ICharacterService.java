@@ -1,4 +1,4 @@
-package com.project.charforge.service.interfaces;
+package com.project.charforge.service.interfaces.characters;
 
 public interface ICharacterService {
     boolean deleteCharacter(int characterId);
