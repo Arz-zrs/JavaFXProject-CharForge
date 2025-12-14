@@ -6,5 +6,5 @@ public record CharacterSnapshot(
         int totalInt,
         double currentWeight,
         double maxWeight,
-        boolean encumbered
+        boolean isEncumbered
 ) {}

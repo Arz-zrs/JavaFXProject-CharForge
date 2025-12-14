@@ -40,16 +40,16 @@ public class PaperDollController {
     private PlayerCharacter character;
 
     private IEquipmentService equipmentService;
-    private ICharacterStatService charSnapShot;
+    private ICharacterStatService charStatService;
     private INavigationService navigationService;
 
     public void injectServices(
             IEquipmentService equipmentService,
-            ICharacterStatService charSnapShot,
+            ICharacterStatService charStatService,
             INavigationService navigationService
     ) {
         this.equipmentService = equipmentService;
-        this.charSnapShot = charSnapShot;
+        this.charStatService = charStatService;
         this.navigationService = navigationService;
     }
 
@@ -232,7 +232,7 @@ public class PaperDollController {
 
     // Stat Calculation
     private void refreshStats() {
-        var snap = charSnapShot.snapshot(character);
+        var snap = charStatService.snapshot(character);
 
         lblTotalStr.setText(String.valueOf(snap.totalStr()));
         lblTotalDex.setText(String.valueOf(snap.totalDex()));
@@ -249,7 +249,7 @@ public class PaperDollController {
 
         progressWeight.getStyleClass().remove("weight-bar-encumbered");
 
-        if (snap.encumbered()) {
+        if (snap.isEncumbered()) {
             progressWeight.getStyleClass().add("weight-bar-encumbered");
         }
     }
