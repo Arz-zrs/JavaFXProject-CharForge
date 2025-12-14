@@ -1,18 +1,10 @@
 package com.project.charforge.config.impl;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
-import com.project.charforge.controller.CharacterCreationController;
-import com.project.charforge.controller.ItemLoadoutController;
-import com.project.charforge.controller.MainMenuController;
-import com.project.charforge.controller.PaperDollController;
+import com.project.charforge.controller.*;
 import com.project.charforge.dao.interfaces.*;
-import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.service.interfaces.characters.ICharacterCreationService;
-import com.project.charforge.service.interfaces.characters.ICharacterService;
-import com.project.charforge.service.interfaces.characters.ICharacterStatService;
-import com.project.charforge.service.interfaces.items.IEquipmentService;
-import com.project.charforge.service.interfaces.items.IInventoryService;
-import com.project.charforge.service.interfaces.items.IItemService;
+import com.project.charforge.service.interfaces.characters.*;
+import com.project.charforge.service.interfaces.items.*;
 import com.project.charforge.service.interfaces.stats.IEncumbranceService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 
