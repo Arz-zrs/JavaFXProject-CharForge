@@ -46,8 +46,8 @@ public class CharacterCreationController {
         rbMale.setToggleGroup(genderGroup);
         rbFemale.setToggleGroup(genderGroup);
 
-        cmbRace.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateDescription());
-        cmbCharClass.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateDescription());
+        cmbRace.getSelectionModel().selectedItemProperty().addListener((_, _, _) -> updateDescription());
+        cmbCharClass.getSelectionModel().selectedItemProperty().addListener((_, _, _) -> updateDescription());
 
         setupComboCellFactory(cmbRace);
         setupComboCellFactory(cmbCharClass);
@@ -84,7 +84,7 @@ public class CharacterCreationController {
     }
 
     private <T> void setupComboCellFactory(ComboBox<T> comboBox) {
-        comboBox.setCellFactory(param -> new ListCell<>() {
+        comboBox.setCellFactory(_ -> new ListCell<>() {
             @Override protected void updateItem(T item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty || item == null) setText(null);

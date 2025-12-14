@@ -5,6 +5,7 @@ import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.INavigationService;
 import com.project.charforge.ui.AlertUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -47,6 +48,11 @@ public class NavigationService implements INavigationService {
         } catch (IOException e) {
             AlertUtils.showError("Error", "Navigation failed");
         }
+    }
+
+    @Override
+    public void exitProgram() {
+        Platform.exit();
     }
 
     private void navigate(String fxmlPath) {

@@ -29,8 +29,8 @@
                         </StackPane>
 
                         <!-- ACCESSORY -->
-                        <StackPane fx:id="slotAccessory" layoutX="157.0" layoutY="94.0" prefHeight="56.0" prefWidth="88.0" styleClass="equipment-slot">
-                            <Label styleClass="slot-label" text="ACCESSORY" />
+                        <StackPane fx:id="slotAccessory" layoutX="289.0" layoutY="311.0" prefHeight="80.0" prefWidth="83.0" styleClass="equipment-slot">
+                            <Label styleClass="slot-label" text="ACCESORIES" />
                             <ImageView fx:id="imgAccessory" fitHeight="40" fitWidth="40" visible="false" />
                         </StackPane>
 
@@ -48,7 +48,7 @@
 
                         <!-- OFFHAND -->
                         <StackPane fx:id="slotOffHand" layoutX="300.0" layoutY="150.0" prefHeight="100.0" prefWidth="60.0" styleClass="equipment-slot">
-                            <Label styleClass="slot-label" text="OFF" />
+                            <Label styleClass="slot-label" text="OFFHAND" />
                             <ImageView fx:id="imgOffHand" fitHeight="90" fitWidth="50" visible="false" />
                         </StackPane>
 
@@ -122,7 +122,7 @@
             <!-- Grid 10x2 -->
             <GridPane fx:id="inventoryGrid" alignment="CENTER" hgap="5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="666.0" styleClass="inventory-grid" vgap="5">
             </GridPane>
-            <Button onAction="#handleReturnToMenu" maxWidth="200" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="RETURN TO MENU" />
+            <Button maxWidth="200" onAction="#handleReturnToMenu" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="RETURN TO MENU" />
         </VBox>
     </bottom>
 

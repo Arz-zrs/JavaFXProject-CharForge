@@ -6,4 +6,5 @@ public interface INavigationService {
     void goToMainMenu();
     void goToCharacterCreation();
     void goToPaperDoll(PlayerCharacter character);
+    void exitProgram();
 }

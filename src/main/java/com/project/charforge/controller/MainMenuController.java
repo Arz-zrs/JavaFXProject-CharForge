@@ -91,4 +91,7 @@ public class MainMenuController {
         }
     }
 
+    public void handleExitProgram() {
+        navigationService.exitProgram();
+    }
 }
