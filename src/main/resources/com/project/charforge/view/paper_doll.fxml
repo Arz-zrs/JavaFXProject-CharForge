@@ -120,7 +120,7 @@
             <Label styleClass="fantasy-header" text="INVENTORY" />
 
             <!-- Grid 10x2 -->
-            <GridPane fx:id="inventoryGrid" alignment="CENTER" hgap="5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="666.0" styleClass="inventory-grid" vgap="5">
+            <GridPane fx:id="inventoryGrid" alignment="CENTER" hgap="5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="150.0" minWidth="-Infinity" prefWidth="500.0" styleClass="inventory-grid" vgap="5">
             </GridPane>
             <Button maxWidth="200" onAction="#handleReturnToMenu" prefHeight="50.0" prefWidth="166.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="RETURN TO MENU" />
         </VBox>

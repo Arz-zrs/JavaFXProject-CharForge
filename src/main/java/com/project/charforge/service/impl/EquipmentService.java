@@ -9,6 +9,8 @@ import com.project.charforge.service.interfaces.IValidationService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class EquipmentService implements IEquipmentService {
     private final InventoryDao inventoryDao;
@@ -52,12 +54,21 @@ public class EquipmentService implements IEquipmentService {
 
     @Override
     public void unequip(PlayerCharacter character, int instanceId) {
-        // Search empty slot in grid
-        long itemsInBag =
-                character.getInventory().stream().filter(i -> !i.isEquipped()).count();
-        int newGridIndex = (int) itemsInBag;
-
+        int newGridIndex = findFreeGridIndex(character);
         inventoryDao.unequipItem(instanceId, newGridIndex);
+    }
+
+    private int findFreeGridIndex(PlayerCharacter character) {
+        Set<Integer> occupiedIndices = character.getInventory().stream()
+                .filter(i -> !i.isEquipped())
+                .map(InventoryItem::getGridIndex)
+                .collect(Collectors.toSet());
+
+        int candidate = 0;
+        while (occupiedIndices.contains(candidate)) {
+            candidate++;
+        }
+        return candidate;
     }
 
     @Override

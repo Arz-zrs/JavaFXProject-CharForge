@@ -275,18 +275,51 @@ public class PaperDollController {
     // Inventory Setup
     @FXML
     public void initialize() {
-        // Unequip when dropped in inventory
-        inventoryGrid.setOnDragDropped(event -> {
+
+        // Unequip Logic
+        inventoryGrid.setOnDragOver(event -> {
             if (event.getDragboard().hasString()) {
-                int instanceId = Integer.parseInt(event.getDragboard().getString());
-                equipmentService.unequip(character, instanceId);
-                reloadInventory();
-                refreshStats();
+                event.acceptTransferModes(TransferMode.MOVE);
+
+                // Visual feedback
+                inventoryGrid.setStyle(
+                        "-fx-border-color: #00ff00;" +
+                                "-fx-border-width: 2;" +
+                                "-fx-background-color: rgba(0,255,0,0.1);"
+                );
             }
-            event.setDropCompleted(true);
+            event.consume();
         });
 
-        // Setup slot drag handlers
+        inventoryGrid.setOnDragExited(event -> {
+            inventoryGrid.setStyle("");
+            event.consume();
+        });
+
+        inventoryGrid.setOnDragDropped(event -> {
+            boolean success = false;
+
+            // Calls unequip method
+            if (event.getDragboard().hasString()) {
+                try {
+                    int instanceId = Integer.parseInt(event.getDragboard().getString());
+
+                    equipmentService.unequip(character, instanceId);
+
+                    reloadInventory();
+                    refreshStats();
+                    success = true;
+
+                } catch (Exception e) {
+                    e.getStackTrace();
+                }
+            }
+
+            event.setDropCompleted(success);
+            inventoryGrid.setStyle("");
+            event.consume();
+        });
+
         setupSlotEvents(slotHead, EquipmentSlot.HEAD);
         setupSlotEvents(slotBody, EquipmentSlot.BODY);
         setupSlotEvents(slotMainHand, EquipmentSlot.MAIN_HAND);
@@ -295,6 +328,7 @@ public class PaperDollController {
         setupSlotEvents(slotAccessory, EquipmentSlot.ACCESSORY);
     }
 
+    @FXML
     public void handleReturnToMenu() {
         navigationService.goToMainMenu();
     }

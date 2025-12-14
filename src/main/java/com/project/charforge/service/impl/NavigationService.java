@@ -1,6 +1,7 @@
 package com.project.charforge.service.impl;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
+import com.project.charforge.console.Logs;
 import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.INavigationService;
@@ -46,6 +47,8 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
+            Logs.printError(e.getMessage());
+            e.getStackTrace();
             AlertUtils.showError("Error", "Navigation failed");
         }
     }
