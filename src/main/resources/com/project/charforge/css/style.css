@@ -5,14 +5,6 @@
     -fx-background-color: #2c241b;
     -fx-background-radius: 8px;
 
-    /*Color Templates*/
-    -fx-accent-gold: #c0a062;      /* Emas Kusam (Legendary feel) */
-    -fx-accent-hover: #e6c885;     /* Emas Terang (Hover) */
-    -fx-text-main: #e0e0e0;        /* Teks Utama */
-    -fx-text-muted: #888888;       /* Teks Deskripsi */
-    -fx-danger: #8b0000;           /* Merah Darah (Error/Invalid) */
-    -fx-success: #2e7d32;          /* Hijau Hutan (Valid Drop) */
-
     -fx-font-family: "Book Antiqua", serif;
 }
 
