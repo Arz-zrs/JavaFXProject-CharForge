@@ -18,6 +18,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.DataFormat;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
@@ -31,6 +32,9 @@ public class ItemLoadoutController {
     @FXML private GridPane gridBackpack;
     @FXML private ProgressBar progressWeight;
     @FXML private Label lblWeightVal;
+
+    private static final DataFormat DRAG_SOURCE_ARMORY = new DataFormat("application/x-charforge-armory-id");
+    private static final DataFormat DRAG_SOURCE_BACKPACK = new DataFormat("application/x-charforge-backpack-index");
 
     private PlayerCharacter character;
     private INavigationService navigationService;
@@ -79,6 +83,7 @@ public class ItemLoadoutController {
             Dragboard db = node.startDragAndDrop(TransferMode.COPY);
 
             ClipboardContent content = new ClipboardContent();
+            content.put(DRAG_SOURCE_ARMORY, item.getId());
             content.putString(String.valueOf(item.getId()));
 
             db.setContent(content);
@@ -92,14 +97,29 @@ public class ItemLoadoutController {
         gridBackpack.getChildren().clear();
         int col = 0, row = 0;
 
-        for (InventoryItem inv : items) {
+        for (int i = 0; i < items.size(); i++) {
+            InventoryItem inv = items.get(i);
             StackPane node = createItemNode(inv.getItem());
+
+            enableDragFromBackpack(node, i);
+
             gridBackpack.add(node, col++, row);
 
             if (col > 4) { col = 0; row++; }
         }
 
         updateWeightUI();
+    }
+
+    private void enableDragFromBackpack(StackPane node, int index) {
+        node.setOnDragDetected(event -> {
+            Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.put(DRAG_SOURCE_BACKPACK, index);
+            content.putString(String.valueOf(index));
+            db.setContent(content);
+            event.consume();
+        });
     }
 
     private StackPane createItemNode(Item item) {
@@ -139,30 +159,61 @@ public class ItemLoadoutController {
 
     @FXML
     public void initialize() {
+        // Adding items to backback
         gridBackpack.setOnDragOver(e -> {
-            if (e.getDragboard().hasString()) {
+            // Accept if it's from armory
+            if (e.getDragboard().hasContent(DRAG_SOURCE_ARMORY)) {
                 e.acceptTransferModes(TransferMode.COPY);
             }
             e.consume();
         });
 
         gridBackpack.setOnDragDropped(e -> {
-            if (!e.getDragboard().hasString()) return;
+            if (!e.getDragboard().hasContent(DRAG_SOURCE_ARMORY)) return;
 
-            int itemId = Integer.parseInt(e.getDragboard().getString());
-            if (character.getId() == 0) {
-                inventoryService.addTempItem(character, itemId);
+            Object content = e.getDragboard().getContent(DRAG_SOURCE_ARMORY);
+            int itemId;
+
+            if (content instanceof Integer) {
+                itemId = (Integer) content;
             }
             else {
-                inventoryService.addItem(character, itemId);
+                itemId = Integer.parseInt(content.toString());
             }
+
+            if (character.getId() == 0) inventoryService.addTempItem(character, itemId);
+            else inventoryService.addItem(character, itemId);
 
             reloadBackpack();
             e.setDropCompleted(true);
             e.consume();
         });
-    }
 
+        // Dropping items to armory
+        gridArmory.setOnDragOver(e -> {
+            // Accept if it's from backpack
+            if (e.getDragboard().hasContent(DRAG_SOURCE_BACKPACK)) {
+                e.acceptTransferModes(TransferMode.MOVE);
+                gridArmory.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+            }
+            e.consume();
+        });
+
+        gridArmory.setOnDragExited(_ -> gridArmory.setStyle(""));
+
+        gridArmory.setOnDragDropped(e -> {
+            if (!e.getDragboard().hasContent(DRAG_SOURCE_BACKPACK)) return;
+
+            int itemIndex = (int) e.getDragboard().getContent(DRAG_SOURCE_BACKPACK);
+            InventoryItem itemToRemove = character.getInventory().get(itemIndex);
+            inventoryService.removeItem(character, itemToRemove);
+
+            reloadBackpack();
+            e.setDropCompleted(true);
+            gridArmory.setStyle("");
+            e.consume();
+        });
+    }
     @FXML
     private void handleFinish() {
         try {

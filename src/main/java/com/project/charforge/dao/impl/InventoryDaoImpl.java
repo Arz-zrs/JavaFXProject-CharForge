@@ -84,6 +84,16 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     }
 
     @Override
+    public boolean deleteItem(int instanceId) {
+        String sql = "DELETE FROM character_items WHERE instance_id = ?";
+
+        return executeUpdate(
+                sql,
+                statement -> statement.setInt(1, instanceId)
+        ) > 0;
+    }
+
+    @Override
     protected InventoryItem mapRow(ResultSet result) throws SQLException {
         EquipmentSlot slotType;
         try {

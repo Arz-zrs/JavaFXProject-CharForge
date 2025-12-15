@@ -6,6 +6,7 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.service.interfaces.items.IInventoryService;
+import com.project.charforge.ui.AlertUtils;
 
 import java.util.List;
 
@@ -51,5 +52,14 @@ public class InventoryService implements IInventoryService {
         InventoryItem newItem = new InventoryItem(0, itemMaster, null, nextIndex);
 
         character.getInventory().add(newItem);
+    }
+
+    @Override
+    public void removeItem(PlayerCharacter character, InventoryItem item) {
+        if (character.getId() != 0) {
+            boolean success = inventoryDao.deleteItem(item.getInstanceId());
+            if (!success) AlertUtils.showError("Error", "Failed to remove item");
+        }
+        character.getInventory().remove(item);
     }
 }

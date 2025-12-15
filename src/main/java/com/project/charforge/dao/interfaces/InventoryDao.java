@@ -9,4 +9,5 @@ public interface InventoryDao {
     boolean equipItem(int instanceId, String slotName);
     boolean unequipItem(int instanceId, int newGridIndex);
     void addItemToCharacter(int charId, int itemId, int gridIndex);
+    boolean deleteItem(int instanceId);
 }
