@@ -31,11 +31,21 @@ public final class AlertUtils {
         alert.showAndWait();
     }
 
-    public static Optional<ButtonType> showConfirmation(String title, String headerMessage, String message) {
+    public static boolean showConfirmation(String title, String headerMessage, String message) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(headerMessage);
         alert.setContentText(message);
-        return alert.showAndWait();
+        Optional<ButtonType> res = alert.showAndWait();
+        return res.isPresent() && res.get() == ButtonType.OK;
+    }
+
+    public static boolean showConfirmation(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        Optional<ButtonType> res = alert.showAndWait();
+        return res.isPresent() && res.get() == ButtonType.OK;
     }
 }

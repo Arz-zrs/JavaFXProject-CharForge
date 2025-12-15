@@ -6,12 +6,10 @@ import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.AlertUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
 import java.util.List;
-import java.util.Optional;
 
 public class MainMenuController {
     @FXML private TableView<PlayerCharacter> tableCharacters;
@@ -72,13 +70,13 @@ public class MainMenuController {
             return;
         }
 
-        Optional<ButtonType> result = AlertUtils.showConfirmation(
+        boolean result = AlertUtils.showConfirmation(
                 "Delete Character",
                 "Are you sure?",
                 "Permanently delete " + selected.getName() + "?\nThis cannot be undone."
         );
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
+        if (result) {
             boolean success = characterService.deleteCharacter(selected.getId());
             if (success) {
                 refreshTable();
@@ -89,6 +87,7 @@ public class MainMenuController {
     }
 
     public void handleExitProgram() {
-        navigationService.exitProgram();
+        boolean result = AlertUtils.showConfirmation("Exit", "Exit App?");
+        if (result) navigationService.exitProgram();
     }
 }
