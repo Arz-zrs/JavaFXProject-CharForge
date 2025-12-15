@@ -2,6 +2,7 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.InventoryDao;
+import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
@@ -11,6 +12,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class InventoryDaoImpl extends BaseDao<InventoryItem> implements InventoryDao {
+    public InventoryDaoImpl(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
+    }
+
     @Override
     public List<InventoryItem> findByCharacterId(int charId) {
         String sql = """
@@ -39,29 +44,29 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     }
 
     @Override
-    public void equipItem(int instanceId, String slotName) {
+    public boolean equipItem(int instanceId, String slotName) {
         String sql = "UPDATE character_items SET slot_name = ?, grid_index = NULL WHERE instance_id = ?";
 
-        executeUpdate(
+        return executeUpdate(
                 sql,
                 statement -> {
                     statement.setString(1, slotName);
                     statement.setInt(2, instanceId);
                 }
-        );
+        ) > 0;
     }
 
     @Override
-    public void unequipItem(int instanceId, int newGridIndex) {
+    public boolean unequipItem(int instanceId, int newGridIndex) {
         String sql = "UPDATE character_items SET slot_name = NULL, grid_index = ? WHERE instance_id = ?";
 
-        executeUpdate(
+        return executeUpdate(
                 sql,
                 statement -> {
                     statement.setInt(1, newGridIndex);
                     statement.setInt(2, instanceId);
                 }
-        );
+        ) > 0;
     }
 
     @Override

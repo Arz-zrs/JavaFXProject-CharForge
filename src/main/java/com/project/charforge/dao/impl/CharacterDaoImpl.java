@@ -2,10 +2,9 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.CharacterDao;
-import com.project.charforge.db.SQLiteConnectionProvider;
+import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.character.*;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements CharacterDao {
+    public CharacterDaoImpl(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
+    }
+
     @Override
     public List<PlayerCharacter> findAll() {
         String sql = """
@@ -49,31 +52,17 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
         String deleteCharacterSql =
                 "DELETE FROM characters WHERE id = ?";
 
-        try (Connection conn = SQLiteConnectionProvider.getConnection()) {
-            conn.setAutoCommit(false);
+        return inTransaction(connection -> {
+            try (PreparedStatement stmtInv = connection.prepareStatement(deleteInventorySql);
+                 PreparedStatement stmtChar = connection.prepareStatement(deleteCharacterSql)) {
 
-            try (PreparedStatement psInv = conn.prepareStatement(deleteInventorySql);
-                 PreparedStatement psChar = conn.prepareStatement(deleteCharacterSql)) {
+                stmtInv.setInt(1, id);
+                stmtInv.executeUpdate();
 
-                psInv.setInt(1, id);
-                psInv.executeUpdate();
-
-                psChar.setInt(1, id);
-                int affectedRows = psChar.executeUpdate();
-
-                conn.commit();
-                return affectedRows > 0;
-
-            } catch (SQLException e) {
-                conn.rollback();
-                throw e;
-            } finally {
-                conn.setAutoCommit(true);
+                stmtChar.setInt(1, id);
+                return stmtChar.executeUpdate() > 0;
             }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to delete character " + id, e);
-        }
+        });
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.ItemDao;
+import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
 
@@ -10,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class ItemDaoImpl extends BaseDao<Item> implements ItemDao {
+    public ItemDaoImpl(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
+    }
+
     @Override
     public List<Item> findAll() {
         return queryList("SELECT * FROM items", StatementBinder.empty());

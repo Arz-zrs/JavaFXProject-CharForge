@@ -1,6 +1,6 @@
 package com.project.charforge.dao.base;
 
-import com.project.charforge.db.SQLiteConnectionProvider;
+import com.project.charforge.db.ConnectionProvider;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseDao<T> {
+    protected final ConnectionProvider connectionProvider;
+
+    protected BaseDao(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
+
     protected abstract T mapRow(ResultSet result) throws SQLException;
 
     // Returns multiple rows
@@ -17,7 +23,7 @@ public abstract class BaseDao<T> {
         List<T> list = new ArrayList<>();
 
         //noinspection SqlSourceToSinkFlow
-        try (Connection connection = SQLiteConnectionProvider.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -37,7 +43,7 @@ public abstract class BaseDao<T> {
     protected T querySingle(String sql, StatementBinder binder) {
 
         //noinspection SqlSourceToSinkFlow
-        try (Connection connection = SQLiteConnectionProvider.getConnection();
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -55,7 +61,8 @@ public abstract class BaseDao<T> {
 
     // UPDATE operations
     protected int executeUpdate(String sql, StatementBinder binder) {
-        try (Connection connection = SQLiteConnectionProvider.getConnection();
+        // noinspection SqlSourceToSinkFlow
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             binder.bind(statement);
@@ -68,7 +75,8 @@ public abstract class BaseDao<T> {
 
     // Insert values into a table
     protected int executeInsert(String sql, StatementBinder binder) {
-        try (Connection connection = SQLiteConnectionProvider.getConnection();
+        // noinspection SqlSourceToSinkFlow
+        try (Connection connection = connectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)){
 
             binder.bind(statement);
@@ -84,6 +92,32 @@ public abstract class BaseDao<T> {
             throw new RuntimeException(e);
         }
     }
+
+    // Deletion
+    protected <R> R inTransaction(SqlTransaction<R> action) {
+        try (Connection conn = connectionProvider.getConnection()) {
+            boolean autoCommit = conn.getAutoCommit();
+            conn.setAutoCommit(false);
+            try {
+                R result = action.execute(conn);
+                conn.commit();
+                return result;
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            } finally {
+                conn.setAutoCommit(autoCommit);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException("Transaction failed", e);
+        }
+    }
+
+    @FunctionalInterface
+    protected interface SqlTransaction<R> {
+        R execute(Connection connection) throws SQLException;
+    }
+
 
     // Method that operates on SQL parameters
     @FunctionalInterface

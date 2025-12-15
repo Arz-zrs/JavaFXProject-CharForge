@@ -2,6 +2,7 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.RaceDao;
+import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.character.Race;
 
 import java.sql.*;
@@ -9,6 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class RaceDaoImpl extends BaseDao<Race> implements RaceDao {
+
+    public RaceDaoImpl(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
+    }
 
     @Override
     public List<Race> findAll() {

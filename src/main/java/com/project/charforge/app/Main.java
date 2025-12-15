@@ -3,6 +3,8 @@ package com.project.charforge.app;
 import com.project.charforge.config.impl.AppControllerInitializer;
 import com.project.charforge.dao.impl.*;
 import com.project.charforge.dao.interfaces.*;
+import com.project.charforge.db.ConnectionProvider;
+import com.project.charforge.db.SQLiteConnectionProvider;
 import com.project.charforge.service.impl.items.EquipmentService;
 import com.project.charforge.service.impl.items.InventoryService;
 import com.project.charforge.service.impl.items.ItemService;
@@ -28,12 +30,14 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        // DAOs
-        RaceDao raceDao = new RaceDaoImpl();
-        CharClassDao classDao = new CharClassDaoImpl();
-        CharacterDao characterDao = new CharacterDaoImpl();
-        InventoryDao inventoryDao = new InventoryDaoImpl();
-        ItemDao itemDao = new ItemDaoImpl();
+        // Databases & DAOs
+        ConnectionProvider provider = new SQLiteConnectionProvider();
+
+        RaceDao raceDao = new RaceDaoImpl(provider);
+        CharClassDao classDao = new CharClassDaoImpl(provider);
+        CharacterDao characterDao = new CharacterDaoImpl(provider);
+        InventoryDao inventoryDao = new InventoryDaoImpl(provider);
+        ItemDao itemDao = new ItemDaoImpl(provider);
 
         // Services
         IItemService itemService = new ItemService(itemDao);
@@ -64,9 +68,5 @@ public class Main extends Application {
 
         // Start
         navigationService.goToMainMenu();
-    }
-
-    public static void main(String[] args) {
-        launch(args);
     }
 }

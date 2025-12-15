@@ -6,6 +6,7 @@ import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.utils.IValidationService;
+import com.project.charforge.ui.AlertUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +50,9 @@ public class EquipmentService implements IEquipmentService {
             unequip(character, oldItem.getInstanceId());
         }
 
-        inventoryDao.equipItem(instanceId, slot.name());
+        boolean success = inventoryDao.equipItem(instanceId, slot.name());
+        if (!success) AlertUtils.showError("Error", "Failed to equip item.");
+
     }
 
     private InventoryItem findInventoryItem(PlayerCharacter character, int instanceId) {
@@ -63,7 +66,8 @@ public class EquipmentService implements IEquipmentService {
     @Override
     public void unequip(PlayerCharacter character, int instanceId) {
         int newGridIndex = findFreeGridIndex(character);
-        inventoryDao.unequipItem(instanceId, newGridIndex);
+        boolean success = inventoryDao.unequipItem(instanceId, newGridIndex);
+        if (!success) AlertUtils.showError("Error", "Failed to unequip item.");
     }
 
     private int findFreeGridIndex(PlayerCharacter character) {

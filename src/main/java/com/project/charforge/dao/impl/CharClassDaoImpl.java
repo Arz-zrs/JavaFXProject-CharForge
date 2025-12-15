@@ -2,6 +2,7 @@ package com.project.charforge.dao.impl;
 
 import com.project.charforge.dao.base.BaseDao;
 import com.project.charforge.dao.interfaces.CharClassDao;
+import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.character.AttackScaling;
 import com.project.charforge.model.entity.character.CharClass;
 
@@ -11,6 +12,10 @@ import java.util.List;
 import java.util.Optional;
 
 public class CharClassDaoImpl extends BaseDao<CharClass> implements CharClassDao {
+    public CharClassDaoImpl(ConnectionProvider connectionProvider) {
+        super(connectionProvider);
+    }
+
     @Override
     public List<CharClass> findAll() {
         String sql = "SELECT * FROM classes";
