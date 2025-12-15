@@ -36,10 +36,10 @@
             <Label style="-fx-text-fill: #555; -fx-font-size: 30px;" text="➔" />
 
             <!-- BACKPACK -->
-            <VBox alignment="CENTER" spacing="10" styleClass="stat-panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <VBox alignment="CENTER" prefHeight="154.0" prefWidth="120.0" spacing="10" styleClass="stat-panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                 <Label alignment="CENTER" styleClass="fantasy-header" text="YOUR BACKPACK" />
                 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                    <GridPane fx:id="gridBackpack" alignment="TOP_CENTER" hgap="10" style="-fx-padding: 10;" styleClass="menu-panel-in" vgap="10">
+                    <GridPane fx:id="gridBackpack" alignment="TOP_CENTER" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="113.0" prefWidth="192.0" style="-fx-padding: 10;" styleClass="menu-panel-in" vgap="10">
                   <padding>
                      <Insets left="10.0" right="10.0" />
                   </padding></GridPane>
@@ -60,12 +60,8 @@
                 <Label fx:id="lblWeightVal" styleClass="stat-label-value" text="0 / 50 kg" />
             </HBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
-                <Button maxWidth="200" onAction="#handleFinish" prefHeight="50.0" prefWidth="185.0"
-                        style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #c1b784; -fx-border-radius: 10px; -fx-padding: 10 30; -fx-cursor: hand; -fx-font-family: 'Palatino Linotype'; -fx-font-size: 14px"
-                        text="BEGIN JOURNEY"/>
-                <Button maxWidth="200" onAction="#handlePrevious" prefHeight="50.0" prefWidth="185.0"
-                        style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px"
-                        text="PREVIOUS"/>
+                <Button maxWidth="200" onAction="#handleFinish" prefHeight="50.0" prefWidth="185.0" style="-fx-background-color: #701b1b; -fx-background-radius: 10px; -fx-text-fill: white; -fx-font-weight: bold; -fx-border-color: #c1b784; -fx-border-radius: 10px; -fx-padding: 10 30; -fx-cursor: hand; -fx-font-family: 'Palatino Linotype'; -fx-font-size: 14px" text="BEGIN JOURNEY" />
+                <Button maxWidth="200" onAction="#handlePrevious" prefHeight="50.0" prefWidth="185.0" style="-fx-background-color: #626c78; -fx-background-radius: 10px; -fx-text-fill: #e0e0e0; -fx-font-family: 'Palatino Linotype'; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand; -fx-border-color: #c1b784; -fx-border-radius: 10px" text="PREVIOUS" />
             </HBox>
         </VBox>
     </bottom>
