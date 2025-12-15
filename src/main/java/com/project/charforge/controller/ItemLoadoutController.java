@@ -152,9 +152,13 @@ public class ItemLoadoutController {
         progressWeight.setProgress(current / max);
         lblWeightVal.setText(String.format("%.1f / %.1f kg", current, max));
 
-        progressWeight.setStyle(
-                current > max ? "-fx-accent: red;" : "-fx-accent: green;"
-        );
+        progressWeight.getStyleClass().remove("weight-bar-encumbered");
+        progressWeight.getStyleClass().add("weight-bar");
+
+        if (current > max) {
+            progressWeight.getStyleClass().remove("weight-bar");
+            progressWeight.getStyleClass().add("weight-bar-encumbered");
+        }
     }
 
     @FXML
