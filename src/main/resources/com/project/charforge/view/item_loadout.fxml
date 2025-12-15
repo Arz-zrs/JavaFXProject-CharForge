@@ -39,7 +39,7 @@
             <VBox alignment="CENTER" spacing="10" styleClass="stat-panel" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                 <Label alignment="CENTER" styleClass="fantasy-header" text="YOUR BACKPACK" />
                 <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color: transparent;" VBox.vgrow="ALWAYS">
-                    <GridPane fx:id="gridBackpack" alignment="TOP_CENTER" hgap="10" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="113.0" prefWidth="192.0" style="-fx-padding: 10;" styleClass="menu-panel-in" vgap="10">
+                    <GridPane fx:id="gridBackpack" alignment="TOP_CENTER" hgap="10" style="-fx-padding: 10;" styleClass="menu-panel-in" vgap="10">
                   <padding>
                      <Insets left="10.0" right="10.0" />
                   </padding></GridPane>
