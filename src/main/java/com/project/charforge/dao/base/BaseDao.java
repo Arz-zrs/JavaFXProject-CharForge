@@ -59,8 +59,8 @@ public abstract class BaseDao<T> {
         return null;
     }
 
-    // UPDATE operations
-    protected int executeUpdate(String sql, StatementBinder binder) {
+    // UPDATE / DELETE operations
+    protected int executeQuery(String sql, StatementBinder binder) {
         // noinspection SqlSourceToSinkFlow
         try (Connection connection = connectionProvider.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -93,7 +93,7 @@ public abstract class BaseDao<T> {
         }
     }
 
-    // Deletion
+    // Deletion with Foreign Key Constraint
     protected <R> R inTransaction(SqlTransaction<R> action) {
         try (Connection conn = connectionProvider.getConnection()) {
             boolean autoCommit = conn.getAutoCommit();
