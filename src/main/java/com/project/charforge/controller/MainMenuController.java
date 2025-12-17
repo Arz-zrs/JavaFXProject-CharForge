@@ -59,7 +59,11 @@ public class MainMenuController {
             AlertUtils.showWarning("No Selection", "Please select a character to load.");
             return;
         }
-        navigationService.goToPaperDoll(selected);
+        boolean success = AlertUtils.showConfirmation(
+                "Load " + selected.getName() + "?",
+                "Do you want to play as " + selected.getName() + "?"
+        );
+        if (success) navigationService.goToPaperDoll(selected);
     }
 
     @FXML

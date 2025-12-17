@@ -222,7 +222,11 @@ public class ItemLoadoutController {
     private void handleFinish() {
         try {
             if (character.getId() == 0) creationService.saveCharacterToDB(character);
-            navigationService.goToPaperDoll(character);
+            boolean success = AlertUtils.showConfirmation(
+                    "Finalize Character",
+                    "Do you want to finalize your character?",
+                    "You'll no longer be able to determine your equipment");
+            if (success) navigationService.goToPaperDoll(character);
 
         } catch (Exception e) {
             Logs.printError(e.getMessage());
