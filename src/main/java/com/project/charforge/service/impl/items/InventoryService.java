@@ -11,6 +11,8 @@ import com.project.charforge.utils.AlertUtils;
 import java.util.List;
 
 public class InventoryService implements IInventoryService {
+    private static final int TEMP_CHARACTER_ID = 0;
+
     private final InventoryDao inventoryDao;
     private final ItemDao itemDao;
 
@@ -21,7 +23,7 @@ public class InventoryService implements IInventoryService {
 
     @Override
     public List<InventoryItem> getInventory(PlayerCharacter character) {
-        if (character.getId() != 0) {
+        if (character.getId() != TEMP_CHARACTER_ID) {
             List<InventoryItem> dbItems = inventoryDao.findByCharacterId(character.getId());
             character.setInventory(dbItems);
         }

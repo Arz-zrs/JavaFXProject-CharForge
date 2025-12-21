@@ -4,8 +4,8 @@ import com.project.charforge.model.dto.StatSnapshot;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.Item;
+import com.project.charforge.service.interfaces.characters.ICharacterInventoryService;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
-import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.process.IMessageService;
@@ -36,10 +36,16 @@ public class ItemLoadoutController {
     private static final DataFormat DRAG_SOURCE_ARMORY = new DataFormat("application/x-charforge-armory-id");
     private static final DataFormat DRAG_SOURCE_BACKPACK = new DataFormat("application/x-charforge-backpack-index");
 
+    private static final int GRID_COLUMNS = 5;
+
+    private static final double ITEM_SLOT_SIZE = 60.0;
+    private static final double ICON_SIZE = 40.0;
+
+
     private PlayerCharacter character;
     private INavigationService navigationService;
     private IItemService itemService;
-    private IInventoryService inventoryService;
+    private ICharacterInventoryService characterInventoryService;
     private IStatCalculator statCalculator;
     private ICharacterService creationService;
     private IMessageService message;
@@ -47,14 +53,14 @@ public class ItemLoadoutController {
     public void injectDependencies(
             INavigationService navigationService,
             IItemService itemService,
-            IInventoryService inventoryService,
+            ICharacterInventoryService characterInventoryService,
             IStatCalculator statCalculator,
             ICharacterService creationService,
             IMessageService message
     ) {
         this.navigationService = navigationService;
         this.itemService = itemService;
-        this.inventoryService = inventoryService;
+        this.characterInventoryService = characterInventoryService;
         this.statCalculator = statCalculator;
         this.creationService = creationService;
         this.message = message;
@@ -77,7 +83,10 @@ public class ItemLoadoutController {
             enableDragFromArmory(node, item);
 
             gridArmory.add(node, col++, row);
-            if (col > 4) { col = 0; row++; }
+            if (col >= GRID_COLUMNS) {
+                col = 0;
+                row++;
+            }
         }
     }
 
@@ -95,7 +104,7 @@ public class ItemLoadoutController {
     }
 
     private void reloadBackpack() {
-        List<InventoryItem> items = inventoryService.getInventory(character);
+        List<InventoryItem> items = characterInventoryService.getInventory(character);
 
         gridBackpack.getChildren().clear();
         int col = 0, row = 0;
@@ -108,7 +117,10 @@ public class ItemLoadoutController {
 
             gridBackpack.add(node, col++, row);
 
-            if (col > 4) { col = 0; row++; }
+            if (col >= GRID_COLUMNS) {
+                col = 0;
+                row++;
+            }
         }
 
         updateWeightUI();
@@ -128,12 +140,12 @@ public class ItemLoadoutController {
 
     private StackPane createItemNode(Item item) {
         StackPane pane = new StackPane();
-        pane.setPrefSize(60, 60);
+        pane.setPrefSize(ITEM_SLOT_SIZE, ITEM_SLOT_SIZE);
         pane.getStyleClass().add("item-slot");
 
         ImageView img = new ImageView();
-        img.setFitWidth(40);
-        img.setFitHeight(40);
+        img.setFitWidth(ICON_SIZE);
+        img.setFitHeight(ICON_SIZE);
 
         try {
             String path = "/com/project/charforge/images/items/" + item.getIconPath();
@@ -192,9 +204,7 @@ public class ItemLoadoutController {
                 Object content = e.getDragboard().getContent(DRAG_SOURCE_ARMORY);
                 int itemId = (content instanceof Integer) ? (Integer) content : Integer.parseInt(content.toString());
 
-                if (character.getId() == 0) inventoryService.addTempItem(character, itemId);
-                else inventoryService.addItem(character, itemId);
-
+                characterInventoryService.addItem(character, itemId);
                 reloadBackpack();
                 success = true;
             }
@@ -226,9 +236,7 @@ public class ItemLoadoutController {
                 int itemIndex = (content instanceof Integer) ? (Integer) content : Integer.parseInt(content.toString());
 
                 if (itemIndex >= 0 && itemIndex < character.getInventory().size()) {
-                    InventoryItem itemToRemove = character.getInventory().get(itemIndex);
-                    inventoryService.removeItem(character, itemToRemove);
-
+                    characterInventoryService.removeItem(character, itemIndex);
                     reloadBackpack();
                     success = true;
                 }

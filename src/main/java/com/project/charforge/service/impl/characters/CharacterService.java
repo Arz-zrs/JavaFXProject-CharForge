@@ -14,6 +14,8 @@ import com.project.charforge.service.interfaces.characters.ICharacterService;
 import java.util.List;
 
 public class CharacterService implements ICharacterService {
+    private static final int TEMP_CHARACTER_ID = 0;
+
     private final CharacterDao characterDao;
     private final InventoryDao inventoryDao;
     private final RaceDao raceDao;
@@ -34,7 +36,7 @@ public class CharacterService implements ICharacterService {
     @Override
     public PlayerCharacter createCharacter(String name, Gender gender, Race race, CharClass charClass) {
         PlayerCharacter pc = new PlayerCharacter();
-        pc.setId(0);
+        pc.setId(TEMP_CHARACTER_ID);
         pc.setName(name);
         pc.setGender(gender);
         pc.setRace(race);

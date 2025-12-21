@@ -5,6 +5,7 @@ import com.project.charforge.dao.impl.*;
 import com.project.charforge.dao.interfaces.*;
 import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.db.SQLiteConnectionProvider;
+import com.project.charforge.service.impl.characters.CharacterInventoryService;
 import com.project.charforge.service.impl.items.EquipmentService;
 import com.project.charforge.service.impl.items.InventoryService;
 import com.project.charforge.service.impl.items.ItemService;
@@ -14,6 +15,7 @@ import com.project.charforge.service.impl.process.MessageService;
 import com.project.charforge.service.impl.process.NavigationService;
 import com.project.charforge.service.impl.characters.CharacterService;
 import com.project.charforge.service.impl.process.ValidationService;
+import com.project.charforge.service.interfaces.characters.ICharacterInventoryService;
 import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IEncumbranceService;
@@ -48,6 +50,7 @@ public class Main extends Application {
         IMessageService messageService = new MessageService();
         IItemService itemService = new ItemService(itemDao);
         IInventoryService inventoryService = new InventoryService(inventoryDao, itemDao);
+        ICharacterInventoryService characterInventoryService = new CharacterInventoryService(inventoryService);
         IValidationService validationService = new ValidationService();
         IEquipmentService equipmentService = new EquipmentService(inventoryDao, validationService, messageService);
         IEncumbranceService encumbranceService = new EncumbranceService();
@@ -59,7 +62,7 @@ public class Main extends Application {
                 new AppControllerInitializer(
                         equipmentService,
                         itemService,
-                        inventoryService,
+                        characterInventoryService,
                         statCalculator,
                         characterService,
                         messageService

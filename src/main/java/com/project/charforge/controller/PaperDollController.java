@@ -38,6 +38,11 @@ public class PaperDollController {
     @FXML private StackPane slotHead, slotAccessory, slotBody, slotMainHand, slotOffHand, slotLegs;
     @FXML private ImageView imgHead, imgAccessory, imgBody, imgMainHand, imgOffHand, imgLegs;
 
+    private static final double INV_SLOT_SIZE = 50.0;
+    private static final double ICON_SIZE = 40.0;
+    private static final double PROGRESS_BAR_CAP = 1.0;
+    private static final int GRID_SIZE = 10;
+
     private PlayerCharacter character;
 
     private IEquipmentService equipmentService;
@@ -110,13 +115,13 @@ public class PaperDollController {
 
     private void renderInventoryItem(InventoryItem inventoryItem) {
         StackPane pane = new StackPane();
-        pane.setPrefSize(50, 50);
+        pane.setPrefSize(INV_SLOT_SIZE, INV_SLOT_SIZE);
         pane.getStyleClass().add("item-slot");
         pane.setUserData(inventoryItem);
 
         ImageView icon = new ImageView();
-        icon.setFitWidth(40);
-        icon.setFitHeight(40);
+        icon.setFitWidth(ICON_SIZE);
+        icon.setFitHeight(ICON_SIZE);
         setImageFromPath(icon, inventoryItem.getItem().getIconPath());
 
         pane.getChildren().add(icon);
@@ -124,7 +129,7 @@ public class PaperDollController {
 
         ItemToolTipFactory.install(pane, inventoryItem.getItem());
 
-        inventoryGrid.add(pane, inventoryItem.getGridIndex() % 10, inventoryItem.getGridIndex() / 10);
+        inventoryGrid.add(pane, inventoryItem.getGridIndex() % GRID_SIZE, inventoryItem.getGridIndex() / GRID_SIZE);
     }
 
     // Drag & Drop Logic
@@ -221,7 +226,7 @@ public class PaperDollController {
         lblTotalInt.setText(formatStat(snap.ints()));
 
         double ratio = snap.currentWeight() / snap.maxWeight();
-        progressWeight.setProgress(Math.min(1.0, ratio));
+        progressWeight.setProgress(Math.min(PROGRESS_BAR_CAP, ratio));
 
         lblWeightVal.setText(
                 String.format("%.2f / %.2f kg",

@@ -1,85 +1,98 @@
 package com.project.charforge.config.impl;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
+import com.project.charforge.config.interfaces.ControllerInjector;
 import com.project.charforge.controller.*;
-import com.project.charforge.service.interfaces.characters.*;
+import com.project.charforge.service.interfaces.characters.ICharacterInventoryService;
+import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.items.*;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.process.IMessageService;
 import com.project.charforge.service.interfaces.process.INavigationService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppControllerInitializer implements ControllerInitializer {
-    private final IEquipmentService equipmentService;
-    private final IItemService itemService;
-    private final IInventoryService inventoryService;
-    private final IStatCalculator statCalculator;
-    private final ICharacterService characterService;
-    private final IMessageService messageService;
+
+    private final Map<Class<?>, ControllerInjector<?>> injector = new HashMap<>();
     private INavigationService navigationService;
 
     public AppControllerInitializer(
             IEquipmentService equipmentService,
             IItemService itemService,
-            IInventoryService inventoryService,
+            ICharacterInventoryService characterInventoryService,
             IStatCalculator statCalculator,
             ICharacterService characterService,
             IMessageService messageService
     ) {
-        this.equipmentService = equipmentService;
-        this.itemService = itemService;
-        this.inventoryService = inventoryService;
-        this.statCalculator = statCalculator;
-        this.characterService = characterService;
-        this.messageService = messageService;
+
+        injector.put(MainMenuController.class,
+                (ControllerInjector<MainMenuController>) c ->
+                        c.injectDependencies(
+                                navigationService,
+                                characterService,
+                                messageService
+                        )
+        );
+
+        injector.put(CharacterCreationController.class,
+                (ControllerInjector<CharacterCreationController>) c ->
+                        c.injectDependencies(
+                                characterService,
+                                navigationService,
+                                messageService
+                        )
+        );
+
+        injector.put(PaperDollController.class,
+                (ControllerInjector<PaperDollController>) c ->
+                        c.injectServices(
+                                equipmentService,
+                                statCalculator,
+                                navigationService,
+                                messageService
+                        )
+        );
+
+        injector.put(ItemLoadoutController.class,
+                (ControllerInjector<ItemLoadoutController>) c ->
+                        c.injectDependencies(
+                                navigationService,
+                                itemService,
+                                characterInventoryService,
+                                statCalculator,
+                                characterService,
+                                messageService
+                        )
+        );
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void initialize(Object controller) {
-        if (controller instanceof MainMenuController c) {
-            validateNavigation();
-            c.injectDependencies(
-                    navigationService,
-                    characterService,
-                    messageService
+        validateNavigation();
+
+        ControllerInjector<Object> injector =
+                (ControllerInjector<Object>) this.injector.get(controller.getClass());
+
+        if (injector == null) {
+            throw new IllegalStateException(
+                    "No injector registered for controller: "
+                            + controller.getClass().getName()
             );
         }
 
-        else if (controller instanceof CharacterCreationController c) {
-            validateNavigation();
-            c.injectDependencies(
-                    characterService,
-                    navigationService,
-                    messageService
-            );
-        }
-
-        else if (controller instanceof PaperDollController c) {
-            validateNavigation();
-            c.injectServices(
-                    equipmentService,
-                    statCalculator,
-                    navigationService,
-                    messageService
-            );
-        }
-
-        else if (controller instanceof ItemLoadoutController c) {
-            validateNavigation();
-            c.injectDependencies(
-                    navigationService,
-                    itemService,
-                    inventoryService,
-                    statCalculator,
-                    characterService,
-                    messageService
-            );
-        }    }
+        injector.inject(controller);
+    }
 
     public void setNavigationService(INavigationService navigationService) {
         this.navigationService = navigationService;
     }
 
     private void validateNavigation() {
-        if (navigationService == null) throw new IllegalStateException("NavigationService not set");
+        if (navigationService == null) {
+            throw new IllegalStateException("NavigationService not set");
+        }
     }
 }

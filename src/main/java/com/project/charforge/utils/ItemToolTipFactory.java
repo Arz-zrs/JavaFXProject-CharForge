@@ -6,10 +6,13 @@ import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
 
 public final class ItemToolTipFactory {
+    private static final double TOOLTIP_SHOW_DELAY = 100.0;
+    private static final double TOOLTIP_VISIBILITY_DURATION = 10.0;
+
     public static void install(Node node, Item item) {
         Tooltip tooltip = new Tooltip(buildText(item));
-        tooltip.setShowDelay(Duration.millis(100));
-        tooltip.setShowDuration(Duration.seconds(10));
+        tooltip.setShowDelay(Duration.millis(TOOLTIP_SHOW_DELAY));
+        tooltip.setShowDuration(Duration.seconds(TOOLTIP_VISIBILITY_DURATION));
         Tooltip.install(node, tooltip);
     }
 
