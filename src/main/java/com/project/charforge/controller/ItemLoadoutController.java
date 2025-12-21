@@ -114,6 +114,7 @@ public class ItemLoadoutController {
         updateWeightUI();
     }
 
+    // Item Discarding
     private void enableDragFromBackpack(StackPane node, int index) {
         node.setOnDragDetected(event -> {
             Dragboard db = node.startDragAndDrop(TransferMode.MOVE);
@@ -128,7 +129,7 @@ public class ItemLoadoutController {
     private StackPane createItemNode(Item item) {
         StackPane pane = new StackPane();
         pane.setPrefSize(60, 60);
-        pane.setStyle("-fx-background-color: #333; -fx-border-color: #555; -fx-border-radius: 5;");
+        pane.getStyleClass().add("item-slot");
 
         ImageView img = new ImageView();
         img.setFitWidth(40);
@@ -138,7 +139,7 @@ public class ItemLoadoutController {
             String path = "/com/project/charforge/images/items/" + item.getIconPath();
             img.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
         } catch (Exception e) {
-            message.error("Image Load Fail", e.getMessage());
+            message.error("Image Load Fail for" + item.getName(), e.getMessage());
             Logs.printError("ItemLoadoutController Error", e);
         }
 
@@ -169,66 +170,75 @@ public class ItemLoadoutController {
 
     @FXML
     public void initialize() {
-        // Adding items to backback
+        // Drop to Backpack / Add Items to Inv
         gridBackpack.setOnDragOver(e -> {
-            // Accept if it's from armory
             if (e.getDragboard().hasContent(DRAG_SOURCE_ARMORY)) {
                 e.acceptTransferModes(TransferMode.COPY);
+                if (!gridBackpack.getStyleClass().contains("equipment-slot-insert")) {
+                    gridBackpack.getStyleClass().add("equipment-slot-insert");
+                }
             }
+            e.consume();
+        });
+
+        gridBackpack.setOnDragExited(e -> {
+            gridBackpack.getStyleClass().remove("equipment-slot-insert");
             e.consume();
         });
 
         gridBackpack.setOnDragDropped(e -> {
-            if (!e.getDragboard().hasContent(DRAG_SOURCE_ARMORY)) return;
+            boolean success = false;
+            if (e.getDragboard().hasContent(DRAG_SOURCE_ARMORY)) {
+                Object content = e.getDragboard().getContent(DRAG_SOURCE_ARMORY);
+                int itemId = (content instanceof Integer) ? (Integer) content : Integer.parseInt(content.toString());
 
-            Object content = e.getDragboard().getContent(DRAG_SOURCE_ARMORY);
-            int itemId;
+                if (character.getId() == 0) inventoryService.addTempItem(character, itemId);
+                else inventoryService.addItem(character, itemId);
 
-            if (content instanceof Integer) {
-                itemId = (Integer) content;
+                reloadBackpack();
+                success = true;
             }
-            else {
-                itemId = Integer.parseInt(content.toString());
-            }
-
-
-            if (character.getId() == 0) {
-                inventoryService.addTempItem(character, itemId);
-            }
-            else {
-                inventoryService.addItem(character, itemId);
-            }
-
-            reloadBackpack();
-            e.setDropCompleted(true);
+            e.setDropCompleted(success);
+            gridBackpack.getStyleClass().remove("equipment-slot-insert");
             e.consume();
         });
 
-        // Dropping items to armory
+        // Drop to Armory / Discard Items from Inv
         gridArmory.setOnDragOver(e -> {
-            // Accept if it's from backpack
             if (e.getDragboard().hasContent(DRAG_SOURCE_BACKPACK)) {
                 e.acceptTransferModes(TransferMode.MOVE);
-                gridArmory.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+                if (!gridArmory.getStyleClass().contains("equipment-slot-discard")) {
+                    gridArmory.getStyleClass().add("equipment-slot-discard");
+                }
             }
             e.consume();
         });
 
-        gridArmory.setOnDragExited(_ -> gridArmory.setStyle(""));
+        gridArmory.setOnDragExited(e -> {
+            gridArmory.getStyleClass().remove("equipment-slot-discard");
+            e.consume();
+        });
 
         gridArmory.setOnDragDropped(e -> {
-            if (!e.getDragboard().hasContent(DRAG_SOURCE_BACKPACK)) return;
+            boolean success = false;
+            if (e.getDragboard().hasContent(DRAG_SOURCE_BACKPACK)) {
+                Object content = e.getDragboard().getContent(DRAG_SOURCE_BACKPACK);
+                int itemIndex = (content instanceof Integer) ? (Integer) content : Integer.parseInt(content.toString());
 
-            int itemIndex = (int) e.getDragboard().getContent(DRAG_SOURCE_BACKPACK);
-            InventoryItem itemToRemove = character.getInventory().get(itemIndex);
-            inventoryService.removeItem(character, itemToRemove);
+                if (itemIndex >= 0 && itemIndex < character.getInventory().size()) {
+                    InventoryItem itemToRemove = character.getInventory().get(itemIndex);
+                    inventoryService.removeItem(character, itemToRemove);
 
-            reloadBackpack();
-            e.setDropCompleted(true);
-            gridArmory.setStyle("");
+                    reloadBackpack();
+                    success = true;
+                }
+            }
+            e.setDropCompleted(success);
+            gridArmory.getStyleClass().remove("equipment-slot-discard");
             e.consume();
         });
     }
+
     @FXML
     private void handleFinish() {
         try {

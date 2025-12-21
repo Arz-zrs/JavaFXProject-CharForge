@@ -111,7 +111,7 @@ public class PaperDollController {
     private void renderInventoryItem(InventoryItem inventoryItem) {
         StackPane pane = new StackPane();
         pane.setPrefSize(50, 50);
-        pane.setStyle("-fx-background-color: #333; -fx-border-color: #555;");
+        pane.getStyleClass().add("item-slot");
         pane.setUserData(inventoryItem);
 
         ImageView icon = new ImageView();
@@ -152,32 +152,34 @@ public class PaperDollController {
 
     // Drop (Target)
     private void setupSlotEvents(StackPane slotPane, EquipmentSlot slotType) {
-
         // When dragged over slot
         slotPane.setOnDragOver(event -> {
             var db = event.getDragboard();
-
             if (db.hasString()) {
                 try {
                     int id = Integer.parseInt(db.getString());
-
                     boolean valid = equipmentService.canEquip(character, id, slotType);
 
                     if (valid) {
                         event.acceptTransferModes(TransferMode.MOVE);
-                        slotPane.setStyle("-fx-border-color: #4CAF50; -fx-border-width: 2;");
+                        if (!slotPane.getStyleClass().contains("equipment-slot-valid")) {
+                            slotPane.getStyleClass().add("equipment-slot-valid");
+                        }
+                        slotPane.getStyleClass().remove("equipment-slot-invalid");
                     } else {
-                        slotPane.setStyle("-fx-border-color: #FF5252; -fx-border-width: 2;");
+                        if (!slotPane.getStyleClass().contains("equipment-slot-invalid")) {
+                            slotPane.getStyleClass().add("equipment-slot-invalid");
+                        }
+                        slotPane.getStyleClass().remove("equipment-slot-valid");
                     }
-
                 } catch (NumberFormatException ignore) {}
             }
-
             event.consume();
         });
 
+        // Style removal during drag exit
         slotPane.setOnDragExited(event -> {
-            slotPane.setStyle("");
+            slotPane.getStyleClass().removeAll("equipment-slot-valid", "equipment-slot-invalid");
             event.consume();
         });
 
@@ -185,28 +187,22 @@ public class PaperDollController {
         slotPane.setOnDragDropped(event -> {
             var db = event.getDragboard();
             boolean success = false;
-
             if (db.hasString()) {
                 int id = Integer.parseInt(db.getString());
-
                 try {
                     equipmentService.equip(character, id, slotType);
                     reloadInventory();
                     refreshStats();
                     success = true;
-
                 } catch (IllegalStateException e) {
                     message.error("Error", e.getMessage());
                     Logs.printError("PaperDollController Error", e);
-                    slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
                 }
             }
-
             event.setDropCompleted(success);
 
-            // always reset after drop
-            slotPane.setStyle("");
-
+            // Clean up styles
+            slotPane.getStyleClass().removeAll("equipment-slot-valid", "equipment-slot-invalid");
             event.consume();
         });
     }
@@ -295,20 +291,16 @@ public class PaperDollController {
         inventoryGrid.setOnDragOver(event -> {
             if (event.getDragboard().hasString()) {
                 event.acceptTransferModes(TransferMode.MOVE);
-
-                // Visual feedback
-                inventoryGrid.setStyle(
-                        "-fx-border-color: #00ff00;" +
-                                "-fx-border-width: 2;" +
-                                "-fx-background-color: rgba(0,255,0,0.1);"
-                );
+                if (!inventoryGrid.getStyleClass().contains("equipment-slot-valid")) {
+                    inventoryGrid.getStyleClass().add("equipment-slot-valid");
+                }
             }
             event.consume();
         });
 
         // Reset style
         inventoryGrid.setOnDragExited(event -> {
-            inventoryGrid.setStyle("");
+            inventoryGrid.getStyleClass().remove("equipment-slot-valid");
             event.consume();
         });
 
@@ -334,7 +326,7 @@ public class PaperDollController {
             }
 
             event.setDropCompleted(success);
-            inventoryGrid.setStyle("");
+            inventoryGrid.getStyleClass().remove("equipment-slot-valid");
             event.consume();
         });
 
