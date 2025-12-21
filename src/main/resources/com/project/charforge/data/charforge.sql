@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS races
     id                       INTEGER
         primary key autoincrement,
     name                     TEXT not null,
+    base_hp                  INTEGER default 100,
     base_str                 INTEGER default 0,
     base_dex                 INTEGER default 0,
     base_int                 INTEGER default 0,

@@ -20,7 +20,7 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
         String sql = """
                 SELECT
                     c.id AS char_id, c.name AS char_name, c.gender AS char_gender,
-                    r.id AS race_id, r.name AS race_name, r.base_str, r.base_dex, r.base_int, r.weight_capacity_modifier,
+                    r.id AS race_id, r.name AS race_name, r.base_hp, r.base_str, r.base_dex, r.base_int, r.weight_capacity_modifier,
                     cl.id AS class_id, cl.name AS class_name, cl.bonus_str, cl.bonus_dex, cl.bonus_int, cl.attack_scaling
                 FROM characters c
                 LEFT JOIN races r ON c.race_id = r.id
@@ -65,6 +65,7 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
             Race race = new Race(
                     result.getInt("race_id"),
                     result.getString("race_name"),
+                    result.getInt("base_hp"),
                     result.getInt("base_str"),
                     result.getInt("base_dex"),
                     result.getInt("base_int"),

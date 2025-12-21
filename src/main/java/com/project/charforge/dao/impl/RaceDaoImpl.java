@@ -34,6 +34,7 @@ public class RaceDaoImpl extends BaseDao<Race> implements RaceDao {
         return new Race(
                 result.getInt("id"),
                 result.getString("name"),
+                result.getInt("base_hp"),
                 result.getInt("base_str"),
                 result.getInt("base_dex"),
                 result.getInt("base_int"),

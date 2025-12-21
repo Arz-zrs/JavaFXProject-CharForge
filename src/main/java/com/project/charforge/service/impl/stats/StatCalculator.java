@@ -9,7 +9,6 @@ import com.project.charforge.service.interfaces.stats.IEncumbranceService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 
 public class StatCalculator implements IStatCalculator {
-    private static final int BASE_HP = 100;
     private static final int HP_PER_STR = 5;
     private static final int ATK_PER_STAT = 2;
     private static final int AP_PER_DEX = 1;
@@ -52,7 +51,8 @@ public class StatCalculator implements IStatCalculator {
         DerivedStat dex = new DerivedStat(baseDex, bonusDex);
         DerivedStat ints = new DerivedStat(baseInt, bonusInt);
 
-        int baseHp = BASE_HP + (str.base() * HP_PER_STR);
+        int raceBaseHp = character.getRace().getBaseHp();
+        int baseHp = raceBaseHp + (str.base() * HP_PER_STR);
         int bonusHp = (str.bonus() * HP_PER_STR) + itemHpBonus;
         DerivedStat hp = new DerivedStat(baseHp, bonusHp);
 
