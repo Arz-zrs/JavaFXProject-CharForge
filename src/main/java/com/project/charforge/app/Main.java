@@ -70,7 +70,7 @@ public class Main extends Application {
         appInitializer.setNavigationService(navigationService);
 
         // Stage Setup
-        stage.setTitle("CharForge - RPG Character Creator");
+        stage.setTitle("CharForge - RPG Character Maker");
         stage.setMaximized(true);
 
         try {
