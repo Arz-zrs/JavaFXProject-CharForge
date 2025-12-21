@@ -185,8 +185,13 @@ public class ItemLoadoutController {
                 itemId = Integer.parseInt(content.toString());
             }
 
-            if (character.getId() == 0) inventoryService.addTempItem(character, itemId);
-            else inventoryService.addItem(character, itemId);
+
+            if (character.getId() == 0) {
+                inventoryService.addTempItem(character, itemId);
+            }
+            else {
+                inventoryService.addItem(character, itemId);
+            }
 
             reloadBackpack();
             e.setDropCompleted(true);
@@ -232,7 +237,7 @@ public class ItemLoadoutController {
         } catch (Exception e) {
             Logs.printError(e.getMessage());
             e.getStackTrace();
-            AlertUtils.showError("Save Error", "Gagal menyimpan karakter.");
+            AlertUtils.showError("Save Error", "Failed to save Character.");
         }
     }
 

@@ -47,7 +47,7 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     public boolean equipItem(int instanceId, String slotName) {
         String sql = "UPDATE character_items SET slot_name = ?, grid_index = NULL WHERE instance_id = ?";
 
-        return executeQuery(
+        return executeUpdate(
                 sql,
                 statement -> {
                     statement.setString(1, slotName);
@@ -60,7 +60,7 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     public boolean unequipItem(int instanceId, int newGridIndex) {
         String sql = "UPDATE character_items SET slot_name = NULL, grid_index = ? WHERE instance_id = ?";
 
-        return executeQuery(
+        return executeUpdate(
                 sql,
                 statement -> {
                     statement.setInt(1, newGridIndex);
@@ -87,7 +87,7 @@ public class InventoryDaoImpl extends BaseDao<InventoryItem> implements Inventor
     public boolean deleteItem(int instanceId) {
         String sql = "DELETE FROM character_items WHERE instance_id = ?";
 
-        return executeQuery(
+        return executeUpdate(
                 sql,
                 statement -> statement.setInt(1, instanceId)
         ) > 0;

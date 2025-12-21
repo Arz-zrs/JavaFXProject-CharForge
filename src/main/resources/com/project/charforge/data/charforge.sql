@@ -1,19 +1,19 @@
 -- TABLES
-create table character_items
+CREATE TABLE IF NOT EXISTS character_items
 (
     instance_id  INTEGER PRIMARY KEY AUTOINCREMENT,
-    character_id INTEGER NOT NULL REFERENCES characters,
-    item_id      INTEGER NOT NULL REFERENCES items,
+    character_id INTEGER NOT NULL REFERENCES characters ON DELETE CASCADE,
+    item_id      INTEGER NOT NULL REFERENCES items ON DELETE CASCADE,
     slot_name    TEXT,
     grid_index   INTEGER
 );
 
-create table characters
+CREATE TABLE IF NOT EXISTS characters
 (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
     name     TEXT,
-    race_id  INTEGER REFERENCES races,
-    class_id INTEGER REFERENCES classes,
+    race_id  INTEGER REFERENCES races ON DELETE CASCADE,
+    class_id INTEGER REFERENCES classes ON DELETE CASCADE,
     gender   TEXT
 );
 
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS items
     icon_path TEXT
 );
 
-create table races
+CREATE TABLE IF NOT EXISTS races
 (
     id                       INTEGER
         primary key autoincrement,

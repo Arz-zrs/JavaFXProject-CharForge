@@ -5,11 +5,9 @@ import com.project.charforge.dao.interfaces.CharacterDao;
 import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.character.*;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
 public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements CharacterDao {
     public CharacterDaoImpl(ConnectionProvider connectionProvider) {
@@ -47,48 +45,10 @@ public class CharacterDaoImpl extends BaseDao<PlayerCharacter> implements Charac
 
     @Override
     public boolean delete(int id) {
-        String deleteInventorySql =
-                "DELETE FROM character_items WHERE character_id = ?";
-        String deleteCharacterSql =
-                "DELETE FROM characters WHERE id = ?";
-
-        return inTransaction(connection -> {
-            try (PreparedStatement stmtInv = connection.prepareStatement(deleteInventorySql);
-                 PreparedStatement stmtChar = connection.prepareStatement(deleteCharacterSql)) {
-
-                stmtInv.setInt(1, id);
-                stmtInv.executeUpdate();
-
-                stmtChar.setInt(1, id);
-                return stmtChar.executeUpdate() > 0;
-            }
-        });
-    }
-
-    @Override
-    public Optional<PlayerCharacter> findById(int id) {
-        String sql = """
-                SELECT
-                    c.id AS char_id,
-                    c.name AS char_name,
-                    c.gender AS char_gender,
-                
-                    r.id AS race_id,
-                    r.name AS race_name,
-                    r.base_str, r.base_dex, r.base_int,
-                    r.weight_capacity_modifier,
-                
-                    cl.id AS class_id,
-                    cl.name AS class_name,
-                    cl.bonus_str, cl.bonus_dex, cl.bonus_int, cl.attack_scaling
-                FROM characters c
-                LEFT JOIN races r ON c.race_id = r.id
-                LEFT JOIN classes cl ON c.class_id = cl.id
-                WHERE c.id = ?
-                """;
-
-        PlayerCharacter character = querySingle(sql, statement -> statement.setInt(1, id));
-        return Optional.ofNullable(character);
+        return executeUpdate(
+                "DELETE FROM characters WHERE id = ?",
+                stmt -> stmt.setInt(1, id)
+        ) > 0;
     }
 
     @Override
