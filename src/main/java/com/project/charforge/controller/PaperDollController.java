@@ -1,6 +1,5 @@
 package com.project.charforge.controller;
 
-import com.project.charforge.console.Logs;
 import com.project.charforge.model.dto.DerivedStat;
 import com.project.charforge.model.entity.character.Gender;
 import com.project.charforge.model.entity.character.PlayerCharacter;
@@ -8,6 +7,7 @@ import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 import com.project.charforge.ui.ItemToolTipFactory;
 import javafx.fxml.FXML;
@@ -42,15 +42,18 @@ public class PaperDollController {
     private IEquipmentService equipmentService;
     private IStatCalculator statCalculator;
     private INavigationService navigationService;
+    private IMessageService message;
 
     public void injectServices(
             IEquipmentService equipmentService,
             IStatCalculator statCalculator,
-            INavigationService navigationService
+            INavigationService navigationService,
+            IMessageService message
     ) {
         this.equipmentService = equipmentService;
         this.statCalculator = statCalculator;
         this.navigationService = navigationService;
+        this.message = message;
     }
 
     public void setCharacter(PlayerCharacter character) {
@@ -192,7 +195,7 @@ public class PaperDollController {
                     success = true;
 
                 } catch (IllegalStateException e) {
-                    Logs.printError(e.getMessage());
+                    message.error("Error", e.getMessage());
                     slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
                 }
             }
@@ -323,7 +326,7 @@ public class PaperDollController {
                     success = true;
 
                 } catch (Exception e) {
-                    e.getStackTrace();
+                    message.error("Error", e.getMessage());
                 }
             }
 

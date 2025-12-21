@@ -1,12 +1,11 @@
 package com.project.charforge.service.impl.utils;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
-import com.project.charforge.console.Logs;
 import com.project.charforge.controller.ItemLoadoutController;
 import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.AlertUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,10 +17,12 @@ import java.io.IOException;
 public class NavigationService implements INavigationService {
     private final Stage stage;
     private final ControllerInitializer initializer;
+    private final IMessageService message;
 
-    public NavigationService(Stage stage, ControllerInitializer initializer) {
+    public NavigationService(Stage stage, ControllerInitializer initializer, IMessageService message) {
         this.stage = stage;
         this.initializer = initializer;
+        this.message = message;
     }
 
     @Override
@@ -48,9 +49,8 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
-            Logs.printError(e.getMessage());
             e.getStackTrace();
-            AlertUtils.showError("Error", "Navigation failed");
+            message.error("Error", "Navigation failed\n" + e.getMessage());
         }
     }
 
@@ -68,9 +68,8 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
-            Logs.printError(e.getMessage());
             e.getStackTrace();
-            AlertUtils.showError("Error", "Navigation failed");
+            message.error("Navigation Error", "Navigation failed\n" + e.getMessage());
         }
     }
 
@@ -88,7 +87,7 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
-            AlertUtils.showError("Error", "Navigation failed");
+            message.error("Navigation Error", "Navigation failed\n" + e.getMessage());
         }
     }
 

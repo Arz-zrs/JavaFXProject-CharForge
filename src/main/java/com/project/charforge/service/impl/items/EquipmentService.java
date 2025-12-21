@@ -5,8 +5,8 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.IValidationService;
-import com.project.charforge.ui.AlertUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,10 +16,16 @@ import java.util.stream.Collectors;
 public class EquipmentService implements IEquipmentService {
     private final InventoryDao inventoryDao;
     private final IValidationService validationService;
+    private final IMessageService message;
 
-    public EquipmentService(InventoryDao inventoryDao, IValidationService validationService) {
+    public EquipmentService(
+            InventoryDao inventoryDao,
+            IValidationService validationService,
+            IMessageService message
+    ) {
         this.inventoryDao = inventoryDao;
         this.validationService = validationService;
+        this.message = message;
     }
 
 
@@ -51,7 +57,10 @@ public class EquipmentService implements IEquipmentService {
         }
 
         boolean success = inventoryDao.equipItem(instanceId, slot.name());
-        if (!success) AlertUtils.showError("Error", "Failed to equip item.");
+        if (!success) message.error(
+                "Error: " + instanceId + " " + slot.name(),
+                "Failed to equip item: " + newItem
+        );
 
     }
 
@@ -67,7 +76,10 @@ public class EquipmentService implements IEquipmentService {
     public void unequip(PlayerCharacter character, int instanceId) {
         int newGridIndex = findFreeGridIndex(character);
         boolean success = inventoryDao.unequipItem(instanceId, newGridIndex);
-        if (!success) AlertUtils.showError("Error", "Failed to unequip item.");
+        if (!success) message.error(
+                "Error: " + instanceId + " " + newGridIndex,
+                "Failed to unequip item"
+        );
     }
 
     private int findFreeGridIndex(PlayerCharacter character) {

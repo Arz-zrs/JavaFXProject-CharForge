@@ -10,6 +10,7 @@ import com.project.charforge.service.impl.items.InventoryService;
 import com.project.charforge.service.impl.items.ItemService;
 import com.project.charforge.service.impl.stats.EncumbranceService;
 import com.project.charforge.service.impl.stats.StatCalculator;
+import com.project.charforge.service.impl.utils.MessageService;
 import com.project.charforge.service.impl.utils.NavigationService;
 import com.project.charforge.service.impl.characters.CharacterService;
 import com.project.charforge.service.impl.utils.ValidationService;
@@ -17,6 +18,7 @@ import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IEncumbranceService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 
 import com.project.charforge.service.interfaces.characters.ICharacterService;
@@ -40,10 +42,11 @@ public class Main extends Application {
         ItemDao itemDao = new ItemDaoImpl(provider);
 
         // Services
+        IMessageService messageService = new MessageService();
         IItemService itemService = new ItemService(itemDao);
         IInventoryService inventoryService = new InventoryService(inventoryDao, itemDao);
         IValidationService validationService = new ValidationService();
-        IEquipmentService equipmentService = new EquipmentService(inventoryDao, validationService);
+        IEquipmentService equipmentService = new EquipmentService(inventoryDao, validationService, messageService);
         IEncumbranceService encumbranceService = new EncumbranceService();
         IStatCalculator statCalculator = new StatCalculator(encumbranceService);
         ICharacterService characterService = new CharacterService(characterDao, inventoryDao, raceDao, classDao);
@@ -55,11 +58,12 @@ public class Main extends Application {
                         itemService,
                         inventoryService,
                         statCalculator,
-                        characterService
+                        characterService,
+                        messageService
                 );
 
         // Navigation & Wiring
-        INavigationService navigationService = new NavigationService(stage, appInitializer);
+        INavigationService navigationService = new NavigationService(stage, appInitializer, messageService);
         appInitializer.setNavigationService(navigationService);
 
         // Stage Setup

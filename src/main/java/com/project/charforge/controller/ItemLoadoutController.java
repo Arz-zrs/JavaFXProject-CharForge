@@ -1,6 +1,5 @@
 package com.project.charforge.controller;
 
-import com.project.charforge.console.Logs;
 import com.project.charforge.model.dto.StatSnapshot;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
@@ -9,8 +8,8 @@ import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.items.IInventoryService;
 import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.AlertUtils;
 import com.project.charforge.ui.ItemToolTipFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -42,19 +41,22 @@ public class ItemLoadoutController {
     private IInventoryService inventoryService;
     private IStatCalculator statCalculator;
     private ICharacterService creationService;
+    private IMessageService message;
 
     public void injectDependencies(
             INavigationService navigationService,
             IItemService itemService,
             IInventoryService inventoryService,
             IStatCalculator statCalculator,
-            ICharacterService creationService
+            ICharacterService creationService,
+            IMessageService message
     ) {
         this.navigationService = navigationService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;
         this.statCalculator = statCalculator;
         this.creationService = creationService;
+        this.message = message;
     }
 
     public void setCharacter(PlayerCharacter character) {
@@ -134,7 +136,7 @@ public class ItemLoadoutController {
         try {
             String path = "/com/project/charforge/images/items/" + item.getIconPath();
             img.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-        } catch (Exception e) { e.getStackTrace(); }
+        } catch (Exception e) { message.error("Image Load Fail", e.getMessage()); }
 
         pane.getChildren().add(img);
 
@@ -226,7 +228,7 @@ public class ItemLoadoutController {
     @FXML
     private void handleFinish() {
         try {
-            boolean success = AlertUtils.showConfirmation(
+            boolean success = message.confirm(
                     "Finalize Character",
                     "Do you want to finalize your character?",
                     "You'll no longer be able to determine your equipment");
@@ -235,9 +237,7 @@ public class ItemLoadoutController {
                 navigationService.goToPaperDoll(character);
             }
         } catch (Exception e) {
-            Logs.printError(e.getMessage());
-            e.getStackTrace();
-            AlertUtils.showError("Save Error", "Failed to save Character.");
+            message.error("Save Error", "Failed to save Character.\n" + e.getMessage());
         }
     }
 

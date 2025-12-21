@@ -2,8 +2,8 @@ package com.project.charforge.controller;
 
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.AlertUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -20,10 +20,16 @@ public class MainMenuController {
 
     private INavigationService navigationService;
     private ICharacterService characterService;
+    private IMessageService message;
 
-    public void injectDependencies(INavigationService navigationService, ICharacterService characterService) {
+    public void injectDependencies(
+            INavigationService navigationService,
+            ICharacterService characterService,
+            IMessageService message
+    ) {
         this.navigationService = navigationService;
         this.characterService = characterService;
+        this.message = message;
 
         refreshTable();
     }
@@ -56,10 +62,10 @@ public class MainMenuController {
     private void handleLoadCharacter() {
         PlayerCharacter selected = tableCharacters.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            AlertUtils.showWarning("No Selection", "Please select a character to load.");
+            message.warning("Player Not Selected", "Please select a character to load.");
             return;
         }
-        boolean success = AlertUtils.showConfirmation(
+        boolean success = message.confirm(
                 "Load " + selected.getName() + "?",
                 "Do you want to play as " + selected.getName() + "?"
         );
@@ -70,11 +76,11 @@ public class MainMenuController {
     public void handleDeleteCharacter() {
         PlayerCharacter selected = tableCharacters.getSelectionModel().getSelectedItem();
         if (selected == null) {
-            AlertUtils.showWarning("No Selection", "Please select a character to delete.");
+            message.warning("No Selection", "Please select a character to delete.");
             return;
         }
 
-        boolean result = AlertUtils.showConfirmation(
+        boolean result = message.confirm(
                 "Delete Character",
                 "Are you sure?",
                 "Permanently delete " + selected.getName() + "?\nThis cannot be undone."
@@ -85,13 +91,13 @@ public class MainMenuController {
             if (success) {
                 refreshTable();
             } else {
-                AlertUtils.showError("Error", "Failed to delete character.");
+                message.error("Deletion Error", "Failed to delete character.");
             }
         }
     }
 
     public void handleExitProgram() {
-        boolean result = AlertUtils.showConfirmation("Exit", "Exit App?");
+        boolean result = message.confirm("Exit", "Exit App?");
         if (result) navigationService.exitProgram();
     }
 }

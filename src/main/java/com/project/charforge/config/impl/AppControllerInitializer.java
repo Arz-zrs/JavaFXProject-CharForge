@@ -5,6 +5,7 @@ import com.project.charforge.controller.*;
 import com.project.charforge.service.interfaces.characters.*;
 import com.project.charforge.service.interfaces.items.*;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
 
 public class AppControllerInitializer implements ControllerInitializer {
@@ -13,6 +14,7 @@ public class AppControllerInitializer implements ControllerInitializer {
     private final IInventoryService inventoryService;
     private final IStatCalculator statCalculator;
     private final ICharacterService characterService;
+    private final IMessageService messageService;
     private INavigationService navigationService;
 
     public AppControllerInitializer(
@@ -20,13 +22,15 @@ public class AppControllerInitializer implements ControllerInitializer {
             IItemService itemService,
             IInventoryService inventoryService,
             IStatCalculator statCalculator,
-            ICharacterService characterService
+            ICharacterService characterService,
+            IMessageService messageService
     ) {
         this.equipmentService = equipmentService;
         this.itemService = itemService;
         this.inventoryService = inventoryService;
         this.statCalculator = statCalculator;
         this.characterService = characterService;
+        this.messageService = messageService;
     }
 
     @Override
@@ -35,7 +39,8 @@ public class AppControllerInitializer implements ControllerInitializer {
             validateNavigation();
             c.injectDependencies(
                     navigationService,
-                    characterService
+                    characterService,
+                    messageService
             );
         }
 
@@ -43,7 +48,8 @@ public class AppControllerInitializer implements ControllerInitializer {
             validateNavigation();
             c.injectDependencies(
                     characterService,
-                    navigationService
+                    navigationService,
+                    messageService
             );
         }
 
@@ -52,7 +58,8 @@ public class AppControllerInitializer implements ControllerInitializer {
             c.injectServices(
                     equipmentService,
                     statCalculator,
-                    navigationService
+                    navigationService,
+                    messageService
             );
         }
 
@@ -63,7 +70,8 @@ public class AppControllerInitializer implements ControllerInitializer {
                     itemService,
                     inventoryService,
                     statCalculator,
-                    characterService
+                    characterService,
+                    messageService
             );
         }    }
 

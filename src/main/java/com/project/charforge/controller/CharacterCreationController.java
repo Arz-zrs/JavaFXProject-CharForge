@@ -1,10 +1,9 @@
 package com.project.charforge.controller;
 
-import com.project.charforge.console.Logs;
 import com.project.charforge.model.entity.character.*;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
+import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.AlertUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -21,10 +20,16 @@ public class CharacterCreationController {
 
     private ICharacterService creationService;
     private INavigationService navigationService;
+    private IMessageService message;
 
-    public void injectDependencies(ICharacterService creationService, INavigationService navigationService) {
+    public void injectDependencies(
+            ICharacterService creationService,
+            INavigationService navigationService
+            ,IMessageService messageService
+    ) {
         this.creationService = creationService;
         this.navigationService = navigationService;
+        this.message = messageService;
 
         loadMasterData();
     }
@@ -92,7 +97,7 @@ public class CharacterCreationController {
     @FXML
     public void handleCreateCharacter() {
         if (!isInputValid()) {
-            AlertUtils.showError("Incomplete", "Please fill all fields!");
+            message.error("Incomplete", "Please fill all fields!");
             return;
         }
 
@@ -106,8 +111,7 @@ public class CharacterCreationController {
 
             navigationService.goToItemLoadout(pc);
         } catch (Exception e) {
-            AlertUtils.showError("Error", e.getMessage());
-            Logs.printError(e.getMessage());
+            message.error("Error", e.getMessage());
         }
     }
 
