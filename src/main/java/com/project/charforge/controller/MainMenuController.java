@@ -4,6 +4,7 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.utils.Logs;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -92,6 +93,7 @@ public class MainMenuController {
                 refreshTable();
             } else {
                 message.error("Deletion Error", "Failed to delete character.");
+                Logs.printError("MainMenuController Error");
             }
         }
     }

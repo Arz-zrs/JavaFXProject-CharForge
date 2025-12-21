@@ -1,4 +1,4 @@
-package com.project.charforge.ui;
+package com.project.charforge.utils;
 
 import com.project.charforge.model.entity.item.Item;
 import javafx.scene.Node;

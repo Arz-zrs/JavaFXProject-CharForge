@@ -9,7 +9,8 @@ import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.ItemToolTipFactory;
+import com.project.charforge.utils.ItemToolTipFactory;
+import com.project.charforge.utils.Logs;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -196,6 +197,7 @@ public class PaperDollController {
 
                 } catch (IllegalStateException e) {
                     message.error("Error", e.getMessage());
+                    Logs.printError("PaperDollController Error", e);
                     slotPane.setStyle("-fx-border-color: #FF0000; -fx-border-width: 2;");
                 }
             }
@@ -327,6 +329,7 @@ public class PaperDollController {
 
                 } catch (Exception e) {
                     message.error("Error", e.getMessage());
+                    Logs.printError("PaperDollController", e);
                 }
             }
 

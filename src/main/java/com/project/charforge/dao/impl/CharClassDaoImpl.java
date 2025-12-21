@@ -5,6 +5,7 @@ import com.project.charforge.dao.interfaces.CharClassDao;
 import com.project.charforge.db.ConnectionProvider;
 import com.project.charforge.model.entity.character.AttackScaling;
 import com.project.charforge.model.entity.character.CharClass;
+import com.project.charforge.utils.Logs;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -43,7 +44,7 @@ public class CharClassDaoImpl extends BaseDao<CharClass> implements CharClassDao
             try {
                 scaling = AttackScaling.valueOf(scalingStr);
             } catch (IllegalArgumentException e) {
-                e.getStackTrace();
+                Logs.printError("CharClassDao Error", e);
             }
         }
         

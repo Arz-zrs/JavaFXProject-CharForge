@@ -6,6 +6,7 @@ import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.utils.Logs;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -49,7 +50,7 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
-            e.getStackTrace();
+            Logs.printError("NavigationService Error", e);
             message.error("Error", "Navigation failed\n" + e.getMessage());
         }
     }
@@ -68,7 +69,7 @@ public class NavigationService implements INavigationService {
 
             setScene(root);
         } catch (IOException e) {
-            e.getStackTrace();
+            Logs.printError("NavigationService Error", e);
             message.error("Navigation Error", "Navigation failed\n" + e.getMessage());
         }
     }
@@ -88,6 +89,7 @@ public class NavigationService implements INavigationService {
             setScene(root);
         } catch (IOException e) {
             message.error("Navigation Error", "Navigation failed\n" + e.getMessage());
+            Logs.printError("NavigationService Error", e);
         }
     }
 

@@ -4,6 +4,7 @@ import com.project.charforge.model.entity.character.*;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.utils.Logs;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -112,6 +113,7 @@ public class CharacterCreationController {
             navigationService.goToItemLoadout(pc);
         } catch (Exception e) {
             message.error("Error", e.getMessage());
+            Logs.printError("CharacterCreationController Error", e);
         }
     }
 

@@ -10,7 +10,8 @@ import com.project.charforge.service.interfaces.items.IItemService;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
 import com.project.charforge.service.interfaces.utils.IMessageService;
 import com.project.charforge.service.interfaces.utils.INavigationService;
-import com.project.charforge.ui.ItemToolTipFactory;
+import com.project.charforge.utils.ItemToolTipFactory;
+import com.project.charforge.utils.Logs;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
@@ -136,7 +137,10 @@ public class ItemLoadoutController {
         try {
             String path = "/com/project/charforge/images/items/" + item.getIconPath();
             img.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
-        } catch (Exception e) { message.error("Image Load Fail", e.getMessage()); }
+        } catch (Exception e) {
+            message.error("Image Load Fail", e.getMessage());
+            Logs.printError("ItemLoadoutController Error", e);
+        }
 
         pane.getChildren().add(img);
 
@@ -238,6 +242,7 @@ public class ItemLoadoutController {
             }
         } catch (Exception e) {
             message.error("Save Error", "Failed to save Character.\n" + e.getMessage());
+            Logs.printError("ItemLoadoutController Error", e);
         }
     }
 

@@ -25,7 +25,10 @@ import com.project.charforge.service.interfaces.characters.ICharacterService;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
 import com.project.charforge.service.interfaces.utils.IValidationService;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -69,6 +72,13 @@ public class Main extends Application {
         // Stage Setup
         stage.setTitle("CharForge - RPG Simulator");
         stage.setMaximized(true);
+
+        try {
+            Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/project/charforge/images/app_icon.png")));
+            stage.getIcons().add(icon);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         // Start
         navigationService.goToMainMenu();

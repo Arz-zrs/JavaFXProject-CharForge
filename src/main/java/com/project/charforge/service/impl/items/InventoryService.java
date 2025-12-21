@@ -6,7 +6,7 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.Item;
 import com.project.charforge.service.interfaces.items.IInventoryService;
-import com.project.charforge.ui.AlertUtils;
+import com.project.charforge.utils.AlertUtils;
 
 import java.util.List;
 

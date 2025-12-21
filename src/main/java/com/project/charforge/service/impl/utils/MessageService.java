@@ -1,7 +1,7 @@
 package com.project.charforge.service.impl.utils;
 
 import com.project.charforge.service.interfaces.utils.IMessageService;
-import com.project.charforge.ui.AlertUtils;
+import com.project.charforge.utils.AlertUtils;
 
 public class MessageService implements IMessageService {
 

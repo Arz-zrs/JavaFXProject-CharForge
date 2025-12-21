@@ -1,4 +1,4 @@
-package com.project.charforge.ui;
+package com.project.charforge.utils;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;

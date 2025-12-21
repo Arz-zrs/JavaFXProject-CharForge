@@ -1,6 +1,5 @@
 package com.project.charforge.dao.interfaces;
 
-import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
 
 import java.util.List;

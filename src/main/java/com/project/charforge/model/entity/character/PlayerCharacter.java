@@ -1,6 +1,5 @@
 package com.project.charforge.model.entity.character;
 
-import com.project.charforge.console.Logs;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.model.entity.item.Item;
@@ -18,8 +17,6 @@ public class PlayerCharacter {
     private Gender gender;
     private Map<EquipmentSlot, Item> equipment = new HashMap<>();
     private List<InventoryItem> inventory = new ArrayList<>();
-
-    public PlayerCharacter(){ }
 
     public CharClass getCharClass() {
         return CharClass;
@@ -75,28 +72,5 @@ public class PlayerCharacter {
 
     public Map<EquipmentSlot, Item> getEquipment() {
         return equipment;
-    }
-    public void equipItem(EquipmentSlot slot, Item item) {
-        equipment.put(slot, item);
-    }
-    public void unequipItem(EquipmentSlot slot) {
-        equipment.remove(slot);
-    }
-
-    public Map<EquipmentSlot, Item> getEquippedItemsMap(){
-        Map<EquipmentSlot, Item> equippedMap = new HashMap<>();
-        for (InventoryItem inventoryItem: inventory) {
-            if (inventoryItem.isEquipped()) {
-                // Error handling if string slot in Database is invalid
-                try {
-                    EquipmentSlot slot = EquipmentSlot.valueOf(inventoryItem.getSlotName());
-                    equippedMap.put(slot, inventoryItem.getItem());
-                } catch (IllegalArgumentException e) {
-                    Logs.printError(e.getMessage());
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        return equippedMap;
     }
 }
