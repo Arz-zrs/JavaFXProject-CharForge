@@ -5,8 +5,8 @@ import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;
 import com.project.charforge.model.entity.item.EquipmentSlot;
 import com.project.charforge.service.interfaces.items.IEquipmentService;
-import com.project.charforge.service.interfaces.utils.IMessageService;
-import com.project.charforge.service.interfaces.utils.IValidationService;
+import com.project.charforge.service.interfaces.process.IMessageService;
+import com.project.charforge.service.interfaces.process.IValidationService;
 
 import java.util.List;
 import java.util.Optional;

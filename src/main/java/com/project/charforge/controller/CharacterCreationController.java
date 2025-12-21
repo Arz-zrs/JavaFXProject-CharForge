@@ -2,8 +2,8 @@ package com.project.charforge.controller;
 
 import com.project.charforge.model.entity.character.*;
 import com.project.charforge.service.interfaces.characters.ICharacterService;
-import com.project.charforge.service.interfaces.utils.IMessageService;
-import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.service.interfaces.process.IMessageService;
+import com.project.charforge.service.interfaces.process.INavigationService;
 import com.project.charforge.utils.Logs;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;

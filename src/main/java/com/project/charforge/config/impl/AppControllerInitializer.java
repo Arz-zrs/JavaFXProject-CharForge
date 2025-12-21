@@ -5,8 +5,8 @@ import com.project.charforge.controller.*;
 import com.project.charforge.service.interfaces.characters.*;
 import com.project.charforge.service.interfaces.items.*;
 import com.project.charforge.service.interfaces.stats.IStatCalculator;
-import com.project.charforge.service.interfaces.utils.IMessageService;
-import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.service.interfaces.process.IMessageService;
+import com.project.charforge.service.interfaces.process.INavigationService;
 
 public class AppControllerInitializer implements ControllerInitializer {
     private final IEquipmentService equipmentService;

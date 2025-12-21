@@ -1,11 +1,11 @@
-package com.project.charforge.service.impl.utils;
+package com.project.charforge.service.impl.process;
 
 import com.project.charforge.config.interfaces.ControllerInitializer;
 import com.project.charforge.controller.ItemLoadoutController;
 import com.project.charforge.controller.PaperDollController;
 import com.project.charforge.model.entity.character.PlayerCharacter;
-import com.project.charforge.service.interfaces.utils.IMessageService;
-import com.project.charforge.service.interfaces.utils.INavigationService;
+import com.project.charforge.service.interfaces.process.IMessageService;
+import com.project.charforge.service.interfaces.process.INavigationService;
 import com.project.charforge.utils.Logs;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

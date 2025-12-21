@@ -1,4 +1,4 @@
-package com.project.charforge.service.interfaces.utils;
+package com.project.charforge.service.interfaces.process;
 
 import com.project.charforge.model.entity.character.PlayerCharacter;
 import com.project.charforge.model.entity.inventory.InventoryItem;

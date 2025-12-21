@@ -19,5 +19,5 @@ module com.project.charforge {
     exports com.project.charforge.service.interfaces.characters;
     exports com.project.charforge.service.interfaces.stats;
     exports com.project.charforge.service.interfaces.items;
-    exports com.project.charforge.service.interfaces.utils;
+    exports com.project.charforge.service.interfaces.process;
 }
