@@ -1,13 +1,10 @@
 package com.project.charforge;
 
-import com.sun.tools.javac.Main;
+import com.project.charforge.app.Main;
+import javafx.application.Application;
 
 public class Launcher {
     public static void main(String[] args) {
-        try {
-            Main.main(args);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Application.launch(Main.class, args);
     }
 }
