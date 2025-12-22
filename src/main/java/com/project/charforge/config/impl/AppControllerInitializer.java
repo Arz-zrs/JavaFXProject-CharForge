@@ -68,6 +68,30 @@ public class AppControllerInitializer implements ControllerInitializer {
         );
     }
 
+    public AppControllerInitializer(
+            ICharacterService characterService,
+            IMessageService messageService
+    ) {
+
+        injector.put(MainMenuController.class,
+                (ControllerInjector<MainMenuController>) c ->
+                        c.injectDependencies(
+                                navigationService,
+                                characterService,
+                                messageService
+                        )
+        );
+
+        injector.put(CharacterCreationController.class,
+                (ControllerInjector<CharacterCreationController>) c ->
+                        c.injectDependencies(
+                                characterService,
+                                navigationService,
+                                messageService
+                        )
+        );
+    }
+
     @Override
     @SuppressWarnings("unchecked")
     public void initialize(Object controller) {
