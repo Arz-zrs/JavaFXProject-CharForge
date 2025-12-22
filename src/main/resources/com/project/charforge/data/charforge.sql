@@ -108,6 +108,9 @@ VALUES ('Pendant of Vigor', 'UTILITY', 0.5, 10, 4, 0, 5, 0, 0, 'vigor_pendant.pn
 INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
 VALUES ('Mage Robe', 'BODY', 0.5, 0, 1, 15, 5, 2, 0, 'mage_robe.png');
 
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('A Normal Stick', 'MAIN_HAND', 0.1, 999, 999, 999, 999, 999, 999, 'placeholder.png');
+
 -- Races Seeded Data
 INSERT INTO races (name, base_str, base_dex, base_int, weight_capacity_modifier)
 VALUES ('Human', 5, 5, 5, 1.0);
