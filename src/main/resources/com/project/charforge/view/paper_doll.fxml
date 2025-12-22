@@ -28,14 +28,14 @@
                             <ImageView fx:id="imgHead" fitHeight="40" fitWidth="40" visible="false" />
                         </StackPane>
 
-                        <!-- ACCESSORY -->
-                        <StackPane fx:id="slotAccessory" layoutX="289.0" layoutY="311.0" prefHeight="80.0" prefWidth="83.0" styleClass="equipment-slot">
-                            <Label styleClass="slot-label" text="ACCESORIES" />
-                            <ImageView fx:id="imgAccessory" fitHeight="40" fitWidth="40" visible="false" />
+                        <!-- UTILITY -->
+                        <StackPane fx:id="slotUtility" layoutX="289.0" layoutY="311.0" prefHeight="80.0" prefWidth="83.0" styleClass="equipment-slot">
+                            <Label styleClass="slot-label" text="UTILITY" />
+                            <ImageView fx:id="imgUtility" fitHeight="40" fitWidth="40" visible="false" />
                         </StackPane>
 
                         <!-- BODY -->
-                        <StackPane fx:id="slotBody" layoutX="165.0" layoutY="163.0" prefHeight="80.0" prefWidth="50.0" styleClass="equipment-slot">
+                        <StackPane fx:id="slotBody" layoutX="153.0" layoutY="116.0" prefHeight="80.0" prefWidth="50.0" styleClass="equipment-slot">
                             <Label styleClass="slot-label" text="BODY" />
                             <ImageView fx:id="imgBody" fitHeight="119.0" fitWidth="68.0" visible="false" />
                         </StackPane>
@@ -74,7 +74,7 @@
                 <Separator opacity="0.3" />
 
                 <!-- Main Stats Grid -->
-                <GridPane hgap="10" prefHeight="168.0" prefWidth="206.0" vgap="10" HBox.hgrow="ALWAYS">
+                <GridPane hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="168.0" prefWidth="230.0" vgap="10" HBox.hgrow="ALWAYS">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="60" />
                         <ColumnConstraints halignment="RIGHT" percentWidth="40" />

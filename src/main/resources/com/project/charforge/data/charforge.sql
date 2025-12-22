@@ -61,13 +61,52 @@ INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, st
 VALUES ('Iron Sword', 'MAIN_HAND', 5.0, 3, 0, 0, 0, 0, 15, 'iron_sword.png');
 
 INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
-VALUES ('Leather Cap', 'HEAD', 1.0, 0, 1, 0, 10, 5, 0, 'leather_cap.png');
+VALUES ('Leather Cap', 'HEAD', 1.0, 0, 1, 0, 2, 5, 0, 'leather_cap.png');
 
 INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
 VALUES ('Old Staff', 'MAIN_HAND', 2.0, 0, 0, 4, 0, 0, 8, 'wood_staff.png');
 
 INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
 VALUES ('Rusty Dagger', 'OFFHAND', 1.5, 1, 2, 0, 0, 0, 4, 'dagger.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Chainmail', 'BODY', 1.0, 1, 3, 0, 5, 10, 0, 'chainmail.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Hunter Bow', 'MAIN_HAND', 1.5, 1, 5, 0, 0, 0, 6, 'hunter_bow.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Iron Armor', 'BODY', 9, 10, 2, 0, 5, 15, 0, 'iron_armor.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Iron Helmet', 'HEAD', 4, 4, 0, 0, 3, 10, 0, 'iron_helmet.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Iron Leggings', 'LEGS', 3, 5, 1, 0, 2, 8, 0, 'iron_leggings.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Iron Shield', 'OFFHAND', 2, 3, 0, 0, 0, 5, 0, 'iron_shield.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Leather Boots', 'LEGS', 0.5, 1, 3, 0, 2, 3, 0, 'leather_boots.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Mage Hat', 'HEAD', 0.5, 0, 2, 10, 3, 1, 0, 'mage_hat.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Magic Necklace', 'UTILITY', 0.5, 0, 0, 15, 0, 0, 0, 'magic_necklace.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Magic Tome', 'OFFHAND', 0.5, 0, 1, 12, 0, 0, 5, 'magic_tome.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Quiver', 'UTILITY', 1, 1, 6, 0, 0, 0, 7, 'quiver.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Pendant of Vigor', 'UTILITY', 0.5, 10, 4, 0, 5, 0, 0, 'vigor_pendant.png');
+
+INSERT INTO items (name, type, weight, stat_str, stat_dex, stat_int, stat_hp, stat_ap, stat_atk, icon_path)
+VALUES ('Mage Robe', 'BODY', 0.5, 0, 1, 15, 5, 2, 0, 'mage_robe.png');
 
 -- Races Seeded Data
 INSERT INTO races (name, base_str, base_dex, base_int, weight_capacity_modifier)

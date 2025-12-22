@@ -35,8 +35,8 @@ public class PaperDollController {
     @FXML private ProgressBar progressWeight;
     @FXML private GridPane inventoryGrid;
 
-    @FXML private StackPane slotHead, slotAccessory, slotBody, slotMainHand, slotOffHand, slotLegs;
-    @FXML private ImageView imgHead, imgAccessory, imgBody, imgMainHand, imgOffHand, imgLegs;
+    @FXML private StackPane slotHead, slotUtility, slotBody, slotMainHand, slotOffHand, slotLegs;
+    @FXML private ImageView imgHead, imgUtility, imgBody, imgMainHand, imgOffHand, imgLegs;
 
     private static final double INV_SLOT_SIZE = 50.0;
     private static final double ICON_SIZE = 40.0;
@@ -257,7 +257,7 @@ public class PaperDollController {
         imgMainHand.setVisible(false); slotMainHand.setUserData(null);
         imgOffHand.setVisible(false); slotOffHand.setUserData(null);
         imgLegs.setVisible(false); slotLegs.setUserData(null);
-        imgAccessory.setVisible(false); slotAccessory.setUserData(null);
+        imgUtility.setVisible(false); slotUtility.setUserData(null);
     }
 
     private ImageView getImageViewForSlot(EquipmentSlot slot) {
@@ -267,7 +267,7 @@ public class PaperDollController {
             case MAIN_HAND -> imgMainHand;
             case OFFHAND -> imgOffHand;
             case LEGS -> imgLegs;
-            case ACCESSORY -> imgAccessory;
+            case UTILITY -> imgUtility;
             default -> null;
         };
     }
@@ -290,7 +290,7 @@ public class PaperDollController {
         setupAutoHideLabel(slotMainHand, imgMainHand);
         setupAutoHideLabel(slotOffHand, imgOffHand);
         setupAutoHideLabel(slotLegs, imgLegs);
-        setupAutoHideLabel(slotAccessory, imgAccessory);
+        setupAutoHideLabel(slotUtility, imgUtility);
 
         // Unequip Logic
         inventoryGrid.setOnDragOver(event -> {
@@ -340,7 +340,7 @@ public class PaperDollController {
         setupSlotEvents(slotMainHand, EquipmentSlot.MAIN_HAND);
         setupSlotEvents(slotOffHand, EquipmentSlot.OFFHAND);
         setupSlotEvents(slotLegs, EquipmentSlot.LEGS);
-        setupSlotEvents(slotAccessory, EquipmentSlot.ACCESSORY);
+        setupSlotEvents(slotUtility, EquipmentSlot.UTILITY);
     }
 
     private void setupAutoHideLabel(StackPane slot, ImageView img) {
