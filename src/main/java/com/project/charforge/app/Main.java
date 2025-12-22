@@ -30,8 +30,6 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import java.util.Objects;
-
 public class Main extends Application {
 
     @Override
@@ -77,10 +75,14 @@ public class Main extends Application {
         stage.setMaximized(true);
 
         try {
-            Image icon = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/project/charforge/images/app_icon.png")));
-            stage.getIcons().add(icon);
+            var iconStream = getClass().getResourceAsStream("/com/project/charforge/images/app_icon.png");
+            if (iconStream != null) {
+                stage.getIcons().add(new Image(iconStream));
+            } else {
+                System.out.println("Warning: app_icon.png not found. Continuing without icon.");
+            }
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            System.out.println("Could not load icon: " + e.getMessage());
         }
 
         // Start

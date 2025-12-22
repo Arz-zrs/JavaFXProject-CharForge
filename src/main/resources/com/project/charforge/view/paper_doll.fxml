@@ -35,25 +35,25 @@
                         </StackPane>
 
                         <!-- BODY -->
-                        <StackPane fx:id="slotBody" layoutX="153.0" layoutY="116.0" prefHeight="80.0" prefWidth="50.0" styleClass="equipment-slot">
+                        <StackPane fx:id="slotBody" layoutX="153.0" layoutY="116.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="99.0" styleClass="equipment-slot">
                             <Label styleClass="slot-label" text="BODY" />
                             <ImageView fx:id="imgBody" fitHeight="119.0" fitWidth="68.0" visible="false" />
                         </StackPane>
 
                         <!-- MAIN HAND -->
-                        <StackPane fx:id="slotMainHand" layoutX="40.0" layoutY="150.0" prefHeight="100.0" prefWidth="60.0" styleClass="equipment-slot">
+                        <StackPane fx:id="slotMainHand" layoutX="16.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="84.0" styleClass="equipment-slot">
                             <Label styleClass="slot-label" text="MAIN" />
                             <ImageView fx:id="imgMainHand" fitHeight="90" fitWidth="50" visible="false" />
                         </StackPane>
 
                         <!-- OFFHAND -->
-                        <StackPane fx:id="slotOffHand" layoutX="300.0" layoutY="150.0" prefHeight="100.0" prefWidth="60.0" styleClass="equipment-slot">
+                        <StackPane fx:id="slotOffHand" layoutX="300.0" layoutY="150.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="84.0" styleClass="equipment-slot">
                             <Label styleClass="slot-label" text="OFFHAND" />
                             <ImageView fx:id="imgOffHand" fitHeight="90" fitWidth="50" visible="false" />
                         </StackPane>
 
                         <!-- LEGS -->
-                        <StackPane fx:id="slotLegs" layoutX="167.0" layoutY="328.0" prefHeight="113.0" prefWidth="68.0" styleClass="equipment-slot">
+                        <StackPane fx:id="slotLegs" layoutX="167.0" layoutY="328.0" prefHeight="70.0" prefWidth="68.0" styleClass="equipment-slot">
                             <Label styleClass="slot-label" text="LEGS" />
                             <ImageView fx:id="imgLegs" fitHeight="50" fitWidth="40" visible="false" />
                         </StackPane>

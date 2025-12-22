@@ -276,6 +276,7 @@ public class PaperDollController {
         try {
             String fullPath = "/com/project/charforge/images/items/" + path;
             view.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(fullPath))));
+            view.setPreserveRatio(true);
         } catch (Exception e) {
             // Placeholder Image
              view.setImage(new Image("com/project/charforge/images/items/placeholder.png"));

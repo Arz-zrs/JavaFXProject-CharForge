@@ -1,6 +1,5 @@
-package com.project.charforge;
+package com.project.charforge.app;
 
-import com.project.charforge.app.Main;
 import javafx.application.Application;
 
 public class Launcher {
